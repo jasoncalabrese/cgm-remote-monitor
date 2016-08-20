@@ -319,8 +319,8 @@ ul.navigation {
   display: block;
 }
 
-.navigation li a {
-  text-decoration: none !important;
+.navigation a {
+  text-decoration: none;
   background-color: #808080;
   display: block;
   padding: 5px;

@@ -1,5 +1,15 @@
 // don't 'use strict' since we're setting serverSettings globally
-serverSettings = null;
+serverSettings = {
+   'status':'unauthorized',
+   'name':'Nightscout',
+   'version':'unknown',
+   'apiEnabled':false,
+   'careportalEnabled':false,
+   'boluscalcEnabled':false,
+   'settings':{ },
+   'extendedSettings':{ },
+   'authorized':null
+};
 
 var params = {};
 if (window.location.search) {

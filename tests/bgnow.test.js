@@ -7,7 +7,10 @@ var FIVE_MINS = 300000;
 var SIX_MINS = 360000;
 
 describe('BG Now', function ( ) {
-  var bgnow = require('../lib/plugins/bgnow')();
+  var ctx = {
+    language: require('../lib/language')()
+  };
+  var bgnow = require('../lib/plugins/bgnow')(ctx);
   var sandbox = require('../lib/sandbox')();
 
   var now = Date.now();
@@ -23,6 +26,7 @@ describe('BG Now', function ( ) {
           options.info.length.should.equal(0);
           done();
         }
+      , language: { translate: function(text) { return text; } }
       }
     };
     var data = {sgvs: [{mills: before, mgdl: 100}, {mills: now, mgdl: 105}]};
@@ -31,11 +35,11 @@ describe('BG Now', function ( ) {
 
     bgnow.setProperties(sbx);
 
-    var prop = sbx.properties.bgnow.delta;
-    prop.mgdl.should.equal(5);
-    prop.interpolated.should.equal(false);
-    prop.scaled.should.equal(5);
-    prop.display.should.equal('+5');
+    var delta = sbx.properties.delta;
+    delta.mgdl.should.equal(5);
+    delta.interpolated.should.equal(false);
+    delta.scaled.should.equal(5);
+    delta.display.should.equal('+5');
 
     bgnow.updateVisualisation(sbx);
   });
@@ -57,17 +61,18 @@ describe('BG Now', function ( ) {
           done();
         }
       }
+      , language: require('../lib/language')()
     };
 
     var sbx = sandbox.clientInit(ctx, now, data);
 
     bgnow.setProperties(sbx);
 
-    var prop = sbx.properties.bgnow.delta;
-    prop.mgdl.should.equal(2);
-    prop.interpolated.should.equal(true);
-    prop.scaled.should.equal(2);
-    prop.display.should.equal('+2');
+    var delta = sbx.properties.delta;
+    delta.mgdl.should.equal(2);
+    delta.interpolated.should.equal(true);
+    delta.scaled.should.equal(2);
+    delta.display.should.equal('+2');
     bgnow.updateVisualisation(sbx);
 
   });
@@ -78,19 +83,40 @@ describe('BG Now', function ( ) {
         units: 'mmol'
       }
       , pluginBase: {}
+      , language: require('../lib/language')()
     };
 
     var data = {sgvs: [{mills: before, mgdl: 100}, {mills: now, mgdl: 105}]};
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
 
+    var gotbgnow = false;
+    var gotdelta = false;
+    var gotbuckets = false;
+
     sbx.offerProperty = function mockedOfferProperty (name, setter) {
-      name.should.equal('bgnow');
-      var result = setter().delta;
-      result.mgdl.should.equal(5);
-      result.interpolated.should.equal(false);
-      result.scaled.should.equal(0.2);
-      result.display.should.equal('+0.2');
-      done();
+      if (name === 'bgnow') {
+        var bgnowProp = setter();
+        bgnowProp.mean.should.equal(105);
+        bgnowProp.last.should.equal(105);
+        bgnowProp.mills.should.equal(now);
+        gotbgnow = true;
+      } else if (name === 'delta') {
+        var result = setter();
+        result.mgdl.should.equal(5);
+        result.interpolated.should.equal(false);
+        result.scaled.should.equal(0.2);
+        result.display.should.equal('+0.2');
+        gotdelta = true;
+      } else if (name === 'buckets') {
+        var buckets = setter();
+        buckets[0].mean.should.equal(105);
+        buckets[1].mean.should.equal(100);
+        gotbuckets = true;
+      }
+
+      if (gotbgnow && gotdelta && gotbuckets) {
+        done();
+      }
     };
 
     bgnow.setProperties(sbx);
@@ -102,19 +128,41 @@ describe('BG Now', function ( ) {
         units: 'mmol'
       }
       , pluginBase: {}
+      , language: require('../lib/language')()
     };
 
     var data = {sgvs: [{mills: before, mgdl: 85}, {mills: now, mgdl: 85}]};
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
 
+    var gotbgnow = false;
+    var gotdelta = false;
+    var gotbuckets = false;
+
     sbx.offerProperty = function mockedOfferProperty (name, setter) {
-      name.should.equal('bgnow');
-      var result = setter().delta;
-      result.mgdl.should.equal(0);
-      result.interpolated.should.equal(false);
-      result.scaled.should.equal(0);
-      result.display.should.equal('+0');
-      done();
+      if (name === 'bgnow') {
+        var bgnowProp = setter();
+        bgnowProp.mean.should.equal(85);
+        bgnowProp.last.should.equal(85);
+        bgnowProp.mills.should.equal(now);
+        gotbgnow = true;
+      } else if (name === 'delta') {
+        var result = setter();
+        result.mgdl.should.equal(0);
+        result.interpolated.should.equal(false);
+        result.scaled.should.equal(0);
+        result.display.should.equal('+0');
+        gotdelta = true;
+      } else if (name === 'buckets') {
+        var buckets = setter();
+        buckets[0].mean.should.equal(85);
+        buckets[1].mean.should.equal(85);
+        gotbuckets = true;
+      }
+
+      if (gotbgnow && gotdelta && gotbuckets) {
+        done();
+      }
+
     };
 
     bgnow.setProperties(sbx);
@@ -126,19 +174,41 @@ describe('BG Now', function ( ) {
         units: 'mmol'
       }
       , pluginBase: {}
+      , language: require('../lib/language')()
     };
 
     var data = {sgvs: [{mills: before - SIX_MINS, mgdl: 100}, {mills: now, mgdl: 105}]};
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
 
+    var gotbgnow = false;
+    var gotdelta = false;
+    var gotbuckets = false;
+
     sbx.offerProperty = function mockedOfferProperty (name, setter) {
-      name.should.equal('bgnow');
-      var result = setter().delta;
-      result.mgdl.should.equal(2);
-      result.interpolated.should.equal(true);
-      result.scaled.should.equal(0.1);
-      result.display.should.equal('+0.1');
-      done();
+      if (name === 'bgnow') {
+        var bgnowProp = setter();
+        bgnowProp.mean.should.equal(105);
+        bgnowProp.last.should.equal(105);
+        bgnowProp.mills.should.equal(now);
+        gotbgnow = true;
+      } else if (name === 'delta') {
+        var result = setter();
+        result.mgdl.should.equal(2);
+        result.interpolated.should.equal(true);
+        result.scaled.should.equal(0.1);
+        result.display.should.equal('+0.1');
+        gotdelta = true;
+      } else if (name === 'buckets') {
+        var buckets = setter();
+        buckets[0].mean.should.equal(105);
+        buckets[1].isEmpty.should.equal(true);
+        buckets[2].mean.should.equal(100);
+        gotbuckets = true;
+      }
+
+      if (gotbgnow && gotdelta && gotbuckets) {
+        done();
+      }
     };
 
     bgnow.setProperties(sbx);

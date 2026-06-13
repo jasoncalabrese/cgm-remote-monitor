@@ -187,6 +187,57 @@ evening creep 130→121 with no new evening lows), but its ~6 h DIA tail (DIA=6)
 > real insulin dosing through Loop; any change should be applied through the normal
 > care-team / Loop workflow, not automatically.
 
+## 11. Basal redesign — overnight (evidence-based)
+
+Goal: cover a late dinner (median 19:30, runs to ~21:00) without the 00:30–04:00 crash, and
+reduce the need for mealtime Afrezza corrections.
+
+**Key evidence — Loop is already fighting the schedule.** Reconstructing Loop's *delivered*
+basal (from 8,315 temp-basal events) vs the programmed schedule:
+
+| Local hr | Scheduled | Loop delivered (mean) | % suspended | Outcome |
+|---|---|---|---|---|
+| 00:00 | 1.80 | 1.14 | 34% | still low |
+| 01:00 | 1.80 | 1.02 | 39% | 14% <70 |
+| 02:00 | 1.45 | 0.88 | 34% | 14% <70 |
+| 03:00 | 1.45 | 0.93 | 29% | 11% <70 |
+| 22:00 | 2.30 | 1.48 | 31% | — |
+| 12:00 (ref) | 1.80 | 0.99 | 39% | midday low cluster |
+
+Loop delivers ~40% below schedule overnight and suspends ~1/3 of the time, yet lows persist —
+because suspending basal can't claw back insulin already absorbed. When Loop chronically
+low-temps a window and the user still goes low, the **scheduled basal is too high**. Loop's
+delivered rate is therefore the empirical target; the schedule should sit ~0.2–0.3 U/h above
+it (room for Loop to suspend during *real* lows).
+
+Note on Afrezza: it is ultra-fast (~90 min), so it does **not** tail into the 2am crash — the
+deep-overnight lows are scheduled basal, not Afrezza. Keeping evening basal coverage (below)
+is what reduces the need to reach for a dinner Afrezza in the first place.
+
+### Proposed schedule (7 segments; daily total 42.5 → 40.3 U, −2.2 U all from 23:00–04:30)
+
+| Time (local) | Current | Proposed | Rationale |
+|---|---|---|---|
+| 00:00 | 1.80 | **1.35** | match Loop's delivery (~1.14) + buffer |
+| 02:00 | 1.45 | **1.20** | protect 02:00–04:00 nadir (Loop delivers ~0.9) |
+| 04:30 | 1.45 | **1.45** | *(new breakpoint)* morning recovery |
+| 09:30 | 1.80 | 1.80 | daytime — unchanged |
+| 17:00 | 1.70 | 1.70 | unchanged |
+| 20:00 | 2.40 | **2.40** | dinner coverage — kept |
+| 22:30 | 2.30 (@22:00) | **1.80** | *(breakpoint 22:00→22:30)* hold dinner late, then taper |
+
+- **Late dinner:** 2.4 block now runs 20:00→22:30 so dinners that run to ~21:00 stay covered.
+- **No overnight spillover:** taper to 1.8/1.35 means an occasional dinner Afrezza (fast, gone
+  in ~90 min) no longer compounds with a high basal tail into a 2am low.
+- **Crash window:** 23:00–04:30 cut −0.25 to −0.50 U/h, sized to Loop's empirical delivery.
+
+**Bonus (separate segment):** midday 09:30–17:00 shows the same pattern (Loop delivers ~1.0 vs
+scheduled 1.8, 40% suspended) — the source of the 13:00 low cluster (16% <70). Candidate for a
+later daytime trim.
+
+> Observational only; not applied to the live profile. Basal changes are a care-team / Loop
+> workflow decision. Verify with `analyze.py` and the temp-basal reconstruction above.
+
 ---
 
 ### Reproduce

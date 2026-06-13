@@ -1,0 +1,25 @@
+{
+  "_comment": "PROPOSED basal schedule (local clock, units U/hr). NOT applied to the live Nightscout profile. Evidence-based redesign to reduce 00:30-04:00 overnight lows while preserving late-dinner coverage. Apply only via care-team / Loop workflow. See REPORT.md section 11.",
+  "units": "mg/dL",
+  "timezone": "ETC/GMT+7",
+  "dia": 6,
+  "basal_current": [
+    {"time": "00:00", "value": 1.8},
+    {"time": "02:00", "value": 1.45},
+    {"time": "09:30", "value": 1.8},
+    {"time": "17:00", "value": 1.7},
+    {"time": "20:00", "value": 2.4},
+    {"time": "22:00", "value": 2.3}
+  ],
+  "basal_proposed": [
+    {"time": "00:00", "value": 1.35},
+    {"time": "02:00", "value": 1.2},
+    {"time": "04:30", "value": 1.45},
+    {"time": "09:30", "value": 1.8},
+    {"time": "17:00", "value": 1.7},
+    {"time": "20:00", "value": 2.4},
+    {"time": "22:30", "value": 1.8}
+  ],
+  "daily_total_current_U": 42.48,
+  "daily_total_proposed_U": 40.25
+}

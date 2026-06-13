@@ -214,26 +214,41 @@ Note on Afrezza: it is ultra-fast (~90 min), so it does **not** tail into the 2a
 deep-overnight lows are scheduled basal, not Afrezza. Keeping evening basal coverage (below)
 is what reduces the need to reach for a dinner Afrezza in the first place.
 
-### Proposed schedule (7 segments; daily total 42.5 → 40.3 U, −2.2 U all from 23:00–04:30)
+The same pattern runs across the **midday**: scheduled 1.80 (09:30–17:00), Loop delivers ~1.0,
+suspends 35–41%, lows peak at **16% at 13:00**. Morning (04:30–09:30) is the one window that's
+roughly right (lows 2–5%) and is kept. Schedule is redesigned to sit ~0.2–0.3 U/h above Loop's
+delivered rate across the day.
 
-| Time (local) | Current | Proposed | Rationale |
-|---|---|---|---|
-| 00:00 | 1.80 | **1.35** | match Loop's delivery (~1.14) + buffer |
-| 02:00 | 1.45 | **1.20** | protect 02:00–04:00 nadir (Loop delivers ~0.9) |
-| 04:30 | 1.45 | **1.45** | *(new breakpoint)* morning recovery |
-| 09:30 | 1.80 | 1.80 | daytime — unchanged |
-| 17:00 | 1.70 | 1.70 | unchanged |
-| 20:00 | 2.40 | **2.40** | dinner coverage — kept |
-| 22:30 | 2.30 (@22:00) | **1.80** | *(breakpoint 22:00→22:30)* hold dinner late, then taper |
+### Proposed full schedule (8 segments; 42.5 → 35.9 U, −6.6 U / −16%)
 
-- **Late dinner:** 2.4 block now runs 20:00→22:30 so dinners that run to ~21:00 stay covered.
-- **No overnight spillover:** taper to 1.8/1.35 means an occasional dinner Afrezza (fast, gone
-  in ~90 min) no longer compounds with a high basal tail into a 2am low.
-- **Crash window:** 23:00–04:30 cut −0.25 to −0.50 U/h, sized to Loop's empirical delivery.
+| Time (local) | Current | Proposed | Loop delivers | %<70 now | Rationale |
+|---|---|---|---|---|---|
+| 00:00 | 1.80 | **1.35** | ~1.14 | 6–12% | deep overnight |
+| 02:00 | 1.45 | **1.20** | ~0.90 | 12–13% | crash nadir |
+| 04:30 | 1.45 | **1.45** | ~1.05 | 2–5% | morning — kept (works) |
+| 09:30 | 1.80 | **1.45** | ~1.10 | 5–9% | late-morning trim |
+| **11:00** | 1.80 | **1.25** | ~1.00 | **9–16%** | **midday trough — new segment, kills 13:00 cluster** |
+| 16:00 | 1.80/1.70 | **1.45** | ~1.10 | 6–8% | afternoon/pre-dinner (merges old 16:00 & 17:00) |
+| 20:00 | 2.40 | **2.40** | ~1.5 | 6% | dinner — kept |
+| 22:30 | 2.30 (@22:00) | **1.80** | ~1.5 | 3% | post-dinner taper |
 
-**Bonus (separate segment):** midday 09:30–17:00 shows the same pattern (Loop delivers ~1.0 vs
-scheduled 1.8, 40% suspended) — the source of the 13:00 low cluster (16% <70). Candidate for a
-later daytime trim.
+- **Late dinner:** 2.4 block runs 20:00→22:30 so dinners to ~21:00 stay covered.
+- **No overnight spillover:** Afrezza is fast (~90 min) so it does not tail to 2am; the deep
+  overnight lows are scheduled basal. Tapering to 1.8/1.35 stops the spillover.
+- **Midday trough:** the 11:00–16:00 @ 1.25 segment targets the 16%-low window directly.
+
+### Phased rollout (recommended — −16% is large for one step)
+
+A full schedule (`proposed_basal.json` → `basal_step2`) is −6.6 U/day. Standard practice is
+~10–15% per change, so stage it:
+
+- **Step 1 (now, −4.98 U / −12%):** overnight cut + midday trough + 22:30 taper. Targets the
+  two worst windows (02:00–04:00 ~14%, 11:00–16:00 ~16%). Keeps 09:30/16:00 shoulders at
+  current values. (`basal_step1`)
+- **Step 2 (after ~1 week confirming Step 1):** trim the daytime shoulders (09:30→1.45, merge
+  16:00–20:00 → 1.45). (`basal_step2`)
+
+Segment *definitions* are identical across steps; phasing only stages the values.
 
 > Observational only; not applied to the live profile. Basal changes are a care-team / Loop
 > workflow decision. Verify with `analyze.py` and the temp-basal reconstruction above.

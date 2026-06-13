@@ -1,5 +1,5 @@
 {
-  "_comment": "PROPOSED basal schedule (local clock, units U/hr). NOT applied to the live Nightscout profile. Evidence-based redesign to reduce 00:30-04:00 overnight lows while preserving late-dinner coverage. Apply only via care-team / Loop workflow. See REPORT.md section 11.",
+  "_comment": "PROPOSED basal schedule (local clock, units U/hr). NOT applied to the live Nightscout profile. Evidence-based redesign calibrated to Loop's actual delivered basal (see REPORT.md section 11). Phased rollout recommended. Apply only via care-team / Loop workflow.",
   "units": "mg/dL",
   "timezone": "ETC/GMT+7",
   "dia": 6,
@@ -11,15 +11,35 @@
     {"time": "20:00", "value": 2.4},
     {"time": "22:00", "value": 2.3}
   ],
-  "basal_proposed": [
-    {"time": "00:00", "value": 1.35},
-    {"time": "02:00", "value": 1.2},
-    {"time": "04:30", "value": 1.45},
-    {"time": "09:30", "value": 1.8},
-    {"time": "17:00", "value": 1.7},
-    {"time": "20:00", "value": 2.4},
-    {"time": "22:30", "value": 1.8}
-  ],
-  "daily_total_current_U": 42.48,
-  "daily_total_proposed_U": 40.25
+  "basal_step1": {
+    "_desc": "Step 1 (now): overnight cut + midday trough + late-dinner taper. Targets the two worst low windows (02:00-04:00 ~14% and 11:00-16:00 ~16% below 70).",
+    "daily_total_U": 37.50,
+    "delta_U": -4.98,
+    "segments": [
+      {"time": "00:00", "value": 1.35},
+      {"time": "02:00", "value": 1.2},
+      {"time": "04:30", "value": 1.45},
+      {"time": "09:30", "value": 1.8},
+      {"time": "11:00", "value": 1.25},
+      {"time": "16:00", "value": 1.8},
+      {"time": "17:00", "value": 1.7},
+      {"time": "20:00", "value": 2.4},
+      {"time": "22:30", "value": 1.8}
+    ]
+  },
+  "basal_step2": {
+    "_desc": "Step 2 (after ~1 week confirming step 1): trim the daytime shoulders (09:30 and merge 16:00-20:00). Merges the old 16:00/17:00 boundaries into one 1.45 afternoon block.",
+    "daily_total_U": 35.88,
+    "delta_U": -6.6,
+    "segments": [
+      {"time": "00:00", "value": 1.35},
+      {"time": "02:00", "value": 1.2},
+      {"time": "04:30", "value": 1.45},
+      {"time": "09:30", "value": 1.45},
+      {"time": "11:00", "value": 1.25},
+      {"time": "16:00", "value": 1.45},
+      {"time": "20:00", "value": 2.4},
+      {"time": "22:30", "value": 1.8}
+    ]
+  }
 }

@@ -12,7 +12,8 @@
     {"time": "22:00", "value": 2.3}
   ],
   "basal_step1": {
-    "_desc": "Step 1 (now): overnight cut + midday trough + late-dinner taper. Targets the two worst low windows (02:00-04:00 ~14% and 11:00-16:00 ~16% below 70).",
+    "_desc": "Step 1 (applied to Loop 2026-06-13 06:48 UTC): overnight cut + midday trough + late-dinner taper.",
+    "_night1_result": "First night overshot to HIGHS overnight: mean 156, max 214, 17% >180, 0% lows. Rise tracked the 22:30 taper (118->157). Midday trough worked well (today 11:00-13:00 ran 83-119, no lows). Conclusion: evening taper too deep; deep-overnight cut was fine. See basal_step1b.",
     "daily_total_U": 37.50,
     "delta_U": -4.98,
     "segments": [
@@ -25,6 +26,22 @@
       {"time": "17:00", "value": 1.7},
       {"time": "20:00", "value": 2.4},
       {"time": "22:30", "value": 1.8}
+    ]
+  },
+  "basal_step1b": {
+    "_desc": "Step 1b (correction after night-1 highs): walk back the evening/overnight cut, KEEP the working midday trough. Restores evening coverage (22:30 -> 2.20), small bumps to deep overnight, dawn insurance at 04:30. Still below the original overnight to keep the 2am lows away.",
+    "daily_total_U": 39.0,
+    "delta_U": -3.48,
+    "segments": [
+      {"time": "00:00", "value": 1.45},
+      {"time": "02:00", "value": 1.3},
+      {"time": "04:30", "value": 1.55},
+      {"time": "09:30", "value": 1.8},
+      {"time": "11:00", "value": 1.25},
+      {"time": "16:00", "value": 1.8},
+      {"time": "17:00", "value": 1.7},
+      {"time": "20:00", "value": 2.4},
+      {"time": "22:30", "value": 2.2}
     ]
   },
   "basal_step2": {

@@ -148,6 +148,47 @@ run slightly higher/safer (Sat mean 124, 5% <70) — typical of weekday routine/
 
 ---
 
+## 10. Basal adjustment — overnight lows (follow-up)
+
+Full profile history (`profile.json?count=500`, back to 2026-04-02, saved as
+`data/raw/profile_history.json.gz`) shows three distinct basal schedules. The relevant
+change was **2026-05-15** (~29 days ago — "raised about a month ago"):
+
+| Segment | Apr 4 | **May 15** | Window |
+|---|---|---|---|
+| 09:30 | 1.6 | **1.8** | daytime |
+| 20:00 | 2.2 | **2.4** | evening |
+| 00:00 (1.8), 02:00 (1.45) | — | unchanged | overnight |
+
+**The overnight segments were never raised** — yet overnight lows doubled. Splitting the
+CGM data exactly at the 5/15 change:
+
+| Window | Before 5/15 | After 5/15 |
+|---|---|---|
+| Daytime 09:30–17:00 (raised seg) | 10.2% <70 | 9.6% <70 — harmless |
+| Evening 20:00–24:00 (raised seg) | mean 130, 4.9% <70 | mean 121, 4.7% <70 — helped highs |
+| **Overnight 00:00–04:00** | mean 111, **8.1% <70** | mean 96, **16.4% <70** (4.6% <54) |
+
+**Mechanism:** the **20:00 → 2.4 evening raise** does its job in its own window (knocked the
+evening creep 130→121 with no new evening lows), but its ~6 h DIA tail (DIA=6) peaks
+~22:00–01:00 and overshoots into the 00:00–02:00 window — exactly where lows doubled. The
+09:30 daytime raise is innocent (afternoon lows unchanged) and should stay.
+
+### Recommendation (observational — care-team call to apply via Loop)
+
+- **Primary (undo the raise):** revert **20:00 segment 2.4 → 2.2 U/hr** (pre-5/15 value).
+  Net −0.4 U/day, targeted at the insulin tailing into overnight lows. Expected: overnight
+  00:00–04:00 <70 roughly halves back toward ~8%. Trade-off: evening may drift ~5–10 mg/dL
+  higher again.
+- **Surgical alternative (keep evening benefit):** leave 20:00 at 2.4, trim **22:00
+  2.3 → 2.1 U/hr** to cut only the insulin active at 00:00–02:00.
+
+> Note: no profile write was made to the live Nightscout server. The basal schedule drives
+> real insulin dosing through Loop; any change should be applied through the normal
+> care-team / Loop workflow, not automatically.
+
+---
+
 ### Reproduce
 
 ```bash

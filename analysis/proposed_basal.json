@@ -29,13 +29,30 @@
     ]
   },
   "basal_step1b": {
-    "_desc": "Step 1b (correction after night-1 highs): walk back the evening/overnight cut, KEEP the working midday trough. Restores evening coverage (22:30 -> 2.20), small bumps to deep overnight, dawn insurance at 04:30. Still below the original overnight to keep the 2am lows away.",
-    "daily_total_U": 39.0,
-    "delta_U": -3.48,
+    "_desc": "Step 1b (applied to Loop 2026-06-13 23:25 UTC): walk back evening/overnight cut, keep midday trough.",
+    "_week_result": "7-day result (Jun 14-20) vs 90d baseline: OVERNIGHT 00-04 FIXED (%<70 12.5->7.0, %<54 2.9->1.3, no highs). Highs down everywhere (>180 2.9->1.1%). BUT lows migrated: dawn 04-07 now low (%<70 4.2->9.1, our 04:30->1.55 bump backfired); midday 11-16 lows up (11.6->16.7) DESPITE basal cut => meal/bolus-driven not basal; evening mild low creep. Overall %<70 7.4->10.4. Action: Step-1c cuts dawn; midday flagged for lunch-bolus review.",
+    "daily_total_U": 39.05,
+    "delta_U": -3.43,
     "segments": [
       {"time": "00:00", "value": 1.45},
       {"time": "02:00", "value": 1.3},
       {"time": "04:30", "value": 1.55},
+      {"time": "09:30", "value": 1.8},
+      {"time": "11:00", "value": 1.25},
+      {"time": "16:00", "value": 1.8},
+      {"time": "17:00", "value": 1.7},
+      {"time": "20:00", "value": 2.4},
+      {"time": "22:30", "value": 2.2}
+    ]
+  },
+  "basal_step1c": {
+    "_desc": "Step 1c (single change after week-1b): cut the dawn 04:30 rate (1.55->1.35) which over-corrected dawn into lows. All else held to keep next week's read clean. Midday lows are NOT basal (cutting basal raised them) -> review lunch carb-ratio/bolus separately. Evening mild low creep: watch.",
+    "daily_total_U": 38.05,
+    "delta_U": -4.43,
+    "segments": [
+      {"time": "00:00", "value": 1.45},
+      {"time": "02:00", "value": 1.3},
+      {"time": "04:30", "value": 1.35},
       {"time": "09:30", "value": 1.8},
       {"time": "11:00", "value": 1.25},
       {"time": "16:00", "value": 1.8},

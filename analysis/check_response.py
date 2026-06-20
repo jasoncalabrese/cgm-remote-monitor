@@ -55,28 +55,32 @@ def ms_of(x):
         return None
 
 
-def device_family(s):
-    """Map a device string to a sensor line. Ignores the Loop 'share' bridge."""
-    if not s:
+def native_device(x):
+    """The hardware-identifying device string, ignoring the generic Loop 'share' bridge.
+    Currently 'Dexcom G6 8B9SE4'; a G7 switch changes this (serial drops, 'G7' appears)."""
+    d = x.get("device")
+    if not d or "share" in d.lower():
         return None
-    u = s.upper()
-    if "G7" in u:
-        return "G7"
-    if "G6" in u:
-        return "G6"
-    return None  # share2 / unknown -> not a family signal
+    return d
 
 
-def detect_family_changes(entries):
-    """Return list of (ms, old_family, new_family) where the sensor line changed."""
-    fam_pts = sorted((x["date"], device_family(x.get("device")))
-                     for x in entries if x.get("type") == "sgv" and device_family(x.get("device")))
+def family_token(s):
+    """G6 / G7 / None, for labeling only (not the change trigger)."""
+    u = (s or "").upper()
+    return "G7" if "G7" in u else ("G6" if "G6" in u else None)
+
+
+def detect_device_changes(entries):
+    """Return (changes, current_string). A change = the native Dexcom string changed at
+    all (new transmitter serial or G6->G7) — robust even if the 'G7' token never appears."""
+    pts = sorted((x["date"], native_device(x))
+                 for x in entries if x.get("type") == "sgv" and native_device(x))
     changes, cur = [], None
-    for ms, fam in fam_pts:
-        if cur is not None and fam != cur:
-            changes.append((ms, cur, fam))
-        cur = fam
-    return changes, (fam_pts[-1][1] if fam_pts else None)
+    for ms, d in pts:
+        if cur is not None and d != cur:
+            changes.append((ms, cur, d))
+        cur = d
+    return changes, (pts[-1][1] if pts else None)
 
 
 def sensor_starts(treatments, lo, hi):
@@ -91,21 +95,30 @@ def sensor_starts(treatments, lo, hi):
     return out
 
 
-def build_exclusions(starts, fam_changes):
-    """(start_ms, end_ms, label) warmup intervals; longer+labeled for device switches."""
+def label_for_change(old, new):
+    """Length + label for a native-string change."""
+    fo, fn = family_token(old), family_token(new)
+    if fo and fn and fo != fn:                       # e.g. G6 -> G7
+        return DEVICE_SWITCH_WARMUP_H, f"{fo}->{fn} switch ({DEVICE_SWITCH_WARMUP_H}h)"
+    return DEVICE_SWITCH_WARMUP_H, f"device changed '{old}'->'{new}' ({DEVICE_SWITCH_WARMUP_H}h)"
+
+
+def build_exclusions(starts, dev_changes):
+    """(start_ms, end_ms, label) warmup intervals from Sensor Start events AND any
+    native-device-string change (hardware / sensor-line swap)."""
     excl = []
+    matched_starts = set()
+    # 1) Native-string changes (G6->G7, transmitter swap) — longer, labeled.
+    for ms, old, new in dev_changes:
+        hrs, lab = label_for_change(old, new)
+        excl.append((ms, ms + hrs * 3600000, lab))
+        for s in starts:
+            if abs(ms - s) <= 3 * 3600000:
+                matched_starts.add(s)
+    # 2) Sensor Start events not already covered by a string change — routine warmup.
     for s in starts:
-        switch = next((c for c in fam_changes if abs(c[0] - s) <= 3 * 3600000), None)
-        if switch:
-            excl.append((s, s + DEVICE_SWITCH_WARMUP_H * 3600000,
-                         f"{switch[1]}->{switch[2]} switch ({DEVICE_SWITCH_WARMUP_H}h)"))
-        else:
+        if s not in matched_starts:
             excl.append((s, s + SENSOR_WARMUP_H * 3600000, f"new sensor ({SENSOR_WARMUP_H}h)"))
-    # Catch a family change with no matching Sensor Start event, too.
-    for ms, old, new in fam_changes:
-        if not any(abs(ms - s) <= 3 * 3600000 for s in starts):
-            excl.append((ms, ms + DEVICE_SWITCH_WARMUP_H * 3600000,
-                         f"{old}->{new} switch, no Sensor Start ({DEVICE_SWITCH_WARMUP_H}h)"))
     return excl
 
 
@@ -133,15 +146,17 @@ def main():
         return
 
     lo, hi = min(x["date"] for x in sgv), max(x["date"] for x in sgv)
-    fam_changes, cur_fam = detect_family_changes(entries)
+    dev_changes, cur_dev = detect_device_changes(entries)
     starts = sensor_starts(treatments, lo, hi)
-    excl = build_exclusions(starts, fam_changes)
+    excl = build_exclusions(starts, dev_changes)
 
+    devices_seen = sorted({x.get("device") for x in sgv if x.get("device")})
     print(f"=== Response check: last {LOOKBACK_DAYS}d ({ld(lo):%b %d} -> {ld(hi):%b %d}) ===")
-    print(f"Current sensor line: {cur_fam or 'unknown'}")
-    if fam_changes:
-        for ms, o, n in fam_changes:
-            print(f"  ! device change {o} -> {n} at {ld(ms):%a %b %d %H:%M}")
+    print(f"Current device: '{cur_dev or 'unknown'}'  ({family_token(cur_dev) or '?'})")
+    print(f"Devices seen: {', '.join(repr(d) for d in devices_seen)}")
+    if dev_changes:
+        for ms, o, n in dev_changes:
+            print(f"  ! native device string changed '{o}' -> '{n}' at {ld(ms):%a %b %d %H:%M}")
     print(f"Sensor starts detected: {len(starts)}" +
           ("".join(f"\n  - {ld(s):%a %b %d %H:%M}" for s in starts) if starts else ""))
     if excl:
@@ -183,8 +198,11 @@ def main():
               f"{100*sum(1 for v in vals if v<70)/len(vals):4.1f}{tag}")
 
     print("\nGoal: %<70 <4%, %<54 <1%. Use the CLEAN column; ignore warmup-flagged nights.")
-    if cur_fam == "G7":
+    if family_token(cur_dev) == "G7":
         print("Note: now on G7 — first session(s) may still read differently; watch the trend, not one night.")
+    elif not dev_changes and family_token(cur_dev) == "G6":
+        print("Note: still on G6. After the G7 swap, confirm the 'Current device' line above changed;"
+              " if it didn't, the uploader isn't tagging G7 — tell me and I'll adjust detection.")
 
 
 if __name__ == "__main__":

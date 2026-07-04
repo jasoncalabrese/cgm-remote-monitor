@@ -65,16 +65,27 @@ def native_device(x):
 
 
 def family_token(s):
-    """G6 / G7 / None, for labeling only (not the change trigger)."""
+    """G6 / G7 / None. Catches 'Dexcom G7 DXCMxf' and 'com.dexcom.g7app' alike."""
     u = (s or "").upper()
     return "G7" if "G7" in u else ("G6" if "G6" in u else None)
 
 
+def device_id(x):
+    """Normalized sensor-line identity for change detection: the family token (G6/G7)
+    when present, else the raw non-share string. This collapses the multiple uploader
+    strings for one sensor line (e.g. 'Dexcom G7 DXCMxf' + 'com.dexcom.g7app' -> 'G7')
+    so only a real model change (G6->G7) registers, not uploader alternation."""
+    nd = native_device(x)
+    if nd is None:
+        return None
+    return family_token(nd) or nd
+
+
 def detect_device_changes(entries):
-    """Return (changes, current_string). A change = the native Dexcom string changed at
-    all (new transmitter serial or G6->G7) — robust even if the 'G7' token never appears."""
-    pts = sorted((x["date"], native_device(x))
-                 for x in entries if x.get("type") == "sgv" and native_device(x))
+    """Return (changes, current_id). A change = the normalized sensor-line identity
+    changed (e.g. G6->G7) — robust to multiple uploader strings and to a missing token."""
+    pts = sorted((x["date"], device_id(x))
+                 for x in entries if x.get("type") == "sgv" and device_id(x))
     changes, cur = [], None
     for ms, d in pts:
         if cur is not None and d != cur:

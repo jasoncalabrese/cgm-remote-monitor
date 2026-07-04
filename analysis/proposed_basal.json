@@ -46,7 +46,8 @@
     ]
   },
   "basal_step1c": {
-    "_desc": "Step 1c (single change after week-1b): cut the dawn 04:30 rate (1.55->1.35) which over-corrected dawn into lows. All else held to keep next week's read clean. Midday lows are NOT basal (cutting basal raised them) -> review lunch carb-ratio/bolus separately. Evening mild low creep: watch.",
+    "_desc": "Step 1c (applied to Loop 2026-06-20 21:33 UTC): cut dawn 04:30 1.55->1.35.",
+    "_result": "Reviewed Jul 4 (14d, incl. G6->G7 swap Jun 26; G7 warmup auto-excluded). G7 reads same level as G6 (mean 108 vs 110) so comparisons valid. Dawn FIXED (9.7->5.6% <70). Midday improved a lot (15->7.3%, real not calibration). Overnight up to 6.4% but all shallow (nadir 61-67, 0% <54) and partly G7 compression lows -> HOLD basal, don't chase. Severe lows 0.0-0.4% everywhere; excellent control. Verdict: Step-1c is a keeper; hold and watch overnight (behavioral/sensor-placement fix for compression, not basal).",
     "daily_total_U": 38.05,
     "delta_U": -4.43,
     "segments": [

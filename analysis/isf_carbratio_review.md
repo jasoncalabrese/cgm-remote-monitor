@@ -6,6 +6,21 @@ all day: **ISF 53, CR 6, target 100, DIA 6**.
 > Observational, not medical advice. Closed-loop (Loop) confounds classic ISF/CR tests
 > because the algorithm continuously corrects — treat these as directional.
 
+## ⚠️ Data-integrity caveats (important)
+This user's data contains two invisible-insulin sources that confound ISF/CR analysis:
+- **Fake carbs**: small carb entries used to trick Loop into correcting. 1–15g entries: 161
+  in 30d, median BG-at-entry **152**, **51% at BG>150** → ~2.8/day are corrections, not food.
+  (The CR analysis below uses the **≥30g** set, which is 93% real meals — so it's clean.)
+- **Unlogged Afrezza** (inhaled ultra-fast): detected ~**0.9/day** as fast ≥40 mg/dL drops
+  from BG>150 with <1U logged (a floor — doses on top of logged insulin are invisible).
+  **Clusters at dinner/evening (16h:6, 18h:3), not lunch.**
+
+Impact: **basal work unaffected** (fasting baseline). **ISF 53 cannot be validated** — most
+real corrections are Afrezza/fake-carb, invisible here (hold, don't change). **CR: the lunch
+finding survives** (lunch window is relatively Afrezza-clean), **dinner is confounded** — do
+not tune dinner CR from post-meal lows. Highest-value fix: **log Afrezza** (even approximately)
+so Loop can account for it and future analysis is valid.
+
 ## Last week (Jun 28–Jul 4, first clean week on G7)
 Mean **107** · GMI **5.9%** · TIR **93%** · CV 26% · <54 **0.8%** · >180 **0.6%**.
 Excellent control; remaining issue is scattered *mild* lows (~7% <70), not highs.
@@ -42,5 +57,10 @@ Breakfast (n=3) too sparse to tune.
 - Don't fully bolus a meal when starting <90 and trending down (esp. lunch).
 
 ## Net
-- ISF 53: keep. · CR 6: keep as base. · Test **lunch CR 7**. · Consider pre-bolusing.
+- ISF 53: **hold — cannot validate** (most corrections are unlogged Afrezza/fake-carb).
+- CR 6: keep as base. **Test lunch CR 7** (lunch is Afrezza-clean). Do NOT tune dinner CR
+  (dinner-time Afrezza confounds it).
+- Highest-value action: **log Afrezza** — lets Loop stop double-dosing AND makes ISF/dinner-CR
+  analysis possible.
+- Consider pre-bolusing (0% currently).
 - Basal (Step-1c) unchanged and working; overnight mild lows are partly G7 compression.

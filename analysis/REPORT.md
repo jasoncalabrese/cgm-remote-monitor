@@ -10,6 +10,49 @@
 
 ---
 
+## Update log — Loop tuning journey (Jun–Jul 2026)
+
+This 90-day baseline (sections 1–11 below) kicked off an iterative tuning effort. Summary of
+what happened since; see `proposed_basal.json` and `isf_carbratio_review.md` for detail.
+
+### Basal — the main win
+The baseline showed excellent A1c/TIR but too many lows (TBR <54 at ~2×goal), concentrated
+overnight and midday. Reconstructing Loop's *delivered* basal showed it was suppressing the
+scheduled rate ~40% and suspending ~⅓ of the night yet still going low — i.e. the schedule was
+too high. Tuned in steps (all entered by the user in the Loop app, verified via profile upload):
+
+| Step | Date | Change | Result |
+|---|---|---|---|
+| **Step 1** | Jun 13 | Overnight cut + midday trough (11–16 @1.25) + late-dinner taper. 42.5→37.5 U | Overshot: night-1 went **high** (mean 156), evening taper too deep. |
+| **Step 1b** | Jun 13 | Walk back evening (22:30→2.20) + small overnight bumps; keep midday. 37.5→39.0 U | Overnight **fixed** (%<70 12.5→~3 clean); midday improved; dawn over-corrected low. |
+| **Step 1c** | Jun 20 | Dawn cut (04:30 1.55→1.35), single change. 39.0→38.1 U | Dawn improved (9.7→5.6%). **Current schedule; working well.** |
+
+Result: last clean week (Jun 28–Jul 4, G7) **GMI 5.9%, TIR 93%, TBR<54 0.8%.**
+
+### Sensor: G6 → G7 (Jun 26)
+Switched sensor lines. `check_response.py` auto-detects the change and excludes the warmup.
+G7 reads at the same level as G6 (no calibration shift) but adds **overnight compression lows**
+(shallow, self-recovering) — behavioral/placement, not a basal target.
+
+### ISF & carb ratio — evaluated, held
+- **ISF 53:** logged-bolus corrections land in range 75% of the time — but most real corrections
+  are unlogged Afrezza/fake-carbs, so it **can't be validated**. Held.
+- **CR 6:** total ~right; meals show a dip-then-peak shape. Only a low-confidence *lunch* case
+  exists. **Held** pending cleaner data.
+- **Why held:** meal-side data is confounded by unlogged Afrezza, fake carbs, and invisible
+  prebolus timing (see `isf_carbratio_review.md`).
+
+### Tooling built
+`check_response.py` (sensor-aware weekly review), `event_classifier.py` (labels fast drops as
+Afrezza / walk / G7-compression / logged-correction; `--label` timeline, `--csv` labeling sheet).
+
+### Next steps
+1. Hand-label events (`event_labels.csv`) → score & tune the classifier.
+2. Then re-read meal-side (lunch CR) with Afrezza/walk windows excluded.
+3. Hold ISF/CR/basal meanwhile; keep watching G7 compression.
+
+---
+
 ## 1. Data pulled
 
 | Dataset | Records | Notes |

@@ -31,7 +31,15 @@ Loop never counts it as insulin-on-board — logged or not; it only reacts to th
 trend (and lags it, since Afrezza is ultra-fast). So logging Afrezza gives **no dosing benefit**
 — it would only aid retrospective analysis, at a manual cost, so it's not worth asking for.
 The practical fix is to **detect Afrezza from the BG trend** (fast drops from highs) in tooling
-and exclude those windows from ISF/CR analysis — no logging required.
+and exclude those windows from ISF/CR analysis — no logging required. See `event_classifier.py`.
+
+- **Walks/exercise** also cause fast drops (another confounder). They're separable: a walk
+  **rebounds** (the "return-home" rise) and lands in **daytime**, whereas Afrezza stays down,
+  and G7 **compression** lows also rebound but cluster **overnight**. So: rebound = transient
+  (walk or compression) vs sustained (Afrezza); time-of-day then splits walk from compression.
+  Encoded in `event_classifier.py` (unlogged-Afrezza ~0.1/day, walk ~0.2/day, compression
+  ~0.3/day, Loop corrections ~3.2/day). Best-effort labels — undercounts Afrezza stacked on a
+  logged bolus, and a no-rebound walk-from-a-high can masquerade as Afrezza.
 
 ## Last week (Jun 28–Jul 4, first clean week on G7)
 Mean **107** · GMI **5.9%** · TIR **93%** · CV 26% · <54 **0.8%** · >180 **0.6%**.

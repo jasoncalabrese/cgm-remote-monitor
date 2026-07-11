@@ -21,7 +21,7 @@ Signatures (validated on this user's data):
     python3 event_classifier.py [days]            # summary (default 30)
     python3 event_classifier.py [days] --label    # per-day timeline for hand-labeling (default 3)
 """
-import sys, json, urllib.request, urllib.parse, statistics as st, datetime, bisect
+import sys, os, csv, json, urllib.request, urllib.parse, statistics as st, datetime, bisect
 from collections import defaultdict as dd, Counter
 
 BASE = "https://nightscout.cbrese.com/api/v1"
@@ -29,7 +29,8 @@ TZ = -7 * 3600 * 1000
 HIGH_START = 150
 REBOUND_HI, REBOUND_LO = 35, 25
 NIGHT = range(0, 7)
-LABEL = "--label" in sys.argv
+CSV = "--csv" in sys.argv
+LABEL = "--label" in sys.argv or CSV
 DAYS = next((int(a) for a in sys.argv[1:] if a.isdigit()), 3 if LABEL else 30)
 # detection sensitivity differs by mode
 DROP_MIN, WIN_MIN, MERGE_GAP_MIN = (25, 60, 35) if LABEL else (40, 40, 0)
@@ -166,9 +167,45 @@ def label(events, carbs, gi):
         print(f"{mark} {ld(ms):%H:%M}  {txt}\n        you: __________")
 
 
+def write_csv(events, carbs, gi, path):
+    rows = []
+    for ev in events:
+        after = f"rebound +{ev['rebound']:.0f}" if ev["rebound"] >= 20 else "stayed down"
+        rows.append((ev["nms"], "DROP",
+                     f"BG {ev['start']:.0f} -> {ev['nadir']:.0f}, then {after}",
+                     f"{ev['logged']:.1f}", ev["cls"]))
+    for ms, c in carbs:
+        bg = gi(ms)
+        tag = "FAKE? (small carb at high BG)" if c <= 15 and bg and bg > 150 else "real meal/snack?"
+        rows.append((ms, "CARB", f"{c:.0f}g eaten at BG~{bg:.0f}", "", tag))
+    rows.sort()
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["event_id", "date", "time", "detected_type", "cgm_context",
+                    "logged_insulin_U", "my_guess",
+                    "ACTUAL_LABEL (walk|Afrezza|compression|correction|real-meal|fake-carb|nothing|other)",
+                    "afrezza_units_if_any", "notes (e.g. 'walked dog', 'pizza')", "confidence (high|med|low)"])
+        for i, (ms, kind, ctx, ins, guess) in enumerate(rows, 1):
+            w.writerow([i, f"{ld(ms):%a %m/%d}", f"{ld(ms):%H:%M}", kind, ctx, ins, guess, "", "", "", ""])
+        # blank rows to add events the detector missed
+        w.writerow([])
+        w.writerow(["-- ADD EVENTS I MISSED BELOW (walks/Afrezza the detector didn't catch) --"])
+        for i in range(1, 13):
+            w.writerow([f"MISSED-{i}", "", "", "", "", "", "", "", "", "", ""])
+    return len(rows), path
+
+
 def main():
     seq, events, carbs, bolus, gi = build()
-    (label(events, carbs, gi) if LABEL else summary(events))
+    if CSV:
+        path = next((a for a in sys.argv[1:] if a.endswith(".csv")), None) or \
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "event_labels.csv")
+        n, path = write_csv(events, carbs, gi, path)
+        print(f"Wrote {n} events to {path} (last {DAYS}d). Fill ACTUAL_LABEL + notes, then upload.")
+    elif LABEL:
+        label(events, carbs, gi)
+    else:
+        summary(events)
 
 
 if __name__ == "__main__":

@@ -24,8 +24,14 @@ This user's data contains two invisible-insulin sources that confound ISF/CR ana
 Impact: **basal work unaffected** (fasting baseline). **ISF 53 cannot be validated** — most
 real corrections are Afrezza/fake-carb, invisible here (hold, don't change). **CR: the lunch
 finding survives** (lunch window is relatively Afrezza-clean), **dinner is confounded** — do
-not tune dinner CR from post-meal lows. Highest-value fix: **log Afrezza** (even approximately)
-so Loop can account for it and future analysis is valid.
+not tune dinner CR from post-meal lows.
+
+**Note: Loop does NOT model Afrezza.** Inhaled Afrezza has no IOB curve Loop understands, so
+Loop never counts it as insulin-on-board — logged or not; it only reacts to the resulting BG
+trend (and lags it, since Afrezza is ultra-fast). So logging Afrezza gives **no dosing benefit**
+— it would only aid retrospective analysis, at a manual cost, so it's not worth asking for.
+The practical fix is to **detect Afrezza from the BG trend** (fast drops from highs) in tooling
+and exclude those windows from ISF/CR analysis — no logging required.
 
 ## Last week (Jun 28–Jul 4, first clean week on G7)
 Mean **107** · GMI **5.9%** · TIR **93%** · CV 26% · <54 **0.8%** · >180 **0.6%**.
@@ -69,6 +75,8 @@ CR/ISF cannot be tuned from CGM+treatments with confidence.** So:
 - CR 6: **hold.** Lunch is the least-confounded window and the only place a low-confidence
   case exists (starts ~90, 17% go <60) — treat lunch CR 7 as an *optional* experiment, not
   a data-backed recommendation. Do NOT touch dinner CR (Afrezza-confounded).
-- **Highest-value action by far: log Afrezza** (even approximately). It lets Loop stop
-  double-dosing AND is the prerequisite for any real ISF/dinner-CR analysis.
+- **Path to a real ISF/dinner-CR read: detect Afrezza from the BG trend in tooling** and
+  exclude those windows (Loop can't use logged Afrezza, so no point asking the user to log it).
+  Even then the detector undercounts (Afrezza stacked on logged insulin is invisible), so
+  meal-side tuning stays low-confidence.
 - Basal (Step-1c) unchanged and working; overnight mild lows are partly G7 compression.

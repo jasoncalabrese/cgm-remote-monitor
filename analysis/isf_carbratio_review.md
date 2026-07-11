@@ -14,6 +14,12 @@ This user's data contains two invisible-insulin sources that confound ISF/CR ana
 - **Unlogged Afrezza** (inhaled ultra-fast): detected ~**0.9/day** as fast ≥40 mg/dL drops
   from BG>150 with <1U logged (a floor — doses on top of logged insulin are invisible).
   **Clusters at dinner/evening (16h:6, 18h:3), not lunch.**
+- **Prebolus timing is invisible**: carbs and insulin are logged at the **same timestamp**
+  (Loop convention — dosing insulin without announced carbs makes Loop 0-temp/suspend, so
+  they're entered together; also easier). The timestamp = when they *dosed*, NOT when they
+  *ate*. So bolus-vs-carb "offset" is always ~0 by construction and says nothing about
+  prebolusing. **Retracts the earlier "0% pre-bolus / front-loading" reading** — the early
+  post-bolus dip is consistent with a normal prebolus acting before food.
 
 Impact: **basal work unaffected** (fasting baseline). **ISF 53 cannot be validated** — most
 real corrections are Afrezza/fake-carb, invisible here (hold, don't change). **CR: the lunch
@@ -51,16 +57,18 @@ and **17% of lunches go <60**. Weakening just the lunch ratio cuts post-lunch lo
 a slightly higher lunch peak (currently only ~141) that Loop corrects. Dinner/rest stay at 6.
 Breakfast (n=3) too sparse to tune.
 
-### Non-settings levers (higher yield for the shape problem)
-- **Pre-bolus** 10–15 min before eating (currently 0%) — blunts the peak and lets the dose
-  match carb absorption instead of front-loading.
+### Non-settings levers
+- Prebolus timing is invisible in the data (carbs+insulin logged together), so it can't be
+  assessed here — do not infer front-loading from timestamps.
 - Don't fully bolus a meal when starting <90 and trending down (esp. lunch).
 
-## Net
-- ISF 53: **hold — cannot validate** (most corrections are unlogged Afrezza/fake-carb).
-- CR 6: keep as base. **Test lunch CR 7** (lunch is Afrezza-clean). Do NOT tune dinner CR
-  (dinner-time Afrezza confounds it).
-- Highest-value action: **log Afrezza** — lets Loop stop double-dosing AND makes ISF/dinner-CR
-  analysis possible.
-- Consider pre-bolusing (0% currently).
+## Net (revised for data-integrity limits)
+Between unlogged Afrezza (dinner), fake carbs, and invisible prebolus timing, **meal-level
+CR/ISF cannot be tuned from CGM+treatments with confidence.** So:
+- ISF 53: **hold — cannot validate.**
+- CR 6: **hold.** Lunch is the least-confounded window and the only place a low-confidence
+  case exists (starts ~90, 17% go <60) — treat lunch CR 7 as an *optional* experiment, not
+  a data-backed recommendation. Do NOT touch dinner CR (Afrezza-confounded).
+- **Highest-value action by far: log Afrezza** (even approximately). It lets Loop stop
+  double-dosing AND is the prerequisite for any real ISF/dinner-CR analysis.
 - Basal (Step-1c) unchanged and working; overnight mild lows are partly G7 compression.

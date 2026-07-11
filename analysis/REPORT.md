@@ -1,6 +1,6 @@
 # Nightscout T1D Data Analysis — 90 Day Review
 
-**Source:** https://nightscout.cbrese.com (Nightscout v14.2.6, public-read)
+**Source:** personal Nightscout server (v14.2.6, public-read)
 **Subject:** "Andrew" · Type 1 · Dexcom G6 + Loop (closed-loop AID) on iPhone
 **Window:** 2026-03-15 → 2026-06-13 (90 days) · pulled 2026-06-13
 **Timezone:** ETC/GMT+7 → local = **UTC−7** (Arizona/MST, no DST)

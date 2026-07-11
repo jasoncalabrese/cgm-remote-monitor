@@ -1,7 +1,7 @@
 # Nightscout T1D Analysis & Loop Tuning
 
 Data analysis and **iterative closed-loop (Loop) tuning** for a Type 1 diabetic ("Andrew")
-using data from `https://nightscout.cbrese.com` (Nightscout v14.2.6, public-read — no token).
+using data from a personal Nightscout server (v14.2.6, public-read — no token).
 What began as a one-time 90-day pattern review has become an ongoing loop: analyze → propose a
 settings change → apply it in Loop → verify → review a week later → adjust.
 

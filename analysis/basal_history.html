@@ -1,0 +1,196 @@
+<style>
+  :root{
+    --bg:#f6f8f9; --surface:#ffffff; --surface-2:#fbfcfd;
+    --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0;
+    --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --orig:#9aa7b0;
+    --good:#1f9e5a; --good-soft:rgba(31,158,90,.12);
+    --warn:#d68a1e; --warn-soft:rgba(214,138,30,.13);
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+    --serif:ui-serif,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0c1317; --surface:#121c22; --surface-2:#0f181d;
+    --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84; --line:#22313a; --line-strong:#2c3d47;
+    --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+    --orig:#6d7c86; --good:#31b06a; --good-soft:rgba(49,176,106,.16);
+    --warn:#e0a13a; --warn-soft:rgba(224,161,58,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }}
+  :root[data-theme="light"]{
+    --bg:#f6f8f9; --surface:#ffffff; --surface-2:#fbfcfd; --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0; --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --orig:#9aa7b0; --good:#1f9e5a; --good-soft:rgba(31,158,90,.12); --warn:#d68a1e; --warn-soft:rgba(214,138,30,.13);
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1317; --surface:#121c22; --surface-2:#0f181d; --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+    --line:#22313a; --line-strong:#2c3d47; --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+    --orig:#6d7c86; --good:#31b06a; --good-soft:rgba(49,176,106,.16); --warn:#e0a13a; --warn-soft:rgba(224,161,58,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;margin:0;}
+  .page{max-width:900px;margin:0 auto;padding:clamp(18px,3vw,40px);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.4vw,33px);letter-spacing:-.01em;margin:.18em 0 .12em;text-wrap:balance;}
+  h2{font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 14px;}
+  .sub{color:var(--muted);font-size:14px;}.sub b{color:var(--ink);font-weight:600;}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+  .disclaimer{font-size:11.5px;color:var(--faint);border-left:2px solid var(--line-strong);padding-left:10px;max-width:230px;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  .tile{padding:14px 16px;}
+  .tile .lab{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .tile .val{font-family:var(--mono);font-size:clamp(18px,2.7vw,25px);font-weight:600;font-variant-numeric:tabular-nums;margin-top:6px;letter-spacing:-.02em;line-height:1.05;}
+  .tile .val small{font-size:12px;color:var(--muted);font-weight:500;}
+  .tile .val .arw{color:var(--good);}
+  .tile .note{font-size:11px;color:var(--faint);margin-top:6px;}
+  .tile.hero{background:linear-gradient(180deg,var(--good-soft),transparent);border-color:color-mix(in srgb,var(--good) 26%,var(--line));}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}header.top{align-items:flex-start}.disclaimer{max-width:none}}
+
+  section.block{padding:20px 20px 16px;margin-bottom:16px;}
+  .chartwrap{position:relative;width:100%;overflow-x:auto;}
+  svg{display:block;width:100%;height:auto;}
+  .axlab{fill:var(--faint);font-size:10px;font-family:var(--sans);}
+  .gline{stroke:var(--line);stroke-width:1;}
+  .orig{stroke:var(--orig);stroke-width:2;fill:none;stroke-dasharray:5 4;stroke-linejoin:round;}
+  .curr{stroke:var(--accent);stroke-width:2.6;fill:none;stroke-linejoin:round;}
+  .zone{fill:var(--accent-soft);}
+  .zlab{fill:var(--accent-ink);font-size:9.5px;font-weight:600;font-family:var(--sans);text-anchor:middle;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .sw{width:20px;height:0;border-top:3px solid;border-radius:2px;}
+
+  /* timeline */
+  .tl{position:relative;padding-left:26px;}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line);}
+  .ev{position:relative;padding:0 0 20px;}
+  .ev:last-child{padding-bottom:0;}
+  .ev::before{content:"";position:absolute;left:-26px;top:3px;width:16px;height:16px;border-radius:50%;
+    background:var(--surface);border:3px solid var(--accent);}
+  .ev.good::before{border-color:var(--good);}
+  .ev.warn::before{border-color:var(--warn);}
+  .ev.base::before{border-color:var(--line-strong);}
+  .evhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .evname{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+  .evdate{font-size:11.5px;color:var(--faint);font-family:var(--mono);}
+  .evtot{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .evtot .d{font-weight:700;}
+  .evtot .d.dn{color:var(--good);}.evtot .d.up{color:var(--warn);}
+  .chg{font-size:13.5px;margin:6px 0 0;}
+  .why{font-size:12.5px;color:var(--muted);margin:4px 0 0;}
+  .out{font-size:12.5px;margin:8px 0 0;padding:8px 11px;border-radius:8px;border:1px solid var(--line);}
+  .out.good{background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 24%,var(--line));}
+  .out.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 24%,var(--line));}
+  .out b{font-weight:700;}
+  .out .tag{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-right:7px;}
+  .out.good .tag{color:var(--good);}.out.warn .tag{color:var(--warn);}
+
+  footer.notes{margin-top:6px;font-size:11.5px;color:var(--faint);line-height:1.65;}
+  footer.notes b{color:var(--muted);}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Insulin Therapy · Change Log</div>
+      <h1>Basal Rate Tuning History</h1>
+      <div class="sub"><b id="subject">—</b> · <b id="window">—</b></div>
+    </div>
+    <div class="disclaimer">Record of scheduled-basal changes, entered in the Loop app and verified via Nightscout. <b>Not medical advice.</b></div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <section class="card block">
+    <h2>Scheduled basal · original vs current</h2>
+    <div class="chartwrap" id="wrap">
+      <svg id="chart" viewBox="0 0 680 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Basal rate schedule, original versus current, over 24 hours"></svg>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="border-top-style:dashed;border-color:var(--orig)"></i>Original (42.5 U/day)</span>
+      <span><i class="sw" style="border-color:var(--accent)"></i>Current · Step 1c (38.1 U/day)</span>
+    </div>
+  </section>
+
+  <section class="card block">
+    <h2>How we got here · four steps</h2>
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <footer class="notes" id="notes"></footer>
+</div>
+
+<script>
+const D = {"subject":"Andrew \u00b7 Type 1 \u00b7 Dexcom + Loop (closed-loop)","window":"June 2026","schedules":{"original":[[0,1.8],[2,1.45],[9.5,1.8],[17,1.7],[20,2.4],[22,2.3]],"step1":[[0,1.35],[2,1.2],[4.5,1.45],[9.5,1.8],[11,1.25],[16,1.8],[17,1.7],[20,2.4],[22.5,1.8]],"step1b":[[0,1.45],[2,1.3],[4.5,1.55],[9.5,1.8],[11,1.25],[16,1.8],[17,1.7],[20,2.4],[22.5,2.2]],"current":[[0,1.45],[2,1.3],[4.5,1.35],[9.5,1.8],[11,1.25],[16,1.8],[17,1.7],[20,2.4],[22.5,2.2]]},"totals":{"original":42.48,"step1":37.5,"step1b":39.05,"current":38.05},"steps":[{"id":"Baseline","date":"through Jun 12","total":42.5,"delta":null,"change":"Starting schedule (6 segments).","why":"90-day review: excellent A1c/TIR but too many lows \u2014 overnight (00\u201304) 12.5% below 70, midday to 16%. Loop was already suppressing scheduled basal ~40% overnight and suspending \u2153 of the night, yet still going low \u2192 the schedule itself was too high.","outcome":null,"tone":"base"},{"id":"Step 1","date":"Jun 13","total":37.5,"delta":-5.0,"change":"Overnight cut, new midday trough (11:00\u201316:00 @ 1.25), late-dinner taper (22:30 \u2192 1.8).","why":"Bring the schedule down toward what Loop was actually delivering; carve out the midday low window.","outcome":"Overshot. First night ran HIGH (mean 156) \u2014 the 22:30 evening taper was too deep and glucose escaped upward. The midday trough worked immediately.","tone":"warn"},{"id":"Step 1b","date":"Jun 13","total":39.05,"delta":1.5,"change":"Walk back the evening (22:30 \u2192 2.20) and nudge deep-overnight up (00:00 1.45, 02:00 1.30, 04:30 1.55). Keep the midday trough.","why":"The evening needed coverage; the deep-overnight cut was fine. Restore evening, keep overnight low.","outcome":"Overnight SOLVED \u2014 %<70 12.5 \u2192 3.1, TIR 96.9% (sensor day-1 excluded). Revealed two leftovers: dawn now ran a touch low, and midday lows that turned out to be meal/bolus-driven, not basal.","tone":"good"},{"id":"Step 1c","date":"Jun 20","total":38.05,"delta":-1.0,"change":"Single change: cut the dawn rate (04:30 1.55 \u2192 1.35).","why":"Change one variable so the next read is clean. Dawn was the clear remaining basal lever.","outcome":"Dawn fixed (9.7 \u2192 5.6% <70); held through the G6\u2192G7 sensor switch. Current schedule \u2014 a keeper. Remaining overnight dips are G7 compression artifact, not basal.","tone":"good"}],"result":{"tir":93,"tir_clean":95,"gmi":5.9,"overnight_before":12.5,"overnight_after":3,"net_delta":-4.4,"net_pct":-10}};
+document.getElementById('subject').textContent = D.subject;
+document.getElementById('window').textContent = D.window;
+
+// stats
+const R=D.result;
+const stats=[
+  {lab:'Overnight lows (00–04)', val:`${R.overnight_before}% <span class="arw">→</span> ~${R.overnight_after}%`, note:'time below 70 mg/dL', hero:true},
+  {lab:'Time in Range now', val:`${R.tir}<small>%</small>`, note:`~${R.tir_clean}% excl. sensor compression`},
+  {lab:'GMI · est. A1c', val:`${R.gmi}<small>%</small>`, note:'held — no loss of control'},
+  {lab:'Total daily basal', val:`${R.net_delta} U<small>/day</small>`, note:`${R.net_pct}% (42.5 → 38.1 U)`},
+];
+document.getElementById('stats').innerHTML=stats.map(s=>`
+  <div class="tile card ${s.hero?'hero':''}">
+    <div class="lab">${s.lab}</div>
+    <div class="val">${s.val}</div>
+    <div class="note">${s.note}</div>
+  </div>`).join('');
+
+// ---- basal step chart ----
+const W=680,H=250,m={l:34,r:14,t:24,b:24}, pw=W-m.l-m.r, ph=H-m.t-m.b;
+const yMax=2.6,yMin=0;
+const gx=h=>m.l+(h/24)*pw, gy=v=>m.t+(1-(v-yMin)/(yMax-yMin))*ph;
+function stepPath(segs){
+  let d=`M${gx(0)} ${gy(segs[0][1])}`;
+  for(let i=1;i<segs.length;i++){d+=` H${gx(segs[i][0])} V${gy(segs[i][1])}`;}
+  d+=` H${gx(24)}`; return d;
+}
+let s='';
+// change zones (where current differs meaningfully)
+const zones=[[0,4.5,'overnight cut'],[11,16,'midday trough'],[4.5,9.5,'dawn'],[22.5,24,'evening']];
+[[0,4.5],[11,16]].forEach(([a,b])=>{s+=`<rect class="zone" x="${gx(a)}" y="${m.t}" width="${gx(b)-gx(a)}" height="${ph}"/>`;});
+// y grid
+[0,0.5,1,1.5,2,2.5].forEach(v=>{const y=gy(v);
+  s+=`<line class="gline" x1="${m.l}" y1="${y}" x2="${W-m.r}" y2="${y}"/>`;
+  s+=`<text class="axlab" x="${m.l-6}" y="${y+3}" text-anchor="end">${v.toFixed(1)}</text>`;});
+// x ticks
+[0,6,12,18,24].forEach(h=>{const lab=h===0?'12a':h===12?'12p':h===24?'12a':h<12?h+'a':(h-12)+'p';
+  s+=`<text class="axlab" x="${gx(h)}" y="${H-8}" text-anchor="middle">${lab}</text>`;});
+// zone labels
+s+=`<text class="zlab" x="${gx(2.25)}" y="${m.t-8}">overnight cut</text>`;
+s+=`<text class="zlab" x="${gx(13.5)}" y="${m.t-8}">midday trough</text>`;
+// lines
+s+=`<path class="orig" d="${stepPath(D.schedules.original)}"/>`;
+s+=`<path class="curr" d="${stepPath(D.schedules.current)}"/>`;
+// y axis unit
+s+=`<text class="axlab" x="${m.l-6}" y="${m.t-10}" text-anchor="end">U/hr</text>`;
+document.getElementById('chart').innerHTML=s;
+
+// ---- timeline ----
+document.getElementById('timeline').innerHTML=D.steps.map(st=>{
+  const dObj = st.delta==null?'' :
+    `<span class="evtot">${st.total} U/day <span class="d ${st.delta<0?'dn':'up'}">(${st.delta>0?'+':''}${st.delta})</span></span>`;
+  const out = st.outcome? `<div class="out ${st.tone}"><span class="tag">${st.tone==='good'?'Result':'Result'}</span>${st.outcome}</div>`:'';
+  return `<div class="ev ${st.tone}">
+    <div class="evhead"><span class="evname">${st.id}</span><span class="evdate">${st.date}</span>${dObj}</div>
+    <div class="chg">${st.change}</div>
+    <div class="why">${st.why}</div>
+    ${out}
+  </div>`;
+}).join('');
+
+document.getElementById('notes').innerHTML =
+  `<b>Method.</b> Each change was entered by the user in the Loop app (Therapy Settings → Basal Rates) and verified via the profile Nightscout received. `+
+  `One variable was changed at a time and reviewed ~1 week later. Rationale throughout: Loop was suppressing the scheduled rate and still going low, so the schedule was lowered toward Loop's actual delivered rate. `+
+  `<b>A further optional step (Step 2)</b> — trimming the daytime shoulders to ~35.9 U/day — is documented but not applied; the current schedule is holding well. Not medical advice.`;
+</script>

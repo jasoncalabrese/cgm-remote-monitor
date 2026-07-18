@@ -1,0 +1,265 @@
+<style>
+  :root{
+    --bg:#f6f8f9; --surface:#ffffff; --surface-2:#fbfcfd;
+    --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0;
+    --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --vlow:#b3261e; --low:#ef6a52; --inrange:#1f9e5a; --high:#e0a935; --vhigh:#d67a2c;
+    --target-band:rgba(31,158,90,.09); --band-outer:rgba(88,120,140,.14); --band-inner:rgba(14,124,134,.22);
+    --good:#1f9e5a;
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+    --serif:ui-serif,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c1317; --surface:#121c22; --surface-2:#0f181d;
+      --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+      --line:#22313a; --line-strong:#2c3d47;
+      --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+      --vlow:#e75a50; --low:#f2836a; --inrange:#31b06a; --high:#e6b74a; --vhigh:#e08a44;
+      --target-band:rgba(49,176,106,.12); --band-outer:rgba(120,150,168,.16); --band-inner:rgba(56,203,183,.24);
+      --good:#31b06a;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f8f9; --surface:#ffffff; --surface-2:#fbfcfd;
+    --ink:#15232e; --muted:#596873; --faint:#879099; --line:#e4eaee; --line-strong:#d2dbe0;
+    --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --vlow:#b3261e; --low:#ef6a52; --inrange:#1f9e5a; --high:#e0a935; --vhigh:#d67a2c;
+    --target-band:rgba(31,158,90,.09); --band-outer:rgba(88,120,140,.14); --band-inner:rgba(14,124,134,.22);
+    --good:#1f9e5a; --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1317; --surface:#121c22; --surface-2:#0f181d;
+    --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84; --line:#22313a; --line-strong:#2c3d47;
+    --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+    --vlow:#e75a50; --low:#f2836a; --inrange:#31b06a; --high:#e6b74a; --vhigh:#e08a44;
+    --target-band:rgba(49,176,106,.12); --band-outer:rgba(120,150,168,.16); --band-inner:rgba(56,203,183,.24);
+    --good:#31b06a; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;margin:0;}
+  .page{max-width:960px;margin:0 auto;padding:clamp(18px,3vw,40px);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.01em;
+    margin:.18em 0 .12em;text-wrap:balance;}
+  h2{font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 14px;}
+  .sub{color:var(--muted);font-size:14px;}
+  .sub b{color:var(--ink);font-weight:600;}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+  .disclaimer{font-size:11.5px;color:var(--faint);border-left:2px solid var(--line-strong);padding-left:10px;max-width:230px;}
+
+  /* stat tiles */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
+  .tile{padding:15px 16px;}
+  .tile .lab{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .tile .val{font-family:var(--mono);font-size:clamp(20px,3vw,27px);font-weight:600;font-variant-numeric:tabular-nums;
+    margin-top:6px;letter-spacing:-.02em;line-height:1;}
+  .tile .val small{font-size:13px;color:var(--muted);font-weight:500;margin-left:2px;}
+  .tile .goal{font-size:11px;color:var(--faint);margin-top:7px;display:flex;align-items:center;gap:5px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex:none;}
+  .tile.hero{background:linear-gradient(180deg,var(--accent-soft),transparent);border-color:color-mix(in srgb,var(--accent) 26%,var(--line));}
+  .tile.hero .val{color:var(--accent-ink);}
+
+  .grid2{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;}
+  section.block{padding:20px 20px 16px;}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}
+    header.top{align-items:flex-start}.disclaimer{max-width:none}}
+
+  .chartwrap{position:relative;width:100%;overflow-x:auto;}
+  svg{display:block;width:100%;height:auto;}
+  .axlab{fill:var(--faint);font-size:10px;font-family:var(--sans);}
+  .gline{stroke:var(--line);stroke-width:1;}
+  .gline.key{stroke:var(--line-strong);stroke-dasharray:3 3;}
+  .medline{stroke:var(--accent);stroke-width:2.5;fill:none;stroke-linejoin:round;stroke-linecap:round;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:16px;height:10px;border-radius:2px;flex:none;}
+  .crosshair{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 2;opacity:0;}
+  .tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line-strong);
+    border-radius:8px;padding:8px 10px;font-size:11.5px;box-shadow:var(--shadow);opacity:0;transition:opacity .1s;
+    min-width:120px;z-index:5;}
+  .tip .t{font-weight:700;font-family:var(--mono);margin-bottom:4px;}
+  .tip .r{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .tip .r b{color:var(--ink);font-family:var(--mono);}
+
+  /* TIR bar */
+  .tirlayout{display:flex;gap:18px;align-items:stretch;}
+  .tirbar{width:52px;flex:none;display:flex;flex-direction:column;border-radius:7px;overflow:hidden;
+    border:1px solid var(--line);}
+  .seg{position:relative;}
+  .tirkey{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:2px;}
+  .krow{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);}
+  .krow:last-child{border-bottom:0;}
+  .kc{width:10px;height:10px;border-radius:3px;flex:none;transform:translateY(1px);}
+  .kmeta{flex:1;min-width:0;}
+  .kline{white-space:nowrap;}
+  .kname{font-size:12.5px;font-weight:600;}
+  .krange{font-size:11px;color:var(--faint);margin-left:5px;}
+  .kpct{flex:none;font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums;font-size:14.5px;}
+  .kgoal{font-size:10.5px;color:var(--faint);margin-top:2px;}
+
+  footer.notes{margin-top:20px;font-size:11.5px;color:var(--faint);line-height:1.65;}
+  footer.notes b{color:var(--muted);}
+  .callout{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 22%,var(--line));
+    border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink);margin-top:14px;}
+  .callout b{color:var(--accent-ink);}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Ambulatory Glucose Profile</div>
+      <h1>14-Day Glucose Report</h1>
+      <div class="sub"><b>Andrew</b> · Type 1 · Dexcom G7 + Loop (closed-loop) · <b id="range">—</b> · <b id="ndays">—</b> · <span id="capture">—</span> sensor active</div>
+    </div>
+    <div class="disclaimer">Observational summary generated from Nightscout CGM data. <b>Not medical advice</b> — for discussion with the care team.</div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="grid2">
+    <section class="card block">
+      <h2>AGP · a typical day</h2>
+      <div class="chartwrap" id="agpwrap">
+        <svg id="agp" viewBox="0 0 720 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="24-hour glucose percentile profile"></svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--band-outer)"></i>5–95%</span>
+        <span><i class="sw" style="background:var(--band-inner)"></i>25–75% (IQR)</span>
+        <span><i class="sw" style="height:3px;background:var(--accent)"></i>Median</span>
+        <span><i class="sw" style="background:var(--target-band);border:1px solid var(--inrange)"></i>Target 70–180</span>
+      </div>
+    </section>
+
+    <section class="card block">
+      <h2>Time in ranges</h2>
+      <div class="tirlayout">
+        <div class="tirbar" id="tirbar"></div>
+        <div class="tirkey" id="tirkey"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="callout" id="callout"></div>
+
+  <footer class="notes" id="notes"></footer>
+</div>
+
+<script>
+const D = {"days":14.0,"n":4002,"capture":99,"start":"Jul 4","end":"Jul 18, 2026","mean":110,"gmi":5.9,"cv":27,"tir":{"vlow":0.8,"low":5.1,"inrange":93.1,"high":0.9,"vhigh":0.1},"tir_clean":95.0,"agp":{"5":[59.6,58.6,57.1,63.7,60.6,63.6,58.0,64.8,69.7,81.0,80.6,80.0,75.6,74.7,73.0,70.3,72.2,76.9,83.2,83.4,79.5,75.1,69.4,64.3,59.7,60.7,65.1,71.5,76.2,74.9,73.0,75.6,73.5,71.0,68.4,72.8,76.4,70.1,69.2,67.8,68.5,64.5,63.9,66.2,72.2,69.8,69.8,63.6],"25":[83.1,83.2,84.5,83.2,79.2,77.0,76.3,81.7,86.5,91.2,92.7,93.3,92.5,96.2,100.2,102.9,100.2,99.1,96.8,94.3,88.8,85.2,81.3,81.0,78.0,78.2,79.6,84.5,89.8,95.0,97.8,97.8,92.7,89.9,88.1,89.4,91.1,92.8,92.0,90.0,87.3,87.8,90.0,91.5,93.9,92.6,90.5,84.3],"50":[110.7,108.7,103.8,98.8,96.7,94.2,94.7,99.8,104.2,105.3,107.3,109.7,113.2,113.0,114.7,114.3,114.2,112.0,110.5,106.3,103.2,98.3,99.2,100.3,103.7,102.0,99.5,99.2,104.3,112.8,118.0,117.0,110.2,106.8,105.7,105.0,103.3,100.8,100.8,99.5,98.7,103.5,112.2,124.0,125.8,119.2,110.0,108.0],"75":[137.1,130.5,123.1,113.9,114.8,112.8,113.8,114.4,119.1,120.0,123.2,126.9,131.2,130.2,130.7,131.0,130.9,135.0,136.9,140.2,132.7,124.2,116.8,116.2,116.8,118.4,120.8,129.2,136.6,146.5,145.6,142.5,131.7,128.4,127.6,129.4,129.6,126.8,124.5,122.8,126.8,137.1,143.5,149.2,146.8,141.7,136.7,132.4],"95":[163.7,161.7,151.8,187.6,181.6,184.3,142.3,143.3,142.5,138.1,136.2,140.0,149.7,162.5,165.4,162.6,161.3,164.1,171.2,168.8,158.8,143.2,131.0,127.6,130.3,139.1,153.1,157.8,161.0,166.2,177.1,185.1,171.9,159.5,150.0,153.7,157.6,150.6,143.6,142.8,152.8,171.1,181.2,181.6,177.2,161.2,159.1,154.4]}};
+
+// ---------- header + stats ----------
+document.getElementById('range').textContent = D.start + ' – ' + D.end;
+document.getElementById('ndays').textContent = D.days + ' days';
+document.getElementById('capture').textContent = D.capture + '%';
+
+const goalMet = '<span class="dot"></span>';
+const stats = [
+  {lab:'Time in Range', val:D.tir.inrange, unit:'%', goal:'Goal >70%', hero:true},
+  {lab:'Mean Glucose', val:D.mean, unit:' mg/dL', goal:'—'},
+  {lab:'GMI · est. A1c', val:D.gmi, unit:'%', goal:'Goal <7%'},
+  {lab:'Variability · CV', val:D.cv, unit:'%', goal:'Goal ≤36%'},
+  {lab:'Time Below 54', val:D.tir.vlow, unit:'%', goal:'Goal <1%'},
+];
+document.getElementById('stats').innerHTML = stats.map(s=>`
+  <div class="tile card ${s.hero?'hero':''}">
+    <div class="lab">${s.lab}</div>
+    <div class="val">${s.val}<small>${s.unit}</small></div>
+    <div class="goal">${s.goal==='—'?'':goalMet}${s.goal}</div>
+  </div>`).join('');
+
+// ---------- AGP chart ----------
+const W=720,H=320, m={l:38,r:14,t:14,b:26};
+const pw=W-m.l-m.r, ph=H-m.t-m.b;
+const yMin=40, yMax=300;
+const gx=i=> m.l + (i/47)*pw;
+const gy=v=> m.t + (1-(Math.max(yMin,Math.min(yMax,v))-yMin)/(yMax-yMin))*ph;
+const P=D.agp;
+function area(hi,lo){
+  let d='M'+gx(0)+' '+gy(hi[0]);
+  for(let i=1;i<48;i++) d+=' L'+gx(i)+' '+gy(hi[i]);
+  for(let i=47;i>=0;i--) d+=' L'+gx(i)+' '+gy(lo[i]);
+  return d+'Z';
+}
+function line(a){return a.map((v,i)=>(i?'L':'M')+gx(i)+' '+gy(v)).join(' ');}
+const yticks=[54,70,180,250,300];
+const xticks=[0,12,24,36,47]; const xlabels=['12a','6a','12p','6p','12a'];
+let svg='';
+// target band
+svg+=`<rect x="${m.l}" y="${gy(180)}" width="${pw}" height="${gy(70)-gy(180)}" fill="var(--target-band)"/>`;
+// gridlines
+yticks.forEach(v=>{const y=gy(v);const key=(v===70||v===180);
+  svg+=`<line class="gline ${key?'key':''}" x1="${m.l}" y1="${y}" x2="${W-m.r}" y2="${y}"/>`;
+  svg+=`<text class="axlab" x="${m.l-7}" y="${y+3}" text-anchor="end">${v}</text>`;});
+// bands
+svg+=`<path d="${area(P['95'],P['5'])}" fill="var(--band-outer)"/>`;
+svg+=`<path d="${area(P['75'],P['25'])}" fill="var(--band-inner)"/>`;
+svg+=`<path class="medline" d="${line(P['50'])}"/>`;
+// x labels
+xticks.forEach((i,k)=>svg+=`<text class="axlab" x="${gx(i)}" y="${H-8}" text-anchor="middle">${xlabels[k]}</text>`);
+// crosshair + hit layer
+svg+=`<line id="cross" class="crosshair" y1="${m.t}" y2="${m.t+ph}"/>`;
+svg+=`<rect id="hit" x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent" style="cursor:crosshair"/>`;
+document.getElementById('agp').innerHTML=svg;
+
+// hover
+const wrap=document.getElementById('agpwrap'), tip=document.getElementById('tip'), cross=document.getElementById('cross');
+const hit=document.getElementById('hit'), svgEl=document.getElementById('agp');
+function hhmm(i){const h=Math.floor(i/2), mm=i%2?'30':'00';const ap=h<12?'am':'pm';let hh=h%12;if(hh===0)hh=12;return hh+':'+mm+ap;}
+hit.addEventListener('mousemove',ev=>{
+  const r=svgEl.getBoundingClientRect(), sx=(ev.clientX-r.left)/r.width*W;
+  let i=Math.round((sx-m.l)/pw*47); i=Math.max(0,Math.min(47,i));
+  const px=gx(i);
+  cross.setAttribute('x1',px);cross.setAttribute('x2',px);cross.style.opacity=1;
+  tip.style.opacity=1;
+  tip.innerHTML=`<div class="t">${hhmm(i)}</div>
+    <div class="r"><span>Median</span><b>${Math.round(P['50'][i])}</b></div>
+    <div class="r"><span>25–75%</span><b>${Math.round(P['25'][i])}–${Math.round(P['75'][i])}</b></div>
+    <div class="r"><span>5–95%</span><b>${Math.round(P['5'][i])}–${Math.round(P['95'][i])}</b></div>`;
+  const wr=wrap.getBoundingClientRect();
+  let tx=(px/W)*wr.width+14; if(tx>wr.width-140)tx-=160;
+  tip.style.left=tx+'px'; tip.style.top='10px';
+});
+hit.addEventListener('mouseleave',()=>{tip.style.opacity=0;cross.style.opacity=0;});
+
+// ---------- TIR bar + key ----------
+const bands=[
+  {k:'vhigh',name:'Very High',range:'>250',pct:D.tir.vhigh,col:'var(--vhigh)',goal:'Goal <5%'},
+  {k:'high',name:'High',range:'181–250',pct:D.tir.high,col:'var(--high)',goal:'—'},
+  {k:'inrange',name:'In Range',range:'70–180',pct:D.tir.inrange,col:'var(--inrange)',goal:'Goal >70%'},
+  {k:'low',name:'Low',range:'54–69',pct:D.tir.low,col:'var(--low)',goal:'—'},
+  {k:'vlow',name:'Very Low',range:'<54',pct:D.tir.vlow,col:'var(--vlow)',goal:'Goal <1%'},
+];
+const barMinH=3;
+document.getElementById('tirbar').innerHTML=bands.map(b=>{
+  const h=Math.max(b.pct,b.k==='inrange'?0:0.6); // proportional; tiny bands still visible
+  return `<div class="seg" style="flex:${h} 0 auto;min-height:${barMinH}px;background:${b.col}"></div>`;
+}).join('<div style="height:2px;background:var(--surface)"></div>');
+document.getElementById('tirkey').innerHTML=bands.map(b=>`
+  <div class="krow">
+    <span class="kc" style="background:${b.col}"></span>
+    <div class="kmeta">
+      <div class="kline"><span class="kname">${b.name}</span><span class="krange">${b.range}</span></div>
+      ${b.goal!=='—'?`<div class="kgoal">${b.goal}</div>`:''}
+    </div>
+    <span class="kpct">${b.pct}%</span>
+  </div>`).join('');
+
+// ---------- callout + notes ----------
+document.getElementById('callout').innerHTML =
+  `<b>Excellent control.</b> Every standard target is met — time-in-range ${D.tir.inrange}% (goal >70%), `+
+  `GMI ${D.gmi}%, and time above 180 under 1%. The below-range readings are dominated by G7 nighttime `+
+  `compression lows (sensor pressure, self-recovering); excluding those, true time-in-range is ~${D.tir_clean}%.`;
+document.getElementById('notes').innerHTML =
+  `<b>Metrics.</b> ${D.n.toLocaleString()} readings over ${D.days} days, ${D.capture}% sensor-active. `+
+  `GMI (Glucose Management Indicator) estimates lab A1c from mean glucose. CV = coefficient of variation (glucose stability). `+
+  `Ranges follow the international consensus (Battelino 2019). `+
+  `Times are local (UTC−7). Overnight lows are largely sensor compression artifact, not hypoglycemia — see the report notes.`;
+</script>

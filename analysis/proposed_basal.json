@@ -4,28 +4,73 @@
   "timezone": "ETC/GMT+7",
   "dia": 6,
   "basal_current": [
-    {"time": "00:00", "value": 1.8},
-    {"time": "02:00", "value": 1.45},
-    {"time": "09:30", "value": 1.8},
-    {"time": "17:00", "value": 1.7},
-    {"time": "20:00", "value": 2.4},
-    {"time": "22:00", "value": 2.3}
+    {
+      "time": "00:00",
+      "value": 1.8
+    },
+    {
+      "time": "02:00",
+      "value": 1.45
+    },
+    {
+      "time": "09:30",
+      "value": 1.8
+    },
+    {
+      "time": "17:00",
+      "value": 1.7
+    },
+    {
+      "time": "20:00",
+      "value": 2.4
+    },
+    {
+      "time": "22:00",
+      "value": 2.3
+    }
   ],
   "basal_step1": {
     "_desc": "Step 1 (applied to Loop 2026-06-13 06:48 UTC): overnight cut + midday trough + late-dinner taper.",
     "_night1_result": "First night overshot to HIGHS overnight: mean 156, max 214, 17% >180, 0% lows. Rise tracked the 22:30 taper (118->157). Midday trough worked well (today 11:00-13:00 ran 83-119, no lows). Conclusion: evening taper too deep; deep-overnight cut was fine. See basal_step1b.",
-    "daily_total_U": 37.50,
+    "daily_total_U": 37.5,
     "delta_U": -4.98,
     "segments": [
-      {"time": "00:00", "value": 1.35},
-      {"time": "02:00", "value": 1.2},
-      {"time": "04:30", "value": 1.45},
-      {"time": "09:30", "value": 1.8},
-      {"time": "11:00", "value": 1.25},
-      {"time": "16:00", "value": 1.8},
-      {"time": "17:00", "value": 1.7},
-      {"time": "20:00", "value": 2.4},
-      {"time": "22:30", "value": 1.8}
+      {
+        "time": "00:00",
+        "value": 1.35
+      },
+      {
+        "time": "02:00",
+        "value": 1.2
+      },
+      {
+        "time": "04:30",
+        "value": 1.45
+      },
+      {
+        "time": "09:30",
+        "value": 1.8
+      },
+      {
+        "time": "11:00",
+        "value": 1.25
+      },
+      {
+        "time": "16:00",
+        "value": 1.8
+      },
+      {
+        "time": "17:00",
+        "value": 1.7
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 1.8
+      }
     ]
   },
   "basal_step1b": {
@@ -34,15 +79,42 @@
     "daily_total_U": 39.05,
     "delta_U": -3.43,
     "segments": [
-      {"time": "00:00", "value": 1.45},
-      {"time": "02:00", "value": 1.3},
-      {"time": "04:30", "value": 1.55},
-      {"time": "09:30", "value": 1.8},
-      {"time": "11:00", "value": 1.25},
-      {"time": "16:00", "value": 1.8},
-      {"time": "17:00", "value": 1.7},
-      {"time": "20:00", "value": 2.4},
-      {"time": "22:30", "value": 2.2}
+      {
+        "time": "00:00",
+        "value": 1.45
+      },
+      {
+        "time": "02:00",
+        "value": 1.3
+      },
+      {
+        "time": "04:30",
+        "value": 1.55
+      },
+      {
+        "time": "09:30",
+        "value": 1.8
+      },
+      {
+        "time": "11:00",
+        "value": 1.25
+      },
+      {
+        "time": "16:00",
+        "value": 1.8
+      },
+      {
+        "time": "17:00",
+        "value": 1.7
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 2.2
+      }
     ]
   },
   "basal_step1c": {
@@ -51,15 +123,42 @@
     "daily_total_U": 38.05,
     "delta_U": -4.43,
     "segments": [
-      {"time": "00:00", "value": 1.45},
-      {"time": "02:00", "value": 1.3},
-      {"time": "04:30", "value": 1.35},
-      {"time": "09:30", "value": 1.8},
-      {"time": "11:00", "value": 1.25},
-      {"time": "16:00", "value": 1.8},
-      {"time": "17:00", "value": 1.7},
-      {"time": "20:00", "value": 2.4},
-      {"time": "22:30", "value": 2.2}
+      {
+        "time": "00:00",
+        "value": 1.45
+      },
+      {
+        "time": "02:00",
+        "value": 1.3
+      },
+      {
+        "time": "04:30",
+        "value": 1.35
+      },
+      {
+        "time": "09:30",
+        "value": 1.8
+      },
+      {
+        "time": "11:00",
+        "value": 1.25
+      },
+      {
+        "time": "16:00",
+        "value": 1.8
+      },
+      {
+        "time": "17:00",
+        "value": 1.7
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 2.2
+      }
     ]
   },
   "basal_step2": {
@@ -67,14 +166,82 @@
     "daily_total_U": 35.88,
     "delta_U": -6.6,
     "segments": [
-      {"time": "00:00", "value": 1.35},
-      {"time": "02:00", "value": 1.2},
-      {"time": "04:30", "value": 1.45},
-      {"time": "09:30", "value": 1.45},
-      {"time": "11:00", "value": 1.25},
-      {"time": "16:00", "value": 1.45},
-      {"time": "20:00", "value": 2.4},
-      {"time": "22:30", "value": 1.8}
+      {
+        "time": "00:00",
+        "value": 1.35
+      },
+      {
+        "time": "02:00",
+        "value": 1.2
+      },
+      {
+        "time": "04:30",
+        "value": 1.45
+      },
+      {
+        "time": "09:30",
+        "value": 1.45
+      },
+      {
+        "time": "11:00",
+        "value": 1.25
+      },
+      {
+        "time": "16:00",
+        "value": 1.45
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 1.8
+      }
+    ]
+  },
+  "basal_step1d": {
+    "_desc": "Step 1d (proposed): remove the late-morning bump - 09:30 1.80 -> 1.45. Targets the fasting drift into the first meal of the day.",
+    "_evidence": "45d review (Jun 9-Jul 24), morning window. FINDING: there is effectively no breakfast - only 35% of days have a >=15g morning carb entry and median first food is 11:18am; the 4/6/8am small entries are corrections at BG~200, not meals. Early morning 04:00-09:00 is GOOD (median 108->118, modest +10 dawn rise, ~0-4% lows, ~0-3% highs) - do not touch. The problem is the LATE-MORNING FASTING SAG: on days with no food before 11:00, 14/16 drifted down, median -16 mg/dL (worst -40/-36/-69), 31% dipped <70, arriving at the first meal already low. Cause: the schedule jumps to 1.80 U/hr at 09:30 (highest daytime rate) mid-fast - apparently vestigial coverage for a breakfast no longer eaten. Loop fights it: hour 10 delivers 1.24 vs 1.80 scheduled, 25% suspended (hr 11: 0.81 vs 1.25, 29% suspended). Morning is the cleanest window for analysis (~0.2 Afrezza-like drops/wk, few fake carbs), so this is fasting-grade evidence.",
+    "daily_total_U": 37.53,
+    "delta_U": -0.52,
+    "segments": [
+      {
+        "time": "00:00",
+        "value": 1.45
+      },
+      {
+        "time": "02:00",
+        "value": 1.3
+      },
+      {
+        "time": "04:30",
+        "value": 1.35
+      },
+      {
+        "time": "09:30",
+        "value": 1.45
+      },
+      {
+        "time": "11:00",
+        "value": 1.25
+      },
+      {
+        "time": "16:00",
+        "value": 1.8
+      },
+      {
+        "time": "17:00",
+        "value": 1.7
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 2.2
+      }
     ]
   }
 }

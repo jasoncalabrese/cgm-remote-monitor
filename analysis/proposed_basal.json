@@ -260,6 +260,53 @@
     "pct_peak_over_180": 2,
     "_finding": "Strongly asymmetric: 22% of first meals dip <70 within 4h vs only 2% peaking >180, with median peak just 135. The dose is a touch strong for the starting point - he arrives at ~89 already drifting down, then boluses at an effective CR of 5.7 (stronger than the profile's 6).",
     "_option": "Weaken the first-meal carb ratio in the window he actually eats (currently ~10:00-15:00): CR 6 -> 7. A 50g meal would take ~7.1U instead of ~8.3U (~1.2U less, ~60 mg/dL at ISF 53). Expected: most of the 22% lows resolve; peak rises from ~135 toward ~150-160, still well under 180. SEASONAL CAVEAT: the window is tied to the summer sleep-in and will need revisiting when the schedule shifts.",
-    "_caution": "Single-variable discipline: do NOT combine with a basal change. ISF stays unvalidated (corrections are mostly invisible Afrezza/fake-carb)."
+    "_caution": "Single-variable discipline: do NOT combine with a basal change. ISF stays unvalidated (corrections are mostly invisible Afrezza/fake-carb).",
+    "_meal_taxonomy": "CORRECTED: the first meal of the day is always BREAKFAST regardless of clock time (subject sleeps in; summer). Sometimes there is no lunch, or only a snack. Analysis is therefore by meal ORDINAL, not clock hour. Breakfast n=45 median 12:15 (IQR 11:48-12:54); mid-meal/snack n=23 median 15:38; dinner n=41 median 19:27.",
+    "_by_meal": {
+      "breakfast": {
+        "n": 45,
+        "median_time": "12:15",
+        "carbs": 50,
+        "bolus": 8.2,
+        "eff_CR": 5.8,
+        "pre": 89,
+        "peak": 133,
+        "pct_low": 22,
+        "pct_high": 4,
+        "read": "over-insulinized relative to need: 22% low vs 4% high, peak only 133"
+      },
+      "mid_meal_snack": {
+        "n": 23,
+        "median_time": "15:38",
+        "carbs": 35,
+        "bolus": 6.1,
+        "eff_CR": 5.8,
+        "pre": 132,
+        "peak": 163,
+        "pct_low": 39,
+        "pct_high": 26,
+        "read": "chaotic both directions; small n and sits in the dinner-time Afrezza window - DO NOT TUNE"
+      },
+      "dinner": {
+        "n": 41,
+        "median_time": "19:27",
+        "carbs": 60,
+        "bolus": 9.0,
+        "eff_CR": 7.1,
+        "pre": 105,
+        "peak": 150,
+        "pct_low": 17,
+        "pct_high": 17,
+        "read": "balanced 17/17 - leave alone; already effectively dosed weaker than breakfast"
+      }
+    },
+    "_two_wave_finding": "KEY. Post-breakfast median trajectory shows TWO low waves, not one: (a) an EARLY dip at 30-90min (BG 89 -> 84 at 30min; 16% <70 at 60min) - the prebolus acting before the food, from an already-low start; and (b) a LATE wave at 240-270min (13-16% <70) - the insulin tail. Median time from breakfast to first <70 is 80 min (IQR 60-230), so the EARLY dip dominates. The meal does not peak until ~180min and only reaches 136. Interpretation: this is primarily a STARTING-BG + PREBOLUS-TIMING problem, not purely carb ratio.",
+    "_options_ranked": [
+      "1. BEHAVIORAL (zero settings risk, targets the dominant 30-90min dip): when pre-breakfast BG is <90 and flat/falling, skip or shorten the prebolus - bolus at first bite instead. ",
+      "2. BASAL (passive, no behavior change needed): Step-1d 09:30 1.80 -> 1.45 now has a better rationale - not the -9 drift itself, but arriving at breakfast nearer 98-100 instead of 89 gives the prebolus dip headroom before it crosses 70.",
+      "3. CARB RATIO (targets the late 240-270min wave): breakfast-window CR 6 -> 6.5 (~8%, standard increment). CR 7 is the more decisive test given peak is only 133, but 6.5 is the by-the-book first step.",
+      "Do ONE at a time. Dinner and mid-meal should not be changed."
+    ],
+    "_seasonal": "All of this is tied to the summer sleep-in: breakfast is currently ~12:15. When school resumes, breakfast moves earlier and any time-windowed CR segment (and the 09:30 basal rationale) must be revisited."
   }
 }

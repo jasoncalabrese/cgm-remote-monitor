@@ -56,6 +56,29 @@ first cycles closely.
     python3 pod_override.py                 # dry run (default) - shows what it would do
     python3 pod_override.py --enable-day3   # also arm the day-3 (more insulin) side
     NS_TOKEN=... python3 pod_override.py --live
+
+DEPLOYMENT (runs on the Nightscout droplet itself)
+  This is the same path the existing manual remote commands already take - they show
+  remoteAddress ::ffff:127.0.0.1, i.e. issued from the server. Talking to localhost
+  skips TLS and the public round-trip, and couples the automation to the box that has
+  to be up anyway.
+
+    # /etc/cron.d/pod-override   (survives reboot; the nightly droplet reboot is fine -
+    # a missed run just means the current override lapses and the next run renews it)
+    */15 * * * * nightscout NS_URL=http://127.0.0.1:1337 NS_TOKEN=xxxx \
+      /usr/bin/python3 /opt/pod_override.py --live >> /var/log/pod-override.log 2>&1
+
+  Notes for that box:
+    - Port: match whatever Nightscout listens on locally (1337 by default).
+    - Token needs the notifications:loop:push permission. Prefer a dedicated
+      least-privilege token over API_SECRET.
+    - Every run prints one timestamped block, so the log doubles as an audit trail.
+      IF THE LOG GOES QUIET, THE AUTOMATION STOPPED - and because it fails safe you
+      will not otherwise notice. Check it during the weekly review.
+    - Add logrotate (or just truncate periodically); 15-min runs produce ~35k lines/yr.
+    - python3 is present on stock Ubuntu droplets; only stdlib is used, no pip install.
+    - Run for a few days WITHOUT --live first: the log then shows exactly what it would
+      have done, at zero risk.
 """
 import sys, os, json, urllib.request, urllib.parse, datetime
 
@@ -218,4 +241,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Any unexpected failure must produce ONE clean, greppable line and exit non-zero -
+    # never a traceback in the cron log, and never a partial action. Failing here is
+    # safe: no command is sent, the current override lapses, therapy reverts to normal.
+    try:
+        main()
+    except Exception as ex:
+        print(f"  ERROR ({type(ex).__name__}): {ex} -> NO ACTION")
+        sys.exit(1)

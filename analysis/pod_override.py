@@ -14,23 +14,39 @@ WHY THIS EXISTS
 HOW IT WORKS  (no Loop code changes, no app rebuild)
   Loop -> Nightscout : pod changes are auto-logged as eventType "Site Change"
                        (enteredBy "loop://iPhone").
-  Nightscout -> Loop : remote-command overrides (proven working on this site -
-                       treatments with enteredBy "Loop (via remote command)").
-  This script closes the loop: read pod age, decide a scale factor, issue the
-  matching EXISTING override preset. Nothing new is invented - it just presses
-  the same buttons a human would.
+  Nightscout -> Loop : POST /api/v2/notifications/loop  (see lib/server/loop.js and
+                       lib/api/notifications-v2.js on the deployed 2022-06 branch).
+                       Nightscout turns this into an APNs push to the Loop app.
+  This script closes the loop: read pod age, decide which EXISTING preset applies,
+  and ask Loop to turn it on. Nothing new is invented - it presses the same button
+  a human would.
+
+  IMPORTANT - what actually crosses the wire. The APNs payload contains only:
+      override-name              <- the preset NAME (data.reason)
+      override-duration-minutes  <- data.duration
+  It does NOT carry insulinNeedsScaleFactor or correctionRange. Those live in the
+  presets ON THE PHONE. So this script cannot invent a dose adjustment; it can only
+  name a preset the device already has. (Scale factors are shown below purely for
+  documentation.) The preset name must match EXACTLY, emoji included.
+  Note also: POSTing a treatment to /api/v1/treatments.json does NOT command Loop -
+  it only writes a record. The notifications endpoint is the real path.
 
 SAFETY DESIGN  (read before running --live)
+  * THE DEVICE OWNS THE MAGNITUDE. The server names a preset; Loop applies whatever
+    that preset is configured to do. The server cannot set a scale factor at all.
   * FAIL-SAFE BY EXPIRY. Overrides are issued with a short duration and refreshed.
     If this script dies, the network drops, or the host reboots, the override simply
     EXPIRES and therapy reverts to the normal profile. Nothing gets stuck on.
-  * NEVER STACKS. If any override is already active (a user-set "Rage"/"Eating Soon",
-    or one of ours), it does nothing. The human always wins.
-  * HARD BOUNDS. Scale factor is clamped to [MIN_SCALE, MAX_SCALE] regardless of config.
+    (The APNs payload itself also expires after 5 minutes - a missed push is dropped,
+    not queued.)
+  * NEVER STACKS. If ANY override is already active - a user-set "Rage"/"Eating Soon"
+    or one of ours - it does nothing. The human always wins, and our own override is
+    simply left to run out before being renewed.
+  * PRESET ALLOWLIST. Only names in ALLOWED_PRESETS may ever be sent.
   * STALE/FUTURE DATA -> NO ACTION. If the last Site Change is older than MAX_POD_AGE_H
     or in the future, it does nothing rather than guess.
-  * DRY RUN BY DEFAULT. --live is required to write, plus a token in NS_TOKEN.
-  * Only uses presets that already exist in this user's Loop.
+  * DRY RUN BY DEFAULT. --live is required to send, plus a token in NS_TOKEN with the
+    notifications:loop:push permission.
 
 NOT MEDICAL ADVICE. This adjusts automated insulin delivery. Magnitudes here are a
 conservative starting point derived from aggregates - they are NOT validated as safe
@@ -50,20 +66,24 @@ ENABLE_DAY3 = "--enable-day3" in sys.argv
 VERBOSE = "--verbose" in sys.argv
 
 # --- safety rails -----------------------------------------------------------
-MIN_SCALE, MAX_SCALE = 0.85, 1.15   # absolute clamp, config cannot exceed this
 MAX_POD_AGE_H = 80                  # beyond this, assume an unlogged change -> no action
 OVERRIDE_MINUTES = 60               # short: refreshed each run, expires if we die
-MIN_REISSUE_GAP_MIN = 45            # don't spam commands
+
+# Only these preset names may ever be sent. They must exist in Loop on the phone,
+# spelled exactly (emoji included). Anything not on this list is refused.
+ALLOWED_PRESETS = {"↘️ Running a little Low", "↗️ Running a little High"}
 
 # --- the policy (uses presets that already exist in this Loop) --------------
 # Phase 1 (default): only the day-1 REDUCTION. Less insulin is the safer direction
 # to test first, and day 1 carries the worst lows (7.4%).
 # Phase 2 (--enable-day3): the day-3 increase. Riskier - adding insulin - so it is
 # opt-in and should only be armed after phase 1 looks good.
+# NOTE: `scale` is DOCUMENTATION ONLY - it is not sent and not enforced here. The
+# real magnitude is whatever the preset is set to in Loop on the device.
 POLICY = [
-    # (age_from_h, age_to_h, preset_reason,               scale, correction_range, phase)
-    (12, 24, "↘️ Running a little Low", 0.9, [100, 100], 1),
-    (48, MAX_POD_AGE_H, "↗️ Running a little High", 1.1, [100, 100], 2),
+    # (age_from_h, age_to_h, preset_name,                 scale-on-device, phase)
+    (12, 24, "↘️ Running a little Low", 0.9, 1),
+    (48, MAX_POD_AGE_H, "↗️ Running a little High", 1.1, 2),
 ]
 
 
@@ -121,39 +141,46 @@ def active_override(lookback_h=12):
 
 
 def desired_state(age_h):
-    for lo, hi, reason, scale, rng, phase in POLICY:
+    for lo, hi, preset, scale, phase in POLICY:
         if phase == 2 and not ENABLE_DAY3:
             continue
         if lo <= age_h < hi:
-            return dict(reason=reason, scale=max(MIN_SCALE, min(MAX_SCALE, scale)), range=rng)
+            return dict(preset=preset, scale=scale)
     return None
 
 
 def issue_override(state):
-    """POST the override. Mirrors the shape this site's working remote commands use."""
-    doc = {
+    """Ask Loop to turn on a preset, via the APNs push endpoint.
+
+    Only `reason` (preset name) and `duration` reach the device; see module docstring.
+    """
+    preset = state["preset"]
+    if preset not in ALLOWED_PRESETS:
+        print(f"  REFUSING: preset {preset!r} is not in ALLOWED_PRESETS")
+        return
+    body = {
         "eventType": "Temporary Override",
-        "reason": state["reason"],
-        "insulinNeedsScaleFactor": state["scale"],
-        "correctionRange": state["range"],
-        "duration": OVERRIDE_MINUTES,
+        "reason": preset,                  # -> APNs 'override-name'
+        "duration": OVERRIDE_MINUTES,      # -> APNs 'override-duration-minutes'
         "enteredBy": "pod-cycle-automation",
-        "created_at": now_utc().strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+        "notes": "pod-age automation",
     }
     if not LIVE:
-        print("  DRY RUN - would POST:")
-        print("   ", json.dumps(doc, ensure_ascii=False))
+        print(f"  DRY RUN - would POST {BASE}/api/v2/notifications/loop")
+        print("   ", json.dumps(body, ensure_ascii=False))
         return
     if not TOKEN:
         print("  REFUSING: --live given but NS_TOKEN is not set.")
         return
-    body = json.dumps([doc]).encode()
     req = urllib.request.Request(
-        f"{BASE}/api/v1/treatments.json?token={urllib.parse.quote(TOKEN)}",
-        data=body, method="POST",
+        f"{BASE}/api/v2/notifications/loop?token={urllib.parse.quote(TOKEN)}",
+        data=json.dumps(body).encode(), method="POST",
         headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=45) as r:
-        print(f"  POSTED (HTTP {r.status})")
+    try:
+        with urllib.request.urlopen(req, timeout=45) as r:
+            print(f"  SENT to Loop (HTTP {r.status})")
+    except urllib.error.HTTPError as ex:
+        print(f"  FAILED (HTTP {ex.code}): {ex.read().decode()[:200]}")
 
 
 def main():
@@ -170,24 +197,23 @@ def main():
     if age_h > MAX_POD_AGE_H:
         print(f"  pod age exceeds {MAX_POD_AGE_H}h (likely an unlogged change) -> NO ACTION"); return
 
+    # Yield to ANY active override, ours or a human's. Loop reports overrides back
+    # under its own enteredBy ("Loop" / "Loop (via remote command)"), so ownership
+    # isn't reliably distinguishable - and it doesn't need to be: if one is running,
+    # there is nothing to do. Ours simply lapses and is renewed on a later run.
     cur, exp = active_override()
     if cur:
-        who = cur.get("enteredBy", "?")
-        mine = who == "pod-cycle-automation"
-        print(f"  active override: '{cur.get('reason')}' by {who}, expires {exp:%H:%M} UTC")
-        if not mine:
-            print("  a human/Loop override is active -> YIELD, no action")
-            return
         remaining = (exp - now_utc()).total_seconds() / 60
-        if remaining > OVERRIDE_MINUTES - MIN_REISSUE_GAP_MIN:
-            print(f"  our override still has {remaining:.0f}m left -> no reissue")
-            return
+        print(f"  active override: '{cur.get('reason')}' by {cur.get('enteredBy','?')}, "
+              f"{remaining:.0f}m left -> YIELD, no action")
+        return
 
     want = desired_state(age_h)
     if not want:
         print("  pod age is in a neutral window -> NO ACTION (any prior override expires on its own)")
         return
-    print(f"  target: {want['reason']}  scale x{want['scale']}  range {want['range']}  for {OVERRIDE_MINUTES}m")
+    print(f"  target preset: {want['preset']}  for {OVERRIDE_MINUTES}m "
+          f"(device-side scale ~x{want['scale']})")
     issue_override(want)
 
 

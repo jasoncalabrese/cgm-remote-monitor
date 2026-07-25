@@ -311,5 +311,58 @@
     "_CORRECTION": "METHODOLOGICAL ERROR in the first pass, now fixed. Peaks were measured in a 2.5h window, but breakfast does not peak until ~3h, so the peak was TRUNCATED and highs under-reported. Corrected 5h window (n=45): median peak 165 (not 133), 29% exceed 180 (not 4%), 51% dip below 70, and 16% do BOTH within the same meal; only 36% are clean. CONCLUSION REVERSED: breakfast swings both ways - it is NOT simply over-insulinized, so weakening the carb ratio is the WRONG fix (it would worsen the 29% highs). The problem is shape/timing, not dose magnitude.",
     "_behavioral_rule_test": "The proposed rule 'pre-BG <95 and flat/falling -> skip prebolus' does NOT discriminate: risky group 35% dip <70 within 2h vs 32% for all others (n=17 vs 28). Trend direction ran backwards from expectation (falling 22% early-dip vs flat 50%, rising 39%) - noise at this n. The ONLY surviving signal is the starting level: pre-BG <80 -> 60% dip <70 (n=10) vs 22-38% for all higher bands.",
     "_recommendation_2026_07": "HOLD ALL SETTINGS. (1) The data cannot support a confident breakfast change - both-ways swing, no clean threshold. (2) The pattern is tied to the summer sleep-in (12:15 breakfast) and is about to be erased by travel and then a college dorm. (3) A change made now would be evaluated during travel, the noisiest possible baseline. Keep Step-1c (holding well: TIR 93%, GMI 5.9%). Carry ONE portable, BG-triggered rule that survives time zones and a shifting class schedule: do not take a full meal bolus starting under 80 - eat the first bites first or bring BG up before dosing. Re-assess 2-3 weeks into the dorm once a routine exists. NOTE: user correctly ruled out a time-of-day basal segment for the morning - first class varies by day, so a clock-based fix cannot work."
+  },
+  "pod_cycle_finding_2026_07": {
+    "_desc": "POD-CYCLE (3-day Omnipod) EFFECT - user hypothesis, confirmed. Largest single systematic driver of variability found to date, and the only intervention that is schedule-independent (anchored to pod changes, not the clock).",
+    "_data": "45d, 19 site changes, median pod life 2.5d (two <1d = likely failures). Bolus insulin is FLAT across pod days (43.1/43.8/43.8 U/day) so this is an ABSORPTION effect, not a dosing difference.",
+    "_overall_gradient_compression_excluded": {
+      "day1": {
+        "n": 4722,
+        "mean": 105,
+        "TIR": 91,
+        "pct_low": 7.4,
+        "pct_vlow": 0.7
+      },
+      "day2": {
+        "n": 4531,
+        "mean": 114,
+        "TIR": 95,
+        "pct_low": 3.9,
+        "pct_vlow": 0.5
+      },
+      "day3": {
+        "n": 2731,
+        "mean": 118,
+        "TIR": 97,
+        "pct_low": 2.5,
+        "pct_vlow": 0.3
+      }
+    },
+    "_robustness": "Gradient holds in EVERY time-of-day window after excluding G7 compression (%<70 day1/2/3): night 3.7/0.2/0.6, morning 6.4/4.2/1.4, afternoon 10.4/6.8/4.0, evening 9.3/5.0/3.9. Mean glucose rises monotonically with pod age in every window. Not a time-of-day artifact - pod changes cluster in the afternoon/evening but the effect survives matching on time of day.",
+    "_breakfast_by_pod_day": {
+      "day1": {
+        "n": 16,
+        "pre": 82,
+        "peak": 148,
+        "pct_high": 12
+      },
+      "day2": {
+        "n": 16,
+        "pre": 93,
+        "peak": 166,
+        "pct_high": 19
+      },
+      "day3": {
+        "n": 11,
+        "pre": 97,
+        "peak": 185,
+        "pct_high": 55
+      },
+      "note": "Explains the previously confusing 'breakfast swings both ways' result: the highs are concentrated on pod day 3 (peak +37 vs day 1, 55% >180), the lows on day 1. Two distinct problems that averaged into one. Low side is noisier at this n (44/69/36) - the peak/high gradient is the clean signal."
+    },
+    "_direction": "Fresh site absorbs BETTER (more insulin action -> lows on day 1); absorption degrades with pod age (less action -> highs on day 3). Note this is the OPPOSITE of what a naive 'day 1 is erratic' expectation predicts, and the magnitude (mean 105 -> 118, lows 7.4% -> 2.5%) is comparable to the entire basal retune.",
+    "_why_it_fits_the_constraints": "Anchored to pod changes (~every 2.5d), NOT the clock. Survives travel, time zones, a college dorm, and a class schedule that differs by day - precisely where a time-of-day basal segment fails.",
+    "_option": "A pod-day-aware Loop Override pair: a gentler-insulin override for roughly the first 12-24h after a pod change (to cut the day-1 lows) and/or a stronger one for the last ~12h before a change (to cut the day-3 highs). Loop overrides scale basal/ISF/CR together and can be time-limited. MAGNITUDE NOT ESTABLISHED HERE - start conservative (~5-10%) and set with the care team; do not derive the percentage from these aggregates.",
+    "_caveats": "Breakfast-by-pod-day cells are small (n=11-16). The overall gradient is robust (n=2731-4999/day). Two sub-1-day pod gaps (failures) were left in. Site-change events are user-logged; an unlogged change would blur the boundaries."
   }
 }

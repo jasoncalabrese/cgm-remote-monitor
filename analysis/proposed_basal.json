@@ -201,7 +201,7 @@
     ]
   },
   "basal_step1d": {
-    "_desc": "Step 1d (proposed): remove the late-morning bump - 09:30 1.80 -> 1.45. Targets the fasting drift into the first meal of the day.",
+    "_desc": "Step 1d (proposed, LOW PRIORITY - evidence weakened on review): 09:30 1.80 -> 1.45. See _evidence and _revision.",
     "_evidence": "45d review (Jun 9-Jul 24), morning window. FINDING: there is effectively no breakfast - only 35% of days have a >=15g morning carb entry and median first food is 11:18am; the 4/6/8am small entries are corrections at BG~200, not meals. Early morning 04:00-09:00 is GOOD (median 108->118, modest +10 dawn rise, ~0-4% lows, ~0-3% highs) - do not touch. The problem is the LATE-MORNING FASTING SAG: on days with no food before 11:00, 14/16 drifted down, median -16 mg/dL (worst -40/-36/-69), 31% dipped <70, arriving at the first meal already low. Cause: the schedule jumps to 1.80 U/hr at 09:30 (highest daytime rate) mid-fast - apparently vestigial coverage for a breakfast no longer eaten. Loop fights it: hour 10 delivers 1.24 vs 1.80 scheduled, 25% suspended (hr 11: 0.81 vs 1.25, 29% suspended). Morning is the cleanest window for analysis (~0.2 Afrezza-like drops/wk, few fake carbs), so this is fasting-grade evidence.",
     "daily_total_U": 37.53,
     "delta_U": -0.52,
@@ -242,6 +242,24 @@
         "time": "22:30",
         "value": 2.2
       }
-    ]
+    ],
+    "_revision": "REVISED after learning the subject is SLEEPING IN (summer). The 09:00-11:30 window is therefore still SLEEP, not a daytime fast, so the same G7 compression that inflates overnight lows also applies here (lying on the sensor). Re-running with compression episodes excluded: median fasting drift shrinks from -16 to -9 mg/dL (11/12 days still fall, so direction is robust but magnitude halved), and %<70 in 09:00-11:30 falls to ~0-4% (the '31% dipped <70' was largely artifact). The 'Loop is suspending 25%' signal is also partly circular - compression lows cause Loop to suspend. Landing at ~96-101 before the first meal is acceptable. VERDICT: the 09:30 bump is still anomalous but the case for changing it is weak and the pattern is SEASONAL (will shift when school resumes). Prefer to hold, or use a Loop Override on sleep-in days rather than editing the permanent schedule."
+  },
+  "first_meal_review_2026_07_24": {
+    "_desc": "First-meal-of-day analysis (the real 'breakfast', ~12:18 due to summer sleep-in). The best-supported meal-side finding to date, because the morning window is comparatively free of unlogged Afrezza (~0.2/wk) and fake carbs (>=25g filter).",
+    "n": 45,
+    "median_time": "12:18",
+    "median_carbs_g": 50,
+    "median_bolus_U": 8.2,
+    "effective_carb_ratio": 5.7,
+    "profile_carb_ratio": 6,
+    "median_pre_meal_bg": 89,
+    "median_peak": 135,
+    "median_2h": 116,
+    "pct_low_within_4h": 22,
+    "pct_peak_over_180": 2,
+    "_finding": "Strongly asymmetric: 22% of first meals dip <70 within 4h vs only 2% peaking >180, with median peak just 135. The dose is a touch strong for the starting point - he arrives at ~89 already drifting down, then boluses at an effective CR of 5.7 (stronger than the profile's 6).",
+    "_option": "Weaken the first-meal carb ratio in the window he actually eats (currently ~10:00-15:00): CR 6 -> 7. A 50g meal would take ~7.1U instead of ~8.3U (~1.2U less, ~60 mg/dL at ISF 53). Expected: most of the 22% lows resolve; peak rises from ~135 toward ~150-160, still well under 180. SEASONAL CAVEAT: the window is tied to the summer sleep-in and will need revisiting when the schedule shifts.",
+    "_caution": "Single-variable discipline: do NOT combine with a basal change. ISF stays unvalidated (corrections are mostly invisible Afrezza/fake-carb)."
   }
 }

@@ -95,6 +95,7 @@
     <div class="h">The ask</div>
     <p><b>Review the overnight basal rates (22:30 – 04:30).</b> Loop is currently delivering far less basal than the schedule specifies — <b>~24.5 U/day actual vs 38.05 U/day scheduled</b> — and suspends 27–38% of the time overnight. The scheduled rate is what the pod falls back to if Loop stops (dead phone, lost pump comms), which is a meaningful concern now that he lives alone at college.</p>
     <p>He has had <b>recurrent nocturnal severe lows</b> (nadirs of 40, 43, 50 mg/dL in the past week), all self-treated and resolved. Alarms, fast carbs and a roommate are in place.</p>
+    <p>A second item worth equal attention: the correction target is a <b>flat 100 mg/dL across all 24 hours</b>, and 81% of Loop's automatic overnight insulin is given below 150 mg/dL. <b>Raising the overnight target</b> may act more directly on the lows than the basal change, and requires no change in behaviour (§4).</p>
   </div>
 
   <section class="card block">
@@ -151,26 +152,30 @@
   </div>
 
   <section class="card block">
-    <h2>4 · Context — what appears to drive the overnight lows</h2>
-    <p style="font-size:13.5px;margin:0 0 10px">The basal change above is a <b>safety and headroom</b> measure; on its own it is not expected to eliminate the lows. The crashes look correction-driven. He eats late (restaurant food), and in the 5 hours after a late meal:</p>
+    <h2>4 · Bolus insulin overnight — two separate sources</h2>
+    <p style="font-size:13.5px;margin:0 0 10px">The basal change above is a <b>safety and headroom</b> measure; on its own it is not expected to eliminate the lows. Boluses overnight come from two distinct sources, identified using Loop's own <span class="settings"><b>automatic</b></span> flag on each dose (not inferred):</p>
     <table>
-      <thead><tr><th>Source of insulin after a late meal</th><th>Amount</th><th>Doses</th></tr></thead>
+      <thead><tr><th>Overnight window</th><th>Loop automatic</th><th>Manual</th><th>Median BG at dose</th></tr></thead>
       <tbody>
-        <tr><td>Loop automatic micro-boluses</td><td class="n">1.9 U</td><td class="n">12</td></tr>
-        <tr><td><b>Manual doses</b></td><td class="n bad">5.5 U</td><td class="n">4</td></tr>
+        <tr><td>22:00 – 02:00</td><td class="n">1.57 U</td><td class="n bad">3.74 U</td><td class="n">118 – 150</td></tr>
+        <tr><td><b>03:00 – 05:00</b></td><td class="n bad">1.32 U</td><td class="n ok">~0</td><td class="n">120 – 126</td></tr>
+        <tr><td><b>Total per night</b></td><td class="n">2.89 U</td><td class="n">3.82 U</td><td class="n">—</td></tr>
       </tbody>
     </table>
-    <div style="height:10px"></div>
+    <div style="height:12px"></div>
     <table>
-      <thead><tr><th>BG when those manual doses were given</th><th>Share</th></tr></thead>
+      <thead><tr><th>BG when dosed (after late meals)</th><th>Loop automatic</th><th>Manual</th></tr></thead>
       <tbody>
-        <tr><td>Under 120 mg/dL</td><td class="n bad">38%</td></tr>
-        <tr><td>120–150</td><td class="n">20%</td></tr>
-        <tr><td>150–180</td><td class="n">33%</td></tr>
-        <tr><td>180 or above</td><td class="n">8%</td></tr>
+        <tr><td>Under 120 mg/dL</td><td class="n">29%</td><td class="n bad">30%</td></tr>
+        <tr><td>120–150</td><td class="n bad">52%</td><td class="n">30%</td></tr>
+        <tr><td>150–180</td><td class="n">17%</td><td class="n">32%</td></tr>
+        <tr><td>180 or above</td><td class="n">1%</td><td class="n">8%</td></tr>
       </tbody>
     </table>
-    <footer class="notes">58% of manual post-meal doses are given below 150 mg/dL — dosing ahead of a rising trend rather than treating a high. Late-meal peaks are in fact modest (median 159; only 3 of 12 exceeded 180). Subcutaneous insulin given at 22:00–23:00 has a 6-hour action tail and is still active at 03:00–04:00. A repeating cycle is visible: manual insulin at 30–60 min after the meal, rescue carbs at 120–180 min, more insulin at 180–210 min. The "🤬 Rage" preset (1.2× insulin, target 80 mg/dL) was used 1–8 times per day, including overnight.</footer>
+    <footer class="notes">
+      <b>Two different problems.</b> (1) <b>22:00–02:00 is mostly manual</b> — 3.74 U per night at a median BG of 118–150, i.e. dosing ahead of a rising trend rather than treating a high. Late-meal peaks are in fact modest (median 159; only 3 of 12 exceeded 180). Subcutaneous insulin given at 22:00–23:00 has a 6-hour tail and is still active at 03:00–04:00. A repeating cycle is visible: manual insulin 30–60 min after the meal, rescue carbs at 120–180 min, more insulin at 180–210 min. The "🤬 Rage" preset (1.2× insulin, target 80 mg/dL) was used 1–8 times per day, including overnight.
+      (2) <b>03:00–05:00 is entirely Loop</b> — 1.32 U of automatic correction at a median BG of 120–126 while asleep. <b>81% of Loop's overnight automatic insulin is given below 150 mg/dL.</b> This is the algorithm working as configured: the correction target is a <b>flat 100 mg/dL for all 24 hours</b>, so Loop actively corrects from the 120s toward 100 overnight.
+    </footer>
   </section>
 
   <section class="card block">
@@ -182,11 +187,12 @@
     </div>
     <div style="height:12px"></div>
     <ul class="q">
-      <li><b>The overnight rates (22:30 / 00:00 / 02:00)</b> — is the proposed reduction appropriate, and is the magnitude right?</li>
+      <li><b>An overnight correction target above 100?</b> The target is currently a flat 100 mg/dL for 24 hours, and 81% of Loop's automatic overnight insulin is delivered below 150 — including 1.32 U/night between 03:00 and 05:00 at a median BG of 120–126. Raising the target overnight would reduce the algorithm's own corrections, requires no change in behaviour, and may act more directly on the lows than the basal change. <i>(Possibly the highest-yield single item here.)</i></li>
+      <li><b>The overnight basal rates (22:30 / 00:00 / 02:00)</b> — is the proposed reduction appropriate, and is the magnitude right?</li>
       <li><b>Confirm leaving 04:30–09:30 at 1.35.</b> Loop accepts this block and it produces no lows; we would prefer not to disturb it.</li>
-      <li><b>A rule for late-evening corrections</b> — e.g. no correction below a set threshold after a certain hour, given 38% of manual doses go in below 120.</li>
+      <li><b>A rule for late-evening manual corrections</b> — e.g. no correction below a set threshold after a certain hour, given 60% of manual post-meal doses go in below 150 and 30% below 120.</li>
       <li><b>Inhaled insulin (Afrezza) for late corrections instead of subcutaneous?</b> Its ~90-minute action would avoid the overnight tail. The family already uses it; it is not currently logged, so it is not visible in this data.</li>
-      <li><b>Daytime basal.</b> The 09:30 and 16:00 segments (both 1.80 U/hr) are also well above delivery (Loop suspends 24–62% there). We have deliberately excluded them from this proposal to change one thing at a time — worth revisiting later.</li>
+      <li><b>Daytime basal.</b> The 09:30 and 16:00 segments (both 1.80 U/hr) are also well above delivery (Loop suspends 24–62% there). Deliberately excluded here to change one thing at a time — worth revisiting later.</li>
       <li><b>ISF and carb ratio</b> are flat all day and unchanged since before the activity increase.</li>
     </ul>
   </section>

@@ -409,5 +409,16 @@
       "C_rebuild_to_delivered": "30.20 U (-21%): match Loop delivery +25% headroom"
     },
     "_next": "Do NOT pair this with an activity override in the same step - one variable at a time. Re-derive activity handling once the ~9am-class pattern has a few weeks of data."
+  },
+  "basal_overnight_2026_08_23": {
+    "_desc": "APPLIED to Loop 2026-08-23 23:09 UTC (16:09 local) and verified against the uploaded profile. Overnight-only reduction; daytime, targets, ISF and CR all untouched.",
+    "_change": "22:30 2.20->1.70 | 00:00 1.45->1.20 | 02:00 1.30->1.00 | 04:30 1.35 unchanged | 09:30+ unchanged",
+    "daily_total_U": 36.05,
+    "delta_U": -2.0,
+    "_rationale": "Loop was delivering ~24.5 U/day against 38.05 scheduled (56% above), suspending 27-38% of overnight hours. Two aims: (1) reduce real overnight delivery - during the ~65% of the night Loop is not suspended, a lower baseline means less insulin; (2) fix the failure mode, since the scheduled rate is what the pod reverts to if Loop stops, which matters now he is unsupervised in a dorm. 04:30-09:30 deliberately left at 1.35 - the one block Loop accepts (delivers 1.00-1.11, suspends only 10-16%, produces no lows); cutting it is the change most likely to create morning highs that get over-corrected.",
+    "_watch": "WORKING: overnight 00:00-05:00 %<54 toward <1%, no nadir under 60, morning 07:00-09:00 mean stays under ~140. TOO FAR: morning mean past ~160 or morning corrections appear -> back the overnight rates up halfway. NOT ENOUGH: severe lows persist 00:00-05:00 after 5-7 clean nights -> second step 1.55/1.10/0.90. IGNORE single bad nights and the first 24h of any new sensor.",
+    "_baseline_to_beat": "Prior 2 weeks: %<54 1.8-3.1% overall; overnight nadirs 40, 43, 50. Late-start days ran 0.9% <54, early-start days 4.0%.",
+    "_confound_warning": "Late-correction rules (no manual correction under ~150 after 10pm; Afrezza instead of subcutaneous; no Rage/fake carbs at night) may be adopted in the same window. If so the two changes are entangled and neither can be cleanly attributed - note which nights had late manual corrections when reviewing.",
+    "_first_night": "2026-08-23 (applied 16:09 local, so tonight is the first night on the new schedule)."
   }
 }

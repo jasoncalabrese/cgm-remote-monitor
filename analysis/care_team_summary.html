@@ -1,0 +1,188 @@
+<style>
+  :root{
+    --bg:#f6f8f9; --surface:#ffffff; --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0;
+    --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --alert:#b3261e; --alert-soft:rgba(179,38,30,.10); --alert-ink:#8f1e17;
+    --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12);
+    --ok:#1f9e5a;
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+    --serif:ui-serif,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0c1317; --surface:#121c22; --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+    --line:#22313a; --line-strong:#2c3d47;
+    --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+    --alert:#e75a50; --alert-soft:rgba(231,90,80,.15); --alert-ink:#f0776e;
+    --warn:#e0a13a; --warn-soft:rgba(224,161,58,.15); --ok:#31b06a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }}
+  :root[data-theme="light"]{
+    --bg:#f6f8f9; --surface:#ffffff; --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0; --accent:#0e7c86; --accent-ink:#0b636b;
+    --accent-soft:rgba(14,124,134,.10); --alert:#b3261e; --alert-soft:rgba(179,38,30,.10);
+    --alert-ink:#8f1e17; --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12); --ok:#1f9e5a;
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1317; --surface:#121c22; --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+    --line:#22313a; --line-strong:#2c3d47; --accent:#38cbb7; --accent-ink:#5bd9c8;
+    --accent-soft:rgba(56,203,183,.13); --alert:#e75a50; --alert-soft:rgba(231,90,80,.15);
+    --alert-ink:#f0776e; --warn:#e0a13a; --warn-soft:rgba(224,161,58,.15); --ok:#31b06a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;margin:0;
+    -webkit-font-smoothing:antialiased;}
+  .page{max-width:940px;margin:0 auto;padding:clamp(18px,3vw,38px);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(23px,3.2vw,31px);letter-spacing:-.01em;margin:.18em 0 .1em;text-wrap:balance;}
+  h2{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px;}
+  .sub{color:var(--muted);font-size:13.5px;}.sub b{color:var(--ink);font-weight:600;}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px;}
+  .disclaimer{font-size:11px;color:var(--faint);border-left:2px solid var(--line-strong);padding-left:10px;max-width:250px;}
+  section.block{padding:18px 20px 15px;margin-bottom:14px;}
+
+  .lede{background:var(--alert-soft);border:1px solid color-mix(in srgb,var(--alert) 28%,var(--line));
+    border-radius:12px;padding:15px 17px;margin-bottom:16px;}
+  .lede .h{font-weight:700;color:var(--alert-ink);font-size:14.5px;margin-bottom:5px;}
+  .lede p{margin:0;font-size:13.5px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;padding:0 8px 7px;border-bottom:1px solid var(--line-strong);}
+  td{padding:7px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:0;}
+  td.n{font-family:var(--mono);}
+  .bad{color:var(--alert);font-weight:700;}
+  .ok{color:var(--ok);font-weight:600;}
+  .flag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    padding:2px 6px;border-radius:4px;background:var(--alert-soft);color:var(--alert-ink);margin-left:6px;}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:780px){.two{grid-template-columns:1fr}header.top{align-items:flex-start}.disclaimer{max-width:none}}
+
+  .night{font-family:var(--mono);font-size:12px;line-height:1.75;background:var(--bg);
+    border:1px solid var(--line);border-radius:9px;padding:11px 13px;overflow-x:auto;}
+  .night .lo{color:var(--alert);font-weight:700;}
+  .night .ev{color:var(--muted);}
+
+  ul.q{margin:0;padding-left:18px;font-size:13.5px;}
+  ul.q li{margin-bottom:8px;}
+  ul.q b{color:var(--accent-ink);}
+  .settings{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;}
+  .settings b{color:var(--ink);}
+  footer.notes{font-size:11px;color:var(--faint);line-height:1.6;margin-top:4px;}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Clinical Summary · Prepared for the Care Team</div>
+      <h1>Recurrent Hypoglycemia After Increased Activity</h1>
+      <div class="sub"><b>Andrew</b> · Type 1 · Omnipod + Loop (closed-loop) · Dexcom G7 · <b>Review period: Jun 24 – Aug 23, 2026</b></div>
+    </div>
+    <div class="disclaimer">Generated from Nightscout CGM &amp; pump data by a family member. Observational — for clinical review, not a diagnosis.</div>
+  </header>
+
+  <div class="lede">
+    <div class="h">Summary</div>
+    <p>Marching band began ~Aug 10, a sustained increase in daily activity. Since then <b>time below 54 mg/dL has risen to 2–3× the recommended &lt;1% target</b>, concentrated in the evening (practice window) and in the following overnight/early-morning hours — a pattern consistent with delayed post-exercise insulin sensitivity. <b>Bolus insulin has already self-corrected down ~22%, but the basal schedule has not changed</b> and still reflects a sedentary summer at home. He moved into a college dorm Aug 21 and is now managing lows unsupervised (alarms are heard, fast carbs and a roommate are in place; all recorded episodes were self-treated and resolved).</p>
+  </div>
+
+  <section class="card block">
+    <h2>1 · Time below range, by week</h2>
+    <table>
+      <thead><tr><th>Week</th><th>Mean</th><th>TIR 70–180</th><th>% &lt;70</th><th>% &lt;54 <span style="text-transform:none">(goal &lt;1%)</span></th></tr></thead>
+      <tbody>
+        <tr><td>July (reference, pre-band)</td><td class="n">110</td><td class="n">93%</td><td class="n">5.1%</td><td class="n ok">0.8%</td></tr>
+        <tr><td>Aug 3 – 9</td><td class="n">113</td><td class="n">89%</td><td class="n">7.5%</td><td class="n ok">0.8%</td></tr>
+        <tr><td>Aug 10 – 16 <span class="flag">band starts</span></td><td class="n">115</td><td class="n">88%</td><td class="n">8.6%</td><td class="n bad">3.1%</td></tr>
+        <tr><td>Aug 17 – 23 <span class="flag">dorm Aug 21</span></td><td class="n">110</td><td class="n">90%</td><td class="n">7.4%</td><td class="n bad">1.8%</td></tr>
+      </tbody>
+    </table>
+    <footer class="notes">Worst individual days: Aug 12 — 14.2% of the day &lt;54; Aug 22 — nadir 40 mg/dL; Aug 23 — nadir 50 mg/dL. Overall glucose and A1c-equivalent remain good (mean ~110, GMI ~5.9%); the problem is hypoglycemia exposure, not average control.</footer>
+  </section>
+
+  <div class="two">
+    <section class="card block">
+      <h2>2 · Where the lows moved (before vs after Aug 10)</h2>
+      <table>
+        <thead><tr><th>Window</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
+        <tbody>
+          <tr><td><b>Evening 17–21</b> <span style="color:var(--faint)">practice</span></td><td class="n">5.9 → <span class="bad">14.3</span></td><td class="n">1.1 → <span class="bad">4.0</span></td></tr>
+          <tr><td>Overnight 00–06</td><td class="n">8.7 → 7.8</td><td class="n">1.1 → <span class="bad">2.9</span></td></tr>
+          <tr><td>Morning 06–12</td><td class="n">3.2 → 6.3</td><td class="n">0.5 → <span class="bad">2.7</span></td></tr>
+          <tr><td>Afternoon 12–17</td><td class="n">7.9 → 6.9</td><td class="n">0.9 → 1.7</td></tr>
+          <tr><td>Late 21–24</td><td class="n">7.9 → 6.0</td><td class="n">1.0 → 0.4</td></tr>
+        </tbody>
+      </table>
+      <footer class="notes">Evening is the epicentre; the overnight and next-morning severe lows roughly tripled, consistent with the 12–24h tail of post-exercise sensitivity rather than anything occurring at that hour.</footer>
+    </section>
+
+    <section class="card block">
+      <h2>3 · By day of week (since Aug 10)</h2>
+      <table>
+        <thead><tr><th>Day</th><th>Mean</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
+        <tbody>
+          <tr><td><b>Wednesday</b></td><td class="n">103</td><td class="n bad">18.1</td><td class="n bad">8.2</td></tr>
+          <tr><td>Friday</td><td class="n">115</td><td class="n">9.4</td><td class="n bad">3.7</td></tr>
+          <tr><td>Sunday</td><td class="n">115</td><td class="n">3.7</td><td class="n">2.0</td></tr>
+          <tr><td>Saturday</td><td class="n">108</td><td class="n">5.2</td><td class="n">1.9</td></tr>
+          <tr><td>Monday</td><td class="n">108</td><td class="n">9.2</td><td class="n ok">0.3</td></tr>
+          <tr><td>Tuesday</td><td class="n">122</td><td class="n">5.6</td><td class="n ok">0.7</td></tr>
+          <tr><td>Thursday</td><td class="n">116</td><td class="n">4.2</td><td class="n ok">0.5</td></tr>
+        </tbody>
+      </table>
+      <footer class="notes">Wednesday is a clear outlier — 8.2% of the day below 54. Worth confirming against the rehearsal schedule.</footer>
+    </section>
+  </div>
+
+  <section class="card block">
+    <h2>4 · Insulin: bolus has fallen, basal has not</h2>
+    <table>
+      <thead><tr><th></th><th>Bolus insulin</th><th>Carbs</th><th>Scheduled basal</th></tr></thead>
+      <tbody>
+        <tr><td>Before Aug 10</td><td class="n">43.3 U/day</td><td class="n">178 g/day</td><td class="n">38.1 U/day</td></tr>
+        <tr><td>After Aug 10</td><td class="n">33.9 U/day <span class="ok">(−22%)</span></td><td class="n">150 g/day</td><td class="n bad">38.1 U/day (unchanged)</td></tr>
+      </tbody>
+    </table>
+    <footer class="notes">Loop and the user have already compensated on the bolus side. The scheduled basal was last tuned Jun 20 for a low-activity summer at home and has not been revisited since activity increased — so the residual excess is concentrated in basal, which is precisely the insulin acting during and after practice.</footer>
+  </section>
+
+  <section class="card block">
+    <h2>5 · Representative night — Sat Aug 22 (dorm)</h2>
+    <div class="night">
+00:30&nbsp;&nbsp; 88&nbsp;&nbsp; <span class="ev">→ "Eating Soon" override + 2.5 U</span><br>
+01:00&nbsp;&nbsp;127&nbsp;&nbsp; <span class="ev">→ "Rage" override (1.2× insulin, target 80) + 2.85 U + 10 g</span><br>
+01:30&nbsp;&nbsp; 76<br>
+02:00&nbsp;&nbsp; <span class="lo">50</span><br>
+02:30&nbsp;&nbsp; <span class="lo">43</span>&nbsp;&nbsp; <span class="ev">→ treated, 15 g + "Running Low" override</span><br>
+03:00&nbsp;&nbsp; 76&nbsp;&nbsp;<span class="ev">recovered</span>
+    </div>
+    <footer class="notes">Post-midnight correction stacking on top of an already-heightened sensitivity state, followed by a crash ~90 minutes later. The overnight "🤬 Rage" preset (1.2× insulin, 80 target) was used 1–8 times per day across this period.</footer>
+  </section>
+
+  <section class="card block">
+    <h2>6 · Current settings &amp; questions</h2>
+    <div class="settings">
+      <b>Basal</b> (38.05 U/day): 00:00 1.45 · 02:00 1.30 · 04:30 1.35 · 09:30 1.80 · 11:00 1.25 · 16:00 1.80 · 17:00 1.70 · 20:00 2.40 · 22:30 2.20<br>
+      <b>ISF</b> 53 mg/dL/U · <b>Carb ratio</b> 6 g/U · <b>Target</b> 100 mg/dL · <b>DIA</b> 6 h · flat all day
+    </div>
+    <div style="height:12px"></div>
+    <ul class="q">
+      <li><b>Overall basal reduction?</b> Bolus has already dropped 22% while basal is unchanged from a pre-activity baseline.</li>
+      <li><b>An exercise override protocol around practice</b> — extending several hours past the session to cover the delayed overnight tail? Existing presets are 0.8× / target 120 and 0.7× / target 120.</li>
+      <li><b>Wednesday specifically</b> — 8.2% below 54 suggests that day needs its own plan.</li>
+      <li><b>Guidance on late-evening corrections</b>, given the post-midnight stacking pattern above.</li>
+      <li><b>ISF / carb ratio</b> — both flat all day and unchanged; should they move with the new activity level?</li>
+    </ul>
+  </section>
+
+  <footer class="notes">
+    Data source: personal Nightscout instance (CGM, pump, and Loop treatment records). CGM values are 5-minute means with duplicate device readings de-duplicated. Sensor-warmup periods and rebounding overnight dips consistent with sensor compression were excluded where noted in the underlying analysis. Prepared 2026-08-23. <b>Not medical advice.</b>
+  </footer>
+</div>

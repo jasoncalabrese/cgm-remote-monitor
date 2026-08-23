@@ -1,0 +1,276 @@
+<style>
+  :root{
+    --bg:#f6f8f9; --surface:#ffffff; --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0;
+    --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
+    --alert:#b3261e; --alert-soft:rgba(179,38,30,.10); --alert-ink:#8f1e17;
+    --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12); --ok:#1f9e5a; --ok-soft:rgba(31,158,90,.10);
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+    --serif:ui-serif,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0c1317; --surface:#121c22; --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+    --line:#22313a; --line-strong:#2c3d47;
+    --accent:#38cbb7; --accent-ink:#5bd9c8; --accent-soft:rgba(56,203,183,.13);
+    --alert:#e75a50; --alert-soft:rgba(231,90,80,.15); --alert-ink:#f0776e;
+    --warn:#e0a13a; --warn-soft:rgba(224,161,58,.15); --ok:#31b06a; --ok-soft:rgba(49,176,106,.14);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }}
+  :root[data-theme="light"]{
+    --bg:#f6f8f9; --surface:#ffffff; --ink:#15232e; --muted:#596873; --faint:#879099;
+    --line:#e4eaee; --line-strong:#d2dbe0; --accent:#0e7c86; --accent-ink:#0b636b;
+    --accent-soft:rgba(14,124,134,.10); --alert:#b3261e; --alert-soft:rgba(179,38,30,.10);
+    --alert-ink:#8f1e17; --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12);
+    --ok:#1f9e5a; --ok-soft:rgba(31,158,90,.10);
+    --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1317; --surface:#121c22; --ink:#e7eef2; --muted:#95a4ae; --faint:#6a7a84;
+    --line:#22313a; --line-strong:#2c3d47; --accent:#38cbb7; --accent-ink:#5bd9c8;
+    --accent-soft:rgba(56,203,183,.13); --alert:#e75a50; --alert-soft:rgba(231,90,80,.15);
+    --alert-ink:#f0776e; --warn:#e0a13a; --warn-soft:rgba(224,161,58,.15);
+    --ok:#31b06a; --ok-soft:rgba(49,176,106,.14);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;margin:0;
+    -webkit-font-smoothing:antialiased;}
+  .page{max-width:940px;margin:0 auto;padding:clamp(18px,3vw,38px);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(23px,3.2vw,31px);letter-spacing:-.01em;margin:.18em 0 .1em;text-wrap:balance;}
+  h2{font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px;}
+  .sub{color:var(--muted);font-size:13.5px;}.sub b{color:var(--ink);font-weight:600;}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px;}
+  .disclaimer{font-size:11px;color:var(--faint);border-left:2px solid var(--line-strong);padding-left:10px;max-width:250px;}
+  section.block{padding:18px 20px 15px;margin-bottom:14px;}
+  p{font-size:13.5px;}
+
+  .step{display:flex;gap:13px;align-items:flex-start;margin-bottom:14px;}
+  .step:last-child{margin-bottom:0;}
+  .num{flex:none;width:25px;height:25px;border-radius:50%;background:var(--accent);color:#fff;
+    font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .num.now{background:var(--alert);}
+  .num.later{background:var(--line-strong);color:var(--muted);}
+  .step .body{flex:1;min-width:0;}
+  .step .t{font-weight:700;font-size:14px;margin-bottom:3px;}
+  .step .d{font-size:13px;color:var(--muted);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;padding:0 8px 7px;border-bottom:1px solid var(--line-strong);}
+  td{padding:7px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:0;}
+  td.n{font-family:var(--mono);}
+  .bad{color:var(--alert);font-weight:700;}
+  .ok{color:var(--ok);font-weight:600;}
+  tr.keep{background:var(--ok-soft);}
+  tr.cut{background:color-mix(in srgb,var(--alert) 6%,transparent);}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:800px){.two{grid-template-columns:1fr}header.top{align-items:flex-start}.disclaimer{max-width:none}}
+
+  .prop{font-family:var(--mono);font-size:13.5px;line-height:2;background:var(--bg);
+    border:1px solid var(--line);border-radius:9px;padding:12px 14px;overflow-x:auto;}
+  .prop .chg{color:var(--alert);font-weight:700;}
+  .prop .same{color:var(--muted);}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--bg);border:1px solid var(--line);
+    border-radius:5px;padding:1px 5px;}
+
+  .rule{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .rule:last-child{border-bottom:0;}
+  .rule .mark{flex:none;font-weight:700;width:16px;}
+  .rule.yes .mark{color:var(--ok);}
+  .rule.no .mark{color:var(--alert);}
+
+  .watch{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 26%,var(--line));
+    border-radius:10px;padding:12px 14px;font-size:13px;margin-top:10px;}
+  .watch b{color:var(--ink);}
+  .caveat{font-size:12.5px;color:var(--muted);background:var(--warn-soft);
+    border:1px solid color-mix(in srgb,var(--warn) 25%,var(--line));border-radius:9px;padding:11px 13px;}
+  .caveat b{color:var(--ink);}
+  .settings{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;}
+  .settings b{color:var(--ink);}
+  footer.notes{font-size:11px;color:var(--faint);line-height:1.6;margin-top:4px;}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Working Reference · Loop Tuning</div>
+      <h1>Overnight Basal Plan</h1>
+      <div class="sub"><b>Andrew</b> · Omnipod + Loop · Dexcom G7 · dorm since Aug 21 · <b>data through Aug 23, 2026</b></div>
+    </div>
+    <div class="disclaimer">Personal working notes from Nightscout data. One change at a time; watch, then decide. Not medical advice.</div>
+  </header>
+
+  <section class="card block">
+    <h2>Where things stand</h2>
+    <div class="two" style="gap:18px">
+      <div>
+        <table>
+          <tbody>
+            <tr><td>Overall control</td><td class="n">mean ~110, GMI ~5.9%</td></tr>
+            <tr><td>Time below 54 (last 2 wks)</td><td class="n bad">1.8 – 3.1%</td></tr>
+            <tr><td>Recent overnight nadirs</td><td class="n bad">40 · 43 · 50</td></tr>
+            <tr><td>Bolus insulin</td><td class="n">33.9 U/day (was 43.3)</td></tr>
+            <tr><td>Scheduled basal</td><td class="n">38.05 U/day</td></tr>
+            <tr><td><b>Basal Loop actually gives</b></td><td class="n bad">~24.5 U/day</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="margin-top:0">Average glucose is fine — this is a <b>hypoglycemia exposure</b> problem, not a control problem. Two things changed in August: marching band added activity, and he moved to a dorm where he eats late.</p>
+        <p style="margin-bottom:0">The schedule has drifted <b>56% above what Loop actually delivers</b>. Loop suspends 27–38% of the overnight hours holding it down — and the scheduled rate is what the pod falls back to if Loop stops.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card block">
+    <h2>The plan</h2>
+    <div class="step">
+      <div class="num now">1</div>
+      <div class="body">
+        <div class="t">Late-correction rules — start tonight, no settings change</div>
+        <div class="d">The single biggest lever on the 2am crashes, and it costs nothing to try. See §3.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <div class="t">Overnight basal reduction — 22:30 / 00:00 / 02:00</div>
+        <div class="d">The settings change. See §2. Give it 5–7 nights before judging.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num later">3</div>
+      <div class="body">
+        <div class="t">Daytime basal — deferred</div>
+        <div class="d">09:30 and 16:00 are both 1.80 U/hr and also well above delivery (Loop suspends 24–62%), but changing them risks daytime highs that get over-corrected. Revisit once the ~9am-class routine has a few weeks of data.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="two">
+    <section class="card block">
+      <h2>1 · Why overnight — scheduled vs delivered</h2>
+      <table>
+        <thead><tr><th>Hour</th><th>Sched</th><th>Loop gives</th><th>Susp.</th><th>%&lt;54</th></tr></thead>
+        <tbody>
+          <tr class="cut"><td>22:00</td><td class="n">2.40</td><td class="n">1.32</td><td class="n bad">36%</td><td class="n">0.3</td></tr>
+          <tr class="cut"><td>23:00</td><td class="n">2.20</td><td class="n">1.28</td><td class="n bad">38%</td><td class="n">0.5</td></tr>
+          <tr class="cut"><td>00:00</td><td class="n">1.45</td><td class="n">0.92</td><td class="n bad">31%</td><td class="n">0.5</td></tr>
+          <tr class="cut"><td>01:00</td><td class="n">1.45</td><td class="n">0.88</td><td class="n bad">33%</td><td class="n">0.2</td></tr>
+          <tr class="cut"><td>02:00</td><td class="n">1.30</td><td class="n">0.72</td><td class="n bad">37%</td><td class="n bad">1.3</td></tr>
+          <tr class="cut"><td>03:00</td><td class="n">1.30</td><td class="n">0.90</td><td class="n">27%</td><td class="n ok">0.0</td></tr>
+          <tr class="keep"><td>04:00</td><td class="n">1.30</td><td class="n">1.00</td><td class="n ok">16%</td><td class="n ok">0.0</td></tr>
+          <tr class="keep"><td>05–08</td><td class="n">1.35</td><td class="n">1.01–1.11</td><td class="n ok">10–15%</td><td class="n ok">0.0</td></tr>
+        </tbody>
+      </table>
+      <footer class="notes"><b>Green rows are the part Loop accepts</b> — near the programmed rate, barely suspended, no lows. Leave 04:30–09:30 alone; cutting it is the change most likely to create morning highs. <b>Red rows are where schedule and reality diverge.</b></footer>
+    </section>
+
+    <section class="card block">
+      <h2>2 · The change</h2>
+      <div class="prop">
+22:30&nbsp;&nbsp;2.20 → <span class="chg">1.70</span><br>
+00:00&nbsp;&nbsp;1.45 → <span class="chg">1.20</span><br>
+02:00&nbsp;&nbsp;1.30 → <span class="chg">1.00</span><br>
+04:30&nbsp;&nbsp;1.35 → <span class="same">unchanged</span><br>
+09:30+&nbsp;<span class="same">daytime unchanged</span>
+      </div>
+      <div style="height:10px"></div>
+      <table>
+        <tbody>
+          <tr><td>Daily total</td><td class="n">38.05 → <b>36.05 U</b> (−5.3%)</td></tr>
+          <tr><td>All of it between</td><td class="n">22:30 and 04:30</td></tr>
+          <tr><td>vs Loop's actual</td><td class="n">+58–81% → <b>+30–39%</b></td></tr>
+        </tbody>
+      </table>
+      <footer class="notes">This lowers real delivery, not just the fallback: during the ~65% of the night Loop isn't suspended, a lower baseline means less insulin. It doesn't limit Loop's ability to respond upward — it can still temp above schedule. <b>If it under-delivers, 1.55 / 1.10 / 0.90 still sits ~20–25% above what Loop gives.</b></footer>
+    </section>
+  </div>
+
+  <section class="card block">
+    <h2>3 · Late corrections — the biggest lever, and it works tonight</h2>
+    <div class="two" style="gap:18px">
+      <div>
+        <table>
+          <thead><tr><th>Overnight bolus source</th><th>Per night</th></tr></thead>
+          <tbody>
+            <tr><td>22:00–02:00 · <b>manual</b></td><td class="n bad">3.74 U</td></tr>
+            <tr><td>22:00–02:00 · Loop auto</td><td class="n">1.57 U</td></tr>
+            <tr><td>03:00–05:00 · Loop auto</td><td class="n">1.32 U</td></tr>
+          </tbody>
+        </table>
+        <div style="height:10px"></div>
+        <table>
+          <thead><tr><th>BG when manual doses given</th><th>Share</th></tr></thead>
+          <tbody>
+            <tr><td>Under 120</td><td class="n bad">30%</td></tr>
+            <tr><td>120–150</td><td class="n bad">30%</td></tr>
+            <tr><td>150–180</td><td class="n">32%</td></tr>
+            <tr><td>180+</td><td class="n">8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="rule no"><span class="mark">✕</span><span><b>No manual correction under ~150 after 10pm.</b> 60% of manual doses go in below 150 — that's dosing ahead of a rise, not treating a high. Late-meal peaks are modest anyway (median 159; only 3 of 12 passed 180).</span></div>
+        <div class="rule no"><span class="mark">✕</span><span><b>No Rage mode at night.</b> 1.2× insulin with an 80 target is a daytime tool. Same for fake carbs — both recruit subcutaneous insulin whose 6-hour tail is still active at 3–4am.</span></div>
+        <div class="rule yes"><span class="mark">✓</span><span><b>Afrezza if a late correction is genuinely needed.</b> ~90-minute action, gone before 2am. Matches fast carby food far better than subcutaneous, which outlasts the meal by hours.</span></div>
+        <div class="rule yes"><span class="mark">✓</span><span><b>Substitute, don't add.</b> Afrezza <i>instead of</i> the subcutaneous correction. At BG 110 on a rise, even Afrezza can overshoot.</span></div>
+      </div>
+    </div>
+    <footer class="notes">The cycle in the data: manual insulin 30–60 min after the meal, rescue carbs at 120–180 min, more insulin at 180–210 min, repeating for five hours. Insulin given at 22:00–23:00 is still working at 03:00–04:00. On Aug 22 a Rage correction at 01:00 with BG <b>127</b> was followed by <b>43</b> ninety minutes later.</footer>
+  </section>
+
+  <section class="card block">
+    <h2>4 · What to watch after each change</h2>
+    <div class="watch">
+      <b>Run:</b> <code>python3 check_response.py</code> — it already excludes sensor warmup and flags G7 compression.
+      <br><br>
+      <b>Working:</b> overnight (00:00–05:00) time below 54 drops toward &lt;1%, no nadir under 60, and morning (07:00–09:00) mean stays under about 140.
+      <br><br>
+      <b>Too far:</b> morning mean climbs past ~160, or he starts correcting in the morning. Back the overnight rates up halfway.
+      <br><br>
+      <b>Not enough:</b> severe lows persist at 00:00–05:00 after 5–7 clean nights → go to the second step (1.55 / 1.10 / 0.90).
+      <br><br>
+      <b>Ignore:</b> single bad nights, and anything in the first 24h of a new sensor. Judge on 5–7 nights, excluding warmup.
+    </div>
+  </section>
+
+  <section class="card block">
+    <h2>5 · Deliberately not changing</h2>
+    <table>
+      <thead><tr><th>Setting</th><th>Current</th><th>Why not</th></tr></thead>
+      <tbody>
+        <tr><td>Correction target</td><td class="n">100 flat, 24h</td><td>Not changing targets by preference. Note it does mean Loop keeps correcting toward 100 overnight — 81% of its automatic overnight insulin goes in below 150.</td></tr>
+        <tr><td>ISF</td><td class="n">53</td><td>The other lever on Loop's aggressiveness (53 → 58 would soften every correction). Unvalidatable while Afrezza is unlogged — hold.</td></tr>
+        <tr><td>Carb ratio</td><td class="n">6</td><td>Late-meal dosing already runs slightly weaker than this (implied 6.6) and late-meal peaks are modest. Not the problem.</td></tr>
+        <tr><td>Daytime basal</td><td class="n">09:30 &amp; 16:00 at 1.80</td><td>Both well above delivery, but cutting risks daytime highs → over-correction. Deferred, not dismissed.</td></tr>
+        <tr><td>04:30–09:30 basal</td><td class="n">1.35</td><td>The one block Loop accepts. Produces no lows. Leave it.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card block">
+    <h2>6 · What this data can't see</h2>
+    <div class="caveat">
+      <b>Afrezza is invisible.</b> Not logged, so every insulin total here is a floor and any correction analysis undercounts.
+      <br><br>
+      <b>Fake carbs inflate carb totals.</b> Small entries used to prompt Loop to correct aren't food.
+      <br><br>
+      <b>Prebolus timing is invisible</b> — carbs and insulin are logged at the same timestamp, so the log shows dose time, not eat time.
+      <br><br>
+      <b>The activity sample isn't the semester.</b> Early-start days (n=7) ran 4.0% below 54 vs 0.9% on late-start days (n=52) — but those were band camp plus one Saturday event, not a normal ~9am-class week. Anything activity-shaped needs re-deriving in a few weeks. <b>The scheduled-vs-delivered gap does not depend on this</b> — it holds on every day type.
+      <br><br>
+      <b>G7 compression lows are frequent overnight</b> — brief untreated dips that rebound on their own. Excluded from the numbers here; they would otherwise roughly double the apparent low rate.
+    </div>
+  </section>
+
+  <footer class="notes">
+    Source: personal Nightscout instance. CGM values are 5-minute means, duplicate devices de-duplicated. Delivered basal reconstructed from temp-basal records; bolus attribution uses Loop's own <code>automatic</code> flag. Prepared 2026-08-23.
+  </footer>
+</div>

@@ -129,105 +129,52 @@
   </section>
 
   <section class="card block">
-    <h2>The plan</h2>
-    <div class="step">
-      <div class="num now">1</div>
-      <div class="body">
-        <div class="t">Late-correction rules — start tonight, no settings change</div>
-        <div class="d">The single biggest lever on the 2am crashes, and it costs nothing to try. See §3.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="num">2</div>
-      <div class="body">
-        <div class="t">Overnight basal reduction — 22:30 / 00:00 / 02:00</div>
-        <div class="d">The settings change. See §2. Give it 5–7 nights before judging.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="num later">3</div>
-      <div class="body">
-        <div class="t">Daytime basal — deferred</div>
-        <div class="d">09:30 and 16:00 are both 1.80 U/hr and also well above delivery (Loop suspends 24–62%), but changing them risks daytime highs that get over-corrected. Revisit once the ~9am-class routine has a few weeks of data.</div>
-      </div>
-    </div>
-  </section>
-
-  <div class="two">
-    <section class="card block">
-      <h2>1 · Why overnight — scheduled vs delivered</h2>
-      <table>
-        <thead><tr><th>Hour</th><th>Sched</th><th>Loop gives</th><th>Susp.</th><th>%&lt;54</th></tr></thead>
-        <tbody>
-          <tr class="cut"><td>22:00</td><td class="n">2.40</td><td class="n">1.32</td><td class="n bad">36%</td><td class="n">0.3</td></tr>
-          <tr class="cut"><td>23:00</td><td class="n">2.20</td><td class="n">1.28</td><td class="n bad">38%</td><td class="n">0.5</td></tr>
-          <tr class="cut"><td>00:00</td><td class="n">1.45</td><td class="n">0.92</td><td class="n bad">31%</td><td class="n">0.5</td></tr>
-          <tr class="cut"><td>01:00</td><td class="n">1.45</td><td class="n">0.88</td><td class="n bad">33%</td><td class="n">0.2</td></tr>
-          <tr class="cut"><td>02:00</td><td class="n">1.30</td><td class="n">0.72</td><td class="n bad">37%</td><td class="n bad">1.3</td></tr>
-          <tr class="cut"><td>03:00</td><td class="n">1.30</td><td class="n">0.90</td><td class="n">27%</td><td class="n ok">0.0</td></tr>
-          <tr class="keep"><td>04:00</td><td class="n">1.30</td><td class="n">1.00</td><td class="n ok">16%</td><td class="n ok">0.0</td></tr>
-          <tr class="keep"><td>05–08</td><td class="n">1.35</td><td class="n">1.01–1.11</td><td class="n ok">10–15%</td><td class="n ok">0.0</td></tr>
-        </tbody>
-      </table>
-      <footer class="notes"><b>Green rows are the part Loop accepts</b> — near the programmed rate, barely suspended, no lows. Leave 04:30–09:30 alone; cutting it is the change most likely to create morning highs. <b>Red rows are where schedule and reality diverge.</b></footer>
-    </section>
-
-    <section class="card block">
-      <h2>2 · The change</h2>
-      <div class="prop">
+    <h2>The change · overnight only</h2>
+    <div class="two" style="gap:20px;align-items:start">
+      <div>
+        <div class="prop">
 22:30&nbsp;&nbsp;2.20 → <span class="chg">1.70</span><br>
 00:00&nbsp;&nbsp;1.45 → <span class="chg">1.20</span><br>
 02:00&nbsp;&nbsp;1.30 → <span class="chg">1.00</span><br>
 04:30&nbsp;&nbsp;1.35 → <span class="same">unchanged</span><br>
 09:30+&nbsp;<span class="same">daytime unchanged</span>
-      </div>
-      <div style="height:10px"></div>
-      <table>
-        <tbody>
-          <tr><td>Daily total</td><td class="n">38.05 → <b>36.05 U</b> (−5.3%)</td></tr>
-          <tr><td>All of it between</td><td class="n">22:30 and 04:30</td></tr>
-          <tr><td>vs Loop's actual</td><td class="n">+58–81% → <b>+30–39%</b></td></tr>
-        </tbody>
-      </table>
-      <footer class="notes">This lowers real delivery, not just the fallback: during the ~65% of the night Loop isn't suspended, a lower baseline means less insulin. It doesn't limit Loop's ability to respond upward — it can still temp above schedule. <b>If it under-delivers, 1.55 / 1.10 / 0.90 still sits ~20–25% above what Loop gives.</b></footer>
-    </section>
-  </div>
-
-  <section class="card block">
-    <h2>3 · Late corrections — the biggest lever, and it works tonight</h2>
-    <div class="two" style="gap:18px">
-      <div>
-        <table>
-          <thead><tr><th>Overnight bolus source</th><th>Per night</th></tr></thead>
-          <tbody>
-            <tr><td>22:00–02:00 · <b>manual</b></td><td class="n bad">3.74 U</td></tr>
-            <tr><td>22:00–02:00 · Loop auto</td><td class="n">1.57 U</td></tr>
-            <tr><td>03:00–05:00 · Loop auto</td><td class="n">1.32 U</td></tr>
-          </tbody>
-        </table>
+        </div>
         <div style="height:10px"></div>
         <table>
-          <thead><tr><th>BG when manual doses given</th><th>Share</th></tr></thead>
           <tbody>
-            <tr><td>Under 120</td><td class="n bad">30%</td></tr>
-            <tr><td>120–150</td><td class="n bad">30%</td></tr>
-            <tr><td>150–180</td><td class="n">32%</td></tr>
-            <tr><td>180+</td><td class="n">8%</td></tr>
+            <tr><td>Daily total</td><td class="n">38.05 → <b>36.05 U</b> (−5.3%)</td></tr>
+            <tr><td>All of it between</td><td class="n">22:30 and 04:30</td></tr>
+            <tr><td>If it under-delivers</td><td class="n">1.55 / 1.10 / 0.90</td></tr>
           </tbody>
         </table>
       </div>
       <div>
-        <div class="rule no"><span class="mark">✕</span><span><b>No manual correction under ~150 after 10pm.</b> 60% of manual doses go in below 150 — that's dosing ahead of a rise, not treating a high. Late-meal peaks are modest anyway (median 159; only 3 of 12 passed 180).</span></div>
-        <div class="rule no"><span class="mark">✕</span><span><b>No Rage mode at night.</b> 1.2× insulin with an 80 target is a daytime tool. Same for fake carbs — both recruit subcutaneous insulin whose 6-hour tail is still active at 3–4am.</span></div>
-        <div class="rule yes"><span class="mark">✓</span><span><b>Afrezza if a late correction is genuinely needed.</b> ~90-minute action, gone before 2am. Matches fast carby food far better than subcutaneous, which outlasts the meal by hours.</span></div>
-        <div class="rule yes"><span class="mark">✓</span><span><b>Substitute, don't add.</b> Afrezza <i>instead of</i> the subcutaneous correction. At BG 110 on a rise, even Afrezza can overshoot.</span></div>
+        <table>
+          <thead><tr><th>Hour</th><th>Sched</th><th>Loop gives</th><th>Susp.</th></tr></thead>
+          <tbody>
+            <tr class="cut"><td>22:00 – 23:00</td><td class="n">2.20 – 2.40</td><td class="n">1.28 – 1.32</td><td class="n bad">36–38%</td></tr>
+            <tr class="cut"><td>00:00 – 01:00</td><td class="n">1.45</td><td class="n">0.88 – 0.92</td><td class="n bad">31–33%</td></tr>
+            <tr class="cut"><td>02:00 – 03:00</td><td class="n">1.30</td><td class="n">0.72 – 0.90</td><td class="n bad">27–37%</td></tr>
+            <tr class="keep"><td>04:00 – 08:00</td><td class="n">1.30 – 1.35</td><td class="n">1.00 – 1.11</td><td class="n ok">10–16%</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">The schedule sits <b>56% above what Loop actually delivers</b>, and Loop suspends a third of the night holding it down. <b>04:00–08:00 is the exception</b> — Loop runs near the programmed rate there with no lows, so that block stays as it is.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">This lowers real delivery, not just the fallback: during the ~65% of the night Loop isn't suspended, a lower baseline means less insulin. It doesn't cap Loop — it can still temp above schedule.</p>
       </div>
     </div>
-    <footer class="notes">The cycle in the data: manual insulin 30–60 min after the meal, rescue carbs at 120–180 min, more insulin at 180–210 min, repeating for five hours. Insulin given at 22:00–23:00 is still working at 03:00–04:00. On Aug 22 a Rage correction at 01:00 with BG <b>127</b> was followed by <b>43</b> ninety minutes later.</footer>
   </section>
 
   <section class="card block">
-    <h2>4 · What to watch after each change</h2>
+    <h2>Alongside it · late corrections</h2>
+    <p style="margin:0 0 12px">Manual boluses add <b>3.74 U/night between 22:00 and 02:00</b>, at a median BG of 118–150 — dosing ahead of a rise rather than treating a high. That insulin is still working at 3–4am.</p>
+    <div class="rule no"><span class="mark">✕</span><span><b>No manual correction under ~150 after 10pm.</b> 60% of them go in below 150. Late-meal peaks are modest anyway — median 159, only 3 of 12 passed 180.</span></div>
+    <div class="rule no"><span class="mark">✕</span><span><b>No Rage mode or fake carbs at night.</b> Both recruit subcutaneous insulin whose 6-hour tail lands at 3–4am.</span></div>
+    <div class="rule yes"><span class="mark">✓</span><span><b>Afrezza instead</b> if a late correction is genuinely needed — ~90-minute action, gone before 2am. Substitute for the subcutaneous dose, don't add to it.</span></div>
+    <footer class="notes">On Aug 22, a Rage correction at 01:00 with BG <b>127</b> was followed by <b>43</b> ninety minutes later.</footer>
+  </section>
+
+  <section class="card block">
+    <h2>What to watch</h2>
     <div class="watch">
       <b>Run:</b> <code>python3 check_response.py</code> — it already excludes sensor warmup and flags G7 compression.
       <br><br>
@@ -242,21 +189,20 @@
   </section>
 
   <section class="card block">
-    <h2>5 · Deliberately not changing</h2>
+    <h2>Not changing</h2>
     <table>
       <thead><tr><th>Setting</th><th>Current</th><th>Why not</th></tr></thead>
       <tbody>
         <tr><td>Correction target</td><td class="n">100 flat, 24h</td><td>Not changing targets by preference. Note it does mean Loop keeps correcting toward 100 overnight — 81% of its automatic overnight insulin goes in below 150.</td></tr>
         <tr><td>ISF</td><td class="n">53</td><td>The other lever on Loop's aggressiveness (53 → 58 would soften every correction). Unvalidatable while Afrezza is unlogged — hold.</td></tr>
         <tr><td>Carb ratio</td><td class="n">6</td><td>Late-meal dosing already runs slightly weaker than this (implied 6.6) and late-meal peaks are modest. Not the problem.</td></tr>
-        <tr><td>Daytime basal</td><td class="n">09:30 &amp; 16:00 at 1.80</td><td>Both well above delivery, but cutting risks daytime highs → over-correction. Deferred, not dismissed.</td></tr>
         <tr><td>04:30–09:30 basal</td><td class="n">1.35</td><td>The one block Loop accepts. Produces no lows. Leave it.</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="card block">
-    <h2>6 · What this data can't see</h2>
+    <h2>What this data can't see</h2>
     <div class="caveat">
       <b>Afrezza is invisible.</b> Not logged, so every insulin total here is a floor and any correction analysis undercounts.
       <br><br>

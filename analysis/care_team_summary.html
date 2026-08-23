@@ -4,8 +4,7 @@
     --line:#e4eaee; --line-strong:#d2dbe0;
     --accent:#0e7c86; --accent-ink:#0b636b; --accent-soft:rgba(14,124,134,.10);
     --alert:#b3261e; --alert-soft:rgba(179,38,30,.10); --alert-ink:#8f1e17;
-    --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12);
-    --ok:#1f9e5a;
+    --warn:#d68a1e; --warn-soft:rgba(214,138,30,.12); --ok:#1f9e5a;
     --shadow:0 1px 2px rgba(20,40,55,.04),0 6px 20px rgba(20,40,55,.05);
     --serif:ui-serif,Georgia,"Times New Roman",serif;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -46,10 +45,11 @@
   .disclaimer{font-size:11px;color:var(--faint);border-left:2px solid var(--line-strong);padding-left:10px;max-width:250px;}
   section.block{padding:18px 20px 15px;margin-bottom:14px;}
 
-  .lede{background:var(--alert-soft);border:1px solid color-mix(in srgb,var(--alert) 28%,var(--line));
+  .ask{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));
     border-radius:12px;padding:15px 17px;margin-bottom:16px;}
-  .lede .h{font-weight:700;color:var(--alert-ink);font-size:14.5px;margin-bottom:5px;}
-  .lede p{margin:0;font-size:13.5px;}
+  .ask .h{font-weight:700;color:var(--accent-ink);font-size:14.5px;margin-bottom:5px;}
+  .ask p{margin:0 0 8px;font-size:13.5px;}
+  .ask p:last-child{margin-bottom:0;}
 
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th{text-align:left;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
@@ -59,22 +59,25 @@
   td.n{font-family:var(--mono);}
   .bad{color:var(--alert);font-weight:700;}
   .ok{color:var(--ok);font-weight:600;}
-  .flag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-    padding:2px 6px;border-radius:4px;background:var(--alert-soft);color:var(--alert-ink);margin-left:6px;}
+  tr.keep{background:color-mix(in srgb,var(--ok) 8%,transparent);}
+  tr.cut{background:color-mix(in srgb,var(--alert) 6%,transparent);}
 
   .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  @media(max-width:780px){.two{grid-template-columns:1fr}header.top{align-items:flex-start}.disclaimer{max-width:none}}
+  @media(max-width:800px){.two{grid-template-columns:1fr}header.top{align-items:flex-start}.disclaimer{max-width:none}}
 
-  .night{font-family:var(--mono);font-size:12px;line-height:1.75;background:var(--bg);
-    border:1px solid var(--line);border-radius:9px;padding:11px 13px;overflow-x:auto;}
-  .night .lo{color:var(--alert);font-weight:700;}
-  .night .ev{color:var(--muted);}
+  .prop{font-family:var(--mono);font-size:13px;line-height:2;background:var(--bg);
+    border:1px solid var(--line);border-radius:9px;padding:12px 14px;overflow-x:auto;}
+  .prop .chg{color:var(--alert);font-weight:700;}
+  .prop .same{color:var(--muted);}
 
   ul.q{margin:0;padding-left:18px;font-size:13.5px;}
-  ul.q li{margin-bottom:8px;}
+  ul.q li{margin-bottom:9px;}
   ul.q b{color:var(--accent-ink);}
   .settings{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;}
   .settings b{color:var(--ink);}
+  .caveat{font-size:12px;color:var(--muted);background:var(--warn-soft);
+    border:1px solid color-mix(in srgb,var(--warn) 25%,var(--line));border-radius:9px;padding:11px 13px;}
+  .caveat b{color:var(--ink);}
   footer.notes{font-size:11px;color:var(--faint);line-height:1.6;margin-top:4px;}
 </style>
 
@@ -82,114 +85,124 @@
   <header class="top">
     <div>
       <div class="eyebrow">Clinical Summary · Prepared for the Care Team</div>
-      <h1>Recurrent Hypoglycemia After Increased Activity</h1>
-      <div class="sub"><b>Andrew</b> · Type 1 · Omnipod + Loop (closed-loop) · Dexcom G7 · <b>Review period: Jun 24 – Aug 23, 2026</b></div>
+      <h1>Overnight Basal Review</h1>
+      <div class="sub"><b>Andrew</b> · Type 1 · Omnipod + Loop (closed-loop) · Dexcom G7 · <b>Data: Jun 24 – Aug 23, 2026</b></div>
     </div>
-    <div class="disclaimer">Generated from Nightscout CGM &amp; pump data by a family member. Observational — for clinical review, not a diagnosis.</div>
+    <div class="disclaimer">Compiled from Nightscout CGM and pump records by a family member. Observational — for clinical review, not a diagnosis.</div>
   </header>
 
-  <div class="lede">
-    <div class="h">Summary</div>
-    <p>Marching band began ~Aug 10, adding activity <i>and</i> early morning starts. The risk is concentrated in <b>days he wakes early (~6:30am)</b>: those days run <b>4.0% below 54 mg/dL vs 0.9% on late-start days</b> (target &lt;1%). Lows do <b>not</b> occur during activity — they appear ~3–6 h after the first meal (mid-morning) and again ~18–21 h later (overnight). The largest cluster, 10:00–12:00, coincides with a <b>basal segment of 1.80 U/hr from 09:30</b> — the highest daytime rate, carried over from an earlier schedule and previously slept through. Bolus insulin has already self-corrected down ~22%; <b>the basal schedule is unchanged</b>. He moved into a college dorm Aug 21 and manages lows unsupervised (alarms are heard, fast carbs and a roommate in place; all recorded episodes were self-treated and resolved).</p>
+  <div class="ask">
+    <div class="h">The ask</div>
+    <p><b>Review the overnight basal rates (22:30 – 04:30).</b> Loop is currently delivering far less basal than the schedule specifies — <b>~24.5 U/day actual vs 38.05 U/day scheduled</b> — and suspends 27–38% of the time overnight. The scheduled rate is what the pod falls back to if Loop stops (dead phone, lost pump comms), which is a meaningful concern now that he lives alone at college.</p>
+    <p>He has had <b>recurrent nocturnal severe lows</b> (nadirs of 40, 43, 50 mg/dL in the past week), all self-treated and resolved. Alarms, fast carbs and a roommate are in place.</p>
   </div>
 
   <section class="card block">
-    <h2>1 · Time below range, by week</h2>
+    <h2>1 · Scheduled vs actually delivered basal</h2>
     <table>
-      <thead><tr><th>Week</th><th>Mean</th><th>TIR 70–180</th><th>% &lt;70</th><th>% &lt;54 <span style="text-transform:none">(goal &lt;1%)</span></th></tr></thead>
+      <thead><tr><th>Hour</th><th>Scheduled</th><th>Loop delivers</th><th>% time suspended</th><th>Mean BG</th><th>%&lt;54</th></tr></thead>
       <tbody>
-        <tr><td>July (reference, pre-band)</td><td class="n">110</td><td class="n">93%</td><td class="n">5.1%</td><td class="n ok">0.8%</td></tr>
-        <tr><td>Aug 3 – 9</td><td class="n">113</td><td class="n">89%</td><td class="n">7.5%</td><td class="n ok">0.8%</td></tr>
-        <tr><td>Aug 10 – 16 <span class="flag">band starts</span></td><td class="n">115</td><td class="n">88%</td><td class="n">8.6%</td><td class="n bad">3.1%</td></tr>
-        <tr><td>Aug 17 – 23 <span class="flag">dorm Aug 21</span></td><td class="n">110</td><td class="n">90%</td><td class="n">7.4%</td><td class="n bad">1.8%</td></tr>
+        <tr class="cut"><td>22:00</td><td class="n">2.40</td><td class="n">1.32</td><td class="n bad">36%</td><td class="n">120</td><td class="n">0.3</td></tr>
+        <tr class="cut"><td>23:00</td><td class="n">2.20</td><td class="n">1.28</td><td class="n bad">38%</td><td class="n">115</td><td class="n">0.5</td></tr>
+        <tr class="cut"><td>00:00</td><td class="n">1.45</td><td class="n">0.92</td><td class="n bad">31%</td><td class="n">113</td><td class="n">0.5</td></tr>
+        <tr class="cut"><td>01:00</td><td class="n">1.45</td><td class="n">0.88</td><td class="n bad">33%</td><td class="n">108</td><td class="n">0.2</td></tr>
+        <tr class="cut"><td>02:00</td><td class="n">1.30</td><td class="n">0.72</td><td class="n bad">37%</td><td class="n">106</td><td class="n bad">1.3</td></tr>
+        <tr class="cut"><td>03:00</td><td class="n">1.30</td><td class="n">0.90</td><td class="n">27%</td><td class="n">108</td><td class="n ok">0.0</td></tr>
+        <tr class="keep"><td>04:00</td><td class="n">1.30</td><td class="n">1.00</td><td class="n ok">16%</td><td class="n">112</td><td class="n ok">0.0</td></tr>
+        <tr class="keep"><td>05:00–08:00</td><td class="n">1.35</td><td class="n">1.01–1.11</td><td class="n ok">10–15%</td><td class="n">115–117</td><td class="n ok">0.0</td></tr>
       </tbody>
     </table>
-    <footer class="notes">Worst individual days: Aug 12 — 14.2% of the day &lt;54; Aug 22 — nadir 40 mg/dL; Aug 23 — nadir 50 mg/dL. Overall glucose and A1c-equivalent remain good (mean ~110, GMI ~5.9%); the problem is hypoglycemia exposure, not average control.</footer>
+    <footer class="notes">Delivered rates are reconstructed from Loop's temp-basal records; G7 compression artifacts excluded from the glucose columns. <b>Green rows (04:00–08:00) are the one part of the schedule Loop largely accepts</b> — it runs near the programmed rate, suspends only 10–16%, and produces no lows. <b>Red rows are where the schedule and reality diverge most.</b></footer>
   </section>
 
   <div class="two">
     <section class="card block">
-      <h2>2 · The discriminator: early-start days</h2>
-      <table>
-        <thead><tr><th>Day type</th><th>Days</th><th>Mean</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
-        <tbody>
-          <tr><td>Late start (first meal ≥9am)</td><td class="n">52</td><td class="n">110</td><td class="n">6.2</td><td class="n ok">0.9</td></tr>
-          <tr><td><b>Early start (first meal &lt;9am)</b></td><td class="n">7</td><td class="n">111</td><td class="n bad">12.3</td><td class="n bad">4.0</td></tr>
-        </tbody>
-      </table>
+      <h2>2 · Proposed change — overnight only</h2>
+      <div class="prop">
+22:30&nbsp;&nbsp;2.20 → <span class="chg">1.70</span><br>
+00:00&nbsp;&nbsp;1.45 → <span class="chg">1.20</span><br>
+02:00&nbsp;&nbsp;1.30 → <span class="chg">1.00</span><br>
+04:30&nbsp;&nbsp;1.35 → <span class="same">1.35 (unchanged)</span><br>
+09:30&nbsp;+&nbsp;<span class="same">all daytime unchanged</span>
+      </div>
       <div style="height:10px"></div>
       <table>
-        <thead><tr><th>Timing on early days</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
         <tbody>
-          <tr><td>0–3 h after first meal <span style="color:var(--faint)">(activity)</span></td><td class="n">4.0</td><td class="n ok">0.0</td></tr>
-          <tr><td><b>3–6 h after</b></td><td class="n bad">25.9</td><td class="n bad">16.3</td></tr>
-          <tr><td>6–9 h after</td><td class="n">12.7</td><td class="n ok">0.0</td></tr>
-          <tr><td><b>18–21 h after</b> <span style="color:var(--faint)">(overnight)</span></td><td class="n bad">15.9</td><td class="n bad">10.3</td></tr>
+          <tr><td>Total daily basal</td><td class="n">38.05 → <b>36.05 U</b> (−5.3%)</td></tr>
+          <tr><td>All of the reduction</td><td class="n">between 22:30 and 04:30</td></tr>
+          <tr><td>Overnight vs Loop's actual</td><td class="n">+58–81% → <b>+30–39%</b></td></tr>
         </tbody>
       </table>
-      <footer class="notes">Mean glucose is identical on both day types (110 vs 111) — this is purely a hypoglycemia-exposure difference. Note lows are absent during the activity itself and appear several hours later, matching the family's observation.</footer>
+      <footer class="notes">A gentler variant (1.90 / 1.30 / 1.10, −1.25 U/day) is available if a smaller first step is preferred. Daytime is deliberately untouched so no new daytime highs are introduced — highs tend to prompt aggressive corrections, which is the pattern driving the overnight crashes (see §4).</footer>
     </section>
 
     <section class="card block">
-      <h2>3 · Early days by clock hour, vs scheduled basal</h2>
+      <h2>3 · Is there room to run higher overnight?</h2>
       <table>
-        <thead><tr><th>Hour</th><th>Mean</th><th>%&lt;54</th><th>Basal U/hr</th></tr></thead>
+        <thead><tr><th>End of night</th><th>Mean</th><th>p25</th><th>p75</th><th>%&gt;180</th></tr></thead>
         <tbody>
-          <tr><td>01:00</td><td class="n">95</td><td class="n bad">13.1</td><td class="n">1.45</td></tr>
-          <tr><td>02:00</td><td class="n">104</td><td class="n bad">17.9</td><td class="n">1.30</td></tr>
-          <tr><td>09:00</td><td class="n">140</td><td class="n ok">0.0</td><td class="n">1.35</td></tr>
-          <tr><td><b>10:00</b></td><td class="n">111</td><td class="n bad">14.5</td><td class="n bad">1.80</td></tr>
-          <tr><td><b>11:00</b></td><td class="n">93</td><td class="n bad">17.9</td><td class="n">1.25</td></tr>
-          <tr><td><b>12:00</b></td><td class="n">98</td><td class="n bad">16.7</td><td class="n">1.25</td></tr>
-          <tr><td>17:00</td><td class="n">89</td><td class="n bad">8.3</td><td class="n">1.70</td></tr>
+          <tr><td>07:00</td><td class="n">117</td><td class="n">100</td><td class="n">132</td><td class="n ok">0.6</td></tr>
+          <tr><td>08:00</td><td class="n">115</td><td class="n">97</td><td class="n">130</td><td class="n ok">0.8</td></tr>
+          <tr><td>09:00</td><td class="n">113</td><td class="n">95</td><td class="n">124</td><td class="n ok">2.4</td></tr>
         </tbody>
       </table>
-      <footer class="notes">The 10:00–12:00 cluster begins exactly at the <b>09:30 step up to 1.80 U/hr</b> — the highest daytime rate in the schedule, a carry-over from an earlier routine. It was previously slept through; on early days he is awake and active during it.</footer>
+      <footer class="notes">Mornings currently end in the 113–117 range with essentially no time above 180, so a modestly higher overnight profile should not push him into morning hyperglycemia. <b>Expected effect on delivered insulin is small</b> — Loop is already suspending 27–38% overnight and will simply suspend less. The primary gain is the fallback rate and restored control headroom, not a large change in insulin actually given.</footer>
     </section>
   </div>
 
   <section class="card block">
-    <h2>4 · Insulin: bolus has fallen, basal has not</h2>
+    <h2>4 · Context — what appears to drive the overnight lows</h2>
+    <p style="font-size:13.5px;margin:0 0 10px">The basal change above is a <b>safety and headroom</b> measure; on its own it is not expected to eliminate the lows. The crashes look correction-driven. He eats late (restaurant food), and in the 5 hours after a late meal:</p>
     <table>
-      <thead><tr><th></th><th>Bolus insulin</th><th>Carbs</th><th>Scheduled basal</th></tr></thead>
+      <thead><tr><th>Source of insulin after a late meal</th><th>Amount</th><th>Doses</th></tr></thead>
       <tbody>
-        <tr><td>Before Aug 10</td><td class="n">43.3 U/day</td><td class="n">178 g/day</td><td class="n">38.1 U/day</td></tr>
-        <tr><td>After Aug 10</td><td class="n">33.9 U/day <span class="ok">(−22%)</span></td><td class="n">150 g/day</td><td class="n bad">38.1 U/day (unchanged)</td></tr>
+        <tr><td>Loop automatic micro-boluses</td><td class="n">1.9 U</td><td class="n">12</td></tr>
+        <tr><td><b>Manual doses</b></td><td class="n bad">5.5 U</td><td class="n">4</td></tr>
       </tbody>
     </table>
-    <footer class="notes">Loop and the user have already compensated on the bolus side. The scheduled basal was last tuned Jun 20 for a low-activity summer at home and has not been revisited since activity increased — so the residual excess is concentrated in basal, which is precisely the insulin acting during and after practice.</footer>
+    <div style="height:10px"></div>
+    <table>
+      <thead><tr><th>BG when those manual doses were given</th><th>Share</th></tr></thead>
+      <tbody>
+        <tr><td>Under 120 mg/dL</td><td class="n bad">38%</td></tr>
+        <tr><td>120–150</td><td class="n">20%</td></tr>
+        <tr><td>150–180</td><td class="n">33%</td></tr>
+        <tr><td>180 or above</td><td class="n">8%</td></tr>
+      </tbody>
+    </table>
+    <footer class="notes">58% of manual post-meal doses are given below 150 mg/dL — dosing ahead of a rising trend rather than treating a high. Late-meal peaks are in fact modest (median 159; only 3 of 12 exceeded 180). Subcutaneous insulin given at 22:00–23:00 has a 6-hour action tail and is still active at 03:00–04:00. A repeating cycle is visible: manual insulin at 30–60 min after the meal, rescue carbs at 120–180 min, more insulin at 180–210 min. The "🤬 Rage" preset (1.2× insulin, target 80 mg/dL) was used 1–8 times per day, including overnight.</footer>
   </section>
 
   <section class="card block">
-    <h2>5 · Representative night — Sat Aug 22 (dorm)</h2>
-    <div class="night">
-00:30&nbsp;&nbsp; 88&nbsp;&nbsp; <span class="ev">→ "Eating Soon" override + 2.5 U</span><br>
-01:00&nbsp;&nbsp;127&nbsp;&nbsp; <span class="ev">→ "Rage" override (1.2× insulin, target 80) + 2.85 U + 10 g</span><br>
-01:30&nbsp;&nbsp; 76<br>
-02:00&nbsp;&nbsp; <span class="lo">50</span><br>
-02:30&nbsp;&nbsp; <span class="lo">43</span>&nbsp;&nbsp; <span class="ev">→ treated, 15 g + "Running Low" override</span><br>
-03:00&nbsp;&nbsp; 76&nbsp;&nbsp;<span class="ev">recovered</span>
-    </div>
-    <footer class="notes">Post-midnight correction stacking on top of an already-heightened sensitivity state, followed by a crash ~90 minutes later. The overnight "🤬 Rage" preset (1.2× insulin, 80 target) was used 1–8 times per day across this period.</footer>
-  </section>
-
-  <section class="card block">
-    <h2>6 · Current settings &amp; questions</h2>
+    <h2>5 · Current settings &amp; questions</h2>
     <div class="settings">
       <b>Basal</b> (38.05 U/day): 00:00 1.45 · 02:00 1.30 · 04:30 1.35 · 09:30 1.80 · 11:00 1.25 · 16:00 1.80 · 17:00 1.70 · 20:00 2.40 · 22:30 2.20<br>
-      <b>ISF</b> 53 mg/dL/U · <b>Carb ratio</b> 6 g/U · <b>Target</b> 100 mg/dL · <b>DIA</b> 6 h · flat all day
+      <b>ISF</b> 53 mg/dL/U · <b>Carb ratio</b> 6 g/U · <b>Target</b> 100 mg/dL · <b>DIA</b> 6 h — all flat across the day<br>
+      <b>Recent totals</b>: bolus 33.9 U/day (down from 43.3 before activity increased) · carbs ~150 g/day
     </div>
     <div style="height:12px"></div>
     <ul class="q">
-      <li><b>The 09:30 → 1.80 U/hr segment.</b> Highest daytime rate, carried over from an earlier routine, and the 10:00–12:00 severe-low cluster starts on it. Should it come down (or the whole 09:30–16:00 block be flattened toward ~1.25–1.45)?</li>
-      <li><b>An early-start / activity-day protocol</b> rather than a fixed clock change — his wake time varies from 6:30am to 2pm. Existing overrides are 0.8× / target 120 and 0.7× / target 120. Should one be applied on early days, extended to cover the overnight tail ~18–21 h later?</li>
-      <li><b>Overall basal reduction?</b> Bolus has already dropped 22% while basal is unchanged from a pre-activity baseline.</li>
-      <li><b>Guidance on late-evening corrections</b>, given the post-midnight stacking pattern above.</li>
-      <li><b>ISF / carb ratio</b> — both flat all day and unchanged; should they move with the new activity level?</li>
+      <li><b>The overnight rates (22:30 / 00:00 / 02:00)</b> — is the proposed reduction appropriate, and is the magnitude right?</li>
+      <li><b>Confirm leaving 04:30–09:30 at 1.35.</b> Loop accepts this block and it produces no lows; we would prefer not to disturb it.</li>
+      <li><b>A rule for late-evening corrections</b> — e.g. no correction below a set threshold after a certain hour, given 38% of manual doses go in below 120.</li>
+      <li><b>Inhaled insulin (Afrezza) for late corrections instead of subcutaneous?</b> Its ~90-minute action would avoid the overnight tail. The family already uses it; it is not currently logged, so it is not visible in this data.</li>
+      <li><b>Daytime basal.</b> The 09:30 and 16:00 segments (both 1.80 U/hr) are also well above delivery (Loop suspends 24–62% there). We have deliberately excluded them from this proposal to change one thing at a time — worth revisiting later.</li>
+      <li><b>ISF and carb ratio</b> are flat all day and unchanged since before the activity increase.</li>
     </ul>
   </section>
 
+  <section class="card block">
+    <h2>6 · Limitations</h2>
+    <div class="caveat">
+      <b>Sample.</b> Marching band began ~Aug 10 and brought both more activity and early wake times. Days with an early start (first meal before 9am, n=7) ran 4.0% below 54 mg/dL versus 0.9% on late-start days (n=52). However those early days were <b>band camp plus one Saturday event — not the ordinary semester</b>, where first class will be around 9am. Activity-specific conclusions are therefore not yet reliable and should be re-derived after a few weeks of routine data.
+      <br><br>
+      <b>What is not schedule-dependent</b> is the gap between scheduled and delivered basal in §1 — it holds on early days (20.4 U/day delivered), late days (24.5 U/day), and was present before the move.
+      <br><br>
+      <b>Other.</b> Inhaled insulin doses are not logged and are invisible here. Small carbohydrate entries are sometimes used to prompt Loop to correct, so carb totals overstate food intake. G7 sensor-compression artifacts (brief untreated dips that rebound spontaneously) were excluded from glucose statistics; they are frequent overnight and would otherwise inflate the low percentages.
+    </div>
+  </section>
+
   <footer class="notes">
-    Data source: personal Nightscout instance (CGM, pump, and Loop treatment records). CGM values are 5-minute means with duplicate device readings de-duplicated. Sensor-warmup periods and rebounding overnight dips consistent with sensor compression were excluded where noted in the underlying analysis. Prepared 2026-08-23. <b>Not medical advice.</b>
+    Source: personal Nightscout instance (CGM, pump and Loop treatment records). CGM values are 5-minute means with duplicate device readings de-duplicated. Delivered basal reconstructed from temp-basal records. Prepared 2026-08-23. <b>Not medical advice.</b>
   </footer>
 </div>

@@ -364,5 +364,50 @@
     "_why_it_fits_the_constraints": "Anchored to pod changes (~every 2.5d), NOT the clock. Survives travel, time zones, a college dorm, and a class schedule that differs by day - precisely where a time-of-day basal segment fails.",
     "_option": "A pod-day-aware Loop Override pair: a gentler-insulin override for roughly the first 12-24h after a pod change (to cut the day-1 lows) and/or a stronger one for the last ~12h before a change (to cut the day-3 highs). Loop overrides scale basal/ISF/CR together and can be time-limited. MAGNITUDE NOT ESTABLISHED HERE - start conservative (~5-10%) and set with the care team; do not derive the percentage from these aggregates.",
     "_caveats": "Breakfast-by-pod-day cells are small (n=11-16). The overall gradient is robust (n=2731-4999/day). Two sub-1-day pod gaps (failures) were left in. Site-change events are user-logged; an unlogged change would blur the boundaries."
+  },
+  "basal_step2_2026_08": {
+    "_desc": "Step 2 (proposed 2026-08-23): flatten the two vestigial daytime bumps AND scale ~15%. 38.05 -> 31.73 U/day (-17%), 9 segments -> 7.",
+    "_rationale": "PRIMARY JUSTIFICATION IS THE DELIVERED-VS-SCHEDULED GAP, NOT ANY TIME-OF-DAY OUTCOME. Loop delivers ~24.5 U/day on late-start days and ~20.4 on early-start days against a scheduled 38.05 - the schedule is 56% above actual delivery, and Loop suspends 30-40% of the time routinely (up to 74% in some hours). Two consequences: (1) FAILURE MODE - the scheduled basal is what the pod falls back to if Loop stops (phone dead, lost comms, app crash), i.e. a 56% over-delivery scenario, potentially overnight, while he is unsupervised in a dorm; (2) NO HEADROOM - Loop spends most of its control range holding the baseline down instead of responding to real lows. The two flattened bumps (09:30 1.80, 16:00 1.80) are rejected by Loop on EVERY day type (delivers 1.27/0.83 and 0.99/0.65, suspending 24-62%), so removing them is robust to schedule changes. In a closed loop, meal coverage should come from the bolus, not a standing basal bump.",
+    "_expected_effect": "Should NOT materially change delivered insulin - Loop will simply suspend less to reach the same targets. This is a safety/headroom change, NOT a fix for the current hypoglycemia. Risk of lowering is correspondingly low precisely because Loop is already ignoring the schedule. New schedule still sits ~29% above Loop's late-day delivery.",
+    "_does_not_fix": "The recurrent lows. Loop is already delivering only 20.4 U/day on active days and still going low, so the driver is elsewhere (activity + meal/bolus, likely the early-breakfast response: peak 137-155 at 08-09 then 14-18% <54 at 10-12).",
+    "_sample_caveat": "IMPORTANT. The 'early-start' days in this analysis (n=7, first meal <9am) were BAND CAMP (Aug 10-14) plus a Saturday band event (Aug 22) - NOT the coming semester. The 'late-start' days (n=52) were the summer sleep-in. Neither group represents the expected routine (first class ~9am). All ACTIVITY-SPECIFIC conclusions (the 10:00-12:00 cluster, override timing, the overnight tail) are therefore fitted to a transient week and must be re-derived after a few weeks of real semester data. The delivered-vs-scheduled gap above is schedule-independent and does survive.",
+    "daily_total_U": 31.73,
+    "delta_U": -6.32,
+    "segments": [
+      {
+        "time": "00:00",
+        "value": 1.25
+      },
+      {
+        "time": "02:00",
+        "value": 1.1
+      },
+      {
+        "time": "04:30",
+        "value": 1.2
+      },
+      {
+        "time": "11:00",
+        "value": 1.1
+      },
+      {
+        "time": "16:00",
+        "value": 1.3
+      },
+      {
+        "time": "20:00",
+        "value": 2.05
+      },
+      {
+        "time": "22:30",
+        "value": 1.9
+      }
+    ],
+    "_alternatives": {
+      "A_targeted_only": "36.27 U (-5%): flatten bumps, no scaling",
+      "B_proportional_15": "32.31 U (-15%): scale only, keep all 9 segments",
+      "C_rebuild_to_delivered": "30.20 U (-21%): match Loop delivery +25% headroom"
+    },
+    "_next": "Do NOT pair this with an activity override in the same step - one variable at a time. Re-derive activity handling once the ~9am-class pattern has a few weeks of data."
   }
 }

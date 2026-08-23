@@ -90,7 +90,7 @@
 
   <div class="lede">
     <div class="h">Summary</div>
-    <p>Marching band began ~Aug 10, a sustained increase in daily activity. Since then <b>time below 54 mg/dL has risen to 2–3× the recommended &lt;1% target</b>, concentrated in the evening (practice window) and in the following overnight/early-morning hours — a pattern consistent with delayed post-exercise insulin sensitivity. <b>Bolus insulin has already self-corrected down ~22%, but the basal schedule has not changed</b> and still reflects a sedentary summer at home. He moved into a college dorm Aug 21 and is now managing lows unsupervised (alarms are heard, fast carbs and a roommate are in place; all recorded episodes were self-treated and resolved).</p>
+    <p>Marching band began ~Aug 10, adding activity <i>and</i> early morning starts. The risk is concentrated in <b>days he wakes early (~6:30am)</b>: those days run <b>4.0% below 54 mg/dL vs 0.9% on late-start days</b> (target &lt;1%). Lows do <b>not</b> occur during activity — they appear ~3–6 h after the first meal (mid-morning) and again ~18–21 h later (overnight). The largest cluster, 10:00–12:00, coincides with a <b>basal segment of 1.80 U/hr from 09:30</b> — the highest daytime rate, carried over from an earlier schedule and previously slept through. Bolus insulin has already self-corrected down ~22%; <b>the basal schedule is unchanged</b>. He moved into a college dorm Aug 21 and manages lows unsupervised (alarms are heard, fast carbs and a roommate in place; all recorded episodes were self-treated and resolved).</p>
   </div>
 
   <section class="card block">
@@ -109,35 +109,42 @@
 
   <div class="two">
     <section class="card block">
-      <h2>2 · Where the lows moved (before vs after Aug 10)</h2>
+      <h2>2 · The discriminator: early-start days</h2>
       <table>
-        <thead><tr><th>Window</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
+        <thead><tr><th>Day type</th><th>Days</th><th>Mean</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
         <tbody>
-          <tr><td><b>Evening 17–21</b> <span style="color:var(--faint)">practice</span></td><td class="n">5.9 → <span class="bad">14.3</span></td><td class="n">1.1 → <span class="bad">4.0</span></td></tr>
-          <tr><td>Overnight 00–06</td><td class="n">8.7 → 7.8</td><td class="n">1.1 → <span class="bad">2.9</span></td></tr>
-          <tr><td>Morning 06–12</td><td class="n">3.2 → 6.3</td><td class="n">0.5 → <span class="bad">2.7</span></td></tr>
-          <tr><td>Afternoon 12–17</td><td class="n">7.9 → 6.9</td><td class="n">0.9 → 1.7</td></tr>
-          <tr><td>Late 21–24</td><td class="n">7.9 → 6.0</td><td class="n">1.0 → 0.4</td></tr>
+          <tr><td>Late start (first meal ≥9am)</td><td class="n">52</td><td class="n">110</td><td class="n">6.2</td><td class="n ok">0.9</td></tr>
+          <tr><td><b>Early start (first meal &lt;9am)</b></td><td class="n">7</td><td class="n">111</td><td class="n bad">12.3</td><td class="n bad">4.0</td></tr>
         </tbody>
       </table>
-      <footer class="notes">Evening is the epicentre; the overnight and next-morning severe lows roughly tripled, consistent with the 12–24h tail of post-exercise sensitivity rather than anything occurring at that hour.</footer>
+      <div style="height:10px"></div>
+      <table>
+        <thead><tr><th>Timing on early days</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
+        <tbody>
+          <tr><td>0–3 h after first meal <span style="color:var(--faint)">(activity)</span></td><td class="n">4.0</td><td class="n ok">0.0</td></tr>
+          <tr><td><b>3–6 h after</b></td><td class="n bad">25.9</td><td class="n bad">16.3</td></tr>
+          <tr><td>6–9 h after</td><td class="n">12.7</td><td class="n ok">0.0</td></tr>
+          <tr><td><b>18–21 h after</b> <span style="color:var(--faint)">(overnight)</span></td><td class="n bad">15.9</td><td class="n bad">10.3</td></tr>
+        </tbody>
+      </table>
+      <footer class="notes">Mean glucose is identical on both day types (110 vs 111) — this is purely a hypoglycemia-exposure difference. Note lows are absent during the activity itself and appear several hours later, matching the family's observation.</footer>
     </section>
 
     <section class="card block">
-      <h2>3 · By day of week (since Aug 10)</h2>
+      <h2>3 · Early days by clock hour, vs scheduled basal</h2>
       <table>
-        <thead><tr><th>Day</th><th>Mean</th><th>%&lt;70</th><th>%&lt;54</th></tr></thead>
+        <thead><tr><th>Hour</th><th>Mean</th><th>%&lt;54</th><th>Basal U/hr</th></tr></thead>
         <tbody>
-          <tr><td><b>Wednesday</b></td><td class="n">103</td><td class="n bad">18.1</td><td class="n bad">8.2</td></tr>
-          <tr><td>Friday</td><td class="n">115</td><td class="n">9.4</td><td class="n bad">3.7</td></tr>
-          <tr><td>Sunday</td><td class="n">115</td><td class="n">3.7</td><td class="n">2.0</td></tr>
-          <tr><td>Saturday</td><td class="n">108</td><td class="n">5.2</td><td class="n">1.9</td></tr>
-          <tr><td>Monday</td><td class="n">108</td><td class="n">9.2</td><td class="n ok">0.3</td></tr>
-          <tr><td>Tuesday</td><td class="n">122</td><td class="n">5.6</td><td class="n ok">0.7</td></tr>
-          <tr><td>Thursday</td><td class="n">116</td><td class="n">4.2</td><td class="n ok">0.5</td></tr>
+          <tr><td>01:00</td><td class="n">95</td><td class="n bad">13.1</td><td class="n">1.45</td></tr>
+          <tr><td>02:00</td><td class="n">104</td><td class="n bad">17.9</td><td class="n">1.30</td></tr>
+          <tr><td>09:00</td><td class="n">140</td><td class="n ok">0.0</td><td class="n">1.35</td></tr>
+          <tr><td><b>10:00</b></td><td class="n">111</td><td class="n bad">14.5</td><td class="n bad">1.80</td></tr>
+          <tr><td><b>11:00</b></td><td class="n">93</td><td class="n bad">17.9</td><td class="n">1.25</td></tr>
+          <tr><td><b>12:00</b></td><td class="n">98</td><td class="n bad">16.7</td><td class="n">1.25</td></tr>
+          <tr><td>17:00</td><td class="n">89</td><td class="n bad">8.3</td><td class="n">1.70</td></tr>
         </tbody>
       </table>
-      <footer class="notes">Wednesday is a clear outlier — 8.2% of the day below 54. Worth confirming against the rehearsal schedule.</footer>
+      <footer class="notes">The 10:00–12:00 cluster begins exactly at the <b>09:30 step up to 1.80 U/hr</b> — the highest daytime rate in the schedule, a carry-over from an earlier routine. It was previously slept through; on early days he is awake and active during it.</footer>
     </section>
   </div>
 
@@ -174,9 +181,9 @@
     </div>
     <div style="height:12px"></div>
     <ul class="q">
+      <li><b>The 09:30 → 1.80 U/hr segment.</b> Highest daytime rate, carried over from an earlier routine, and the 10:00–12:00 severe-low cluster starts on it. Should it come down (or the whole 09:30–16:00 block be flattened toward ~1.25–1.45)?</li>
+      <li><b>An early-start / activity-day protocol</b> rather than a fixed clock change — his wake time varies from 6:30am to 2pm. Existing overrides are 0.8× / target 120 and 0.7× / target 120. Should one be applied on early days, extended to cover the overnight tail ~18–21 h later?</li>
       <li><b>Overall basal reduction?</b> Bolus has already dropped 22% while basal is unchanged from a pre-activity baseline.</li>
-      <li><b>An exercise override protocol around practice</b> — extending several hours past the session to cover the delayed overnight tail? Existing presets are 0.8× / target 120 and 0.7× / target 120.</li>
-      <li><b>Wednesday specifically</b> — 8.2% below 54 suggests that day needs its own plan.</li>
       <li><b>Guidance on late-evening corrections</b>, given the post-midnight stacking pattern above.</li>
       <li><b>ISF / carb ratio</b> — both flat all day and unchanged; should they move with the new activity level?</li>
     </ul>

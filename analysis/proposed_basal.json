@@ -420,5 +420,57 @@
     "_baseline_to_beat": "Prior 2 weeks: %<54 1.8-3.1% overall; overnight nadirs 40, 43, 50. Late-start days ran 0.9% <54, early-start days 4.0%.",
     "_confound_warning": "Late-correction rules (no manual correction under ~150 after 10pm; Afrezza instead of subcutaneous; no Rage/fake carbs at night) may be adopted in the same window. If so the two changes are entangled and neither can be cleanly attributed - note which nights had late manual corrections when reviewing.",
     "_first_night": "2026-08-23 (applied 16:09 local, so tonight is the first night on the new schedule)."
+  },
+  "basal_afternoon_2026_09_05": {
+    "_desc": "PROPOSED 2026-09-05: afternoon-only trim. 09:30 1.80->1.50, 11:00 1.25->0.95, 16:00 1.80->1.40. Evening (17:00/18:00), overnight, dawn and dinner blocks all UNCHANGED. 35.35 -> 33.00 U/day (-7%).",
+    "_week_review": "7 days on the Aug 28 changes (18:00 1.35 + maximumBolus 10->15). WORKED: overnight 00-05 severe lows held at 0.0%; morning improved; post-dinner improved (8.1->2.0% <70). MAX BOLUS used as intended - 6 boluses >10U (~4.7/wk), max 15.00 twice, cap-pinning at exactly 10.00 fell from 14 to 1, manual boluses dropped ~12.4/day to ~8/day. Total bolus 48.8 -> 38.5 U/day with carbs 219 -> 172 g/day. DID NOT WORK: afternoon deteriorated badly - 11:00-20:00 now runs 12-26% <70 every hour, worst at 14:00 (Loop suspends 68%, delivers 0.37 vs 1.25 scheduled, 25.6% <70, 10.3% <54). Overall %<70 7.0 -> 10.1 though %<54 edged down 1.8 -> 1.4; mean 111 -> 103. Classes started ~Sep 1.",
+    "_key_split": "WEEKDAY vs WEEKEND separates two different problems. AFTERNOON 11-17 is bad on BOTH (weekday mean 96 / 22.0% <70 / 3.9% <54; weekend mean 86 / 16.5% / 2.3%) - weekend mean is actually LOWER, so this is a background shift, not campus walking, and a basal change is the right tool. EVENING 17-20 is WEEKDAY-ONLY (weekday 25.6% <70, 6.1% <54; weekend 0.0% and 0.0%, mean 110) - that is activity, and a permanent cut there would create weekend evening highs. Hence evening is deliberately left alone and should be handled with an activity override (existing presets: 0.8x/target 120, 0.7x/target 120) on class days.",
+    "_meal_note": "7 of 7 midday meals post-change were followed by a low. Doses ran effective CR 4.8-6.1 from starting BG 72-89. But Sep 4 was dosed 5.0U for 100g (effective CR 20, a large under-dose) and STILL reached 55 - so the driver is background/activity, not primarily the meal bolus.",
+    "daily_total_U": 33.0,
+    "delta_U": -2.35,
+    "segments": [
+      {
+        "time": "00:00",
+        "value": 1.2
+      },
+      {
+        "time": "02:00",
+        "value": 1.0
+      },
+      {
+        "time": "04:30",
+        "value": 1.35
+      },
+      {
+        "time": "09:30",
+        "value": 1.5
+      },
+      {
+        "time": "11:00",
+        "value": 0.95
+      },
+      {
+        "time": "16:00",
+        "value": 1.4
+      },
+      {
+        "time": "17:00",
+        "value": 1.7
+      },
+      {
+        "time": "18:00",
+        "value": 1.35
+      },
+      {
+        "time": "20:00",
+        "value": 2.4
+      },
+      {
+        "time": "22:30",
+        "value": 1.7
+      }
+    ],
+    "_rejected_alternative": "A broader version also cutting 17:00->1.05 and 18:00->1.05 (31.75 U/day, -10%) was rejected: weekend evenings already run mean 110 with 0% lows, so permanently cutting the evening would create highs on non-class days.",
+    "_watch": "WORKING: afternoon 11-17 %<54 toward <1% and no nadir under 60, while 09:30-11:00 does not drift high. TOO FAR: afternoon mean climbs past ~140 or he starts correcting mid-afternoon. STILL WEEKDAY-ONLY EVENING LOWS: that is the override's job, not basal. CAVEAT: only ~5 days of the new class routine; expect to revisit."
   }
 }

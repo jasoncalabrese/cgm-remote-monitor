@@ -486,5 +486,29 @@
     "_overnight_tracks_prior_day_activity": "Fri 09/04 (band) -> that night 31.8% <70. Sat 09/05 (game) -> that night 20.9% <70 / 7.9% <54. Sun 09/06 (rest) -> that night 0.0% <70, mean 119. Delayed post-exercise overnight lows, cleanly separated.",
     "_recommendation_2026_09_07": "ONE change, phone-side: add an activity preset at x0.65 / target 130 (nothing weaker than x0.80 exists today). Use it differently from Running Low — ON BEFORE the activity and before the meal bolus, left running overnight, rather than switched on after the fall. Saturday's 12.9U dinner would have been ~8.4U. Do NOT change basal: Sunday shows the schedule is correct on a rest day.",
     "_not_changing_yet": "CR 6. Sunday's hour-14 post-lunch low is one data point at home and points at CR, but one change at a time — and Mon 09/07 is a holiday (low activity, unrepresentative), so the first real test of the preset is Tue 09/08 and the next band/game day."
+  },
+  "carbratio_midday_2026_09_07": {
+    "_desc": "PROPOSED 2026-09-07: first carb-ratio change of this engagement, and the first time-segmented setting. CR 6 flat -> 6.5 between 10:00 and 16:00; 00:00 and 16:00 segments stay at 6.",
+    "_why": "Midday collapsed across ~Aug 25 at an UNCHANGED dose. Meals >=25g, 30d, median values: midday 10-16 before Aug25 n=17 effCR 6.0 peak 163 nadir 75 0.0% <70; Aug25->now n=15 effCR 5.9 peak 158 nadir 55 14.6% <70. Dinner 16-22 is the control and did not move: 0.0% <70 in BOTH eras (effCR 8.0->7.8, peak 165->183, nadir 72->79). TDD flat across the break (48.9 -> 48.3 U on 172 -> 174 g carbs), so this is not a global sensitivity shift — it is confined to the midday window, which is what a CR segment is for.",
+    "_sizing": "Median midday nadir 55, target ~85, gap 30 mg/dL. At ISF 53 that is ~0.6U against a median 8.6U midday dose = ~8%, i.e. CR 6 -> 6.5. Expected: nadir ~55 -> ~90, peak ~158 -> ~176 — landing midday on dinner's profile, which produces zero lows at effCR ~8 and peak 183. Deliberately not 7 (14%): that would push midday peaks past dinner's and risks the daytime highs he over-corrects for.",
+    "_staged_next_step": "If still >10% <70 after a week, 6.5 -> 7.0. Do not skip straight there.",
+    "_does_not_replace_the_activity_preset": "CR covers the everyday campus routine — the part that must not depend on remembering. It does NOT cover game/band days: Sat 09/05 reached 46 despite a continuously-run x0.80 override, and the post-activity OVERNIGHT lows (Fri 09/04 night 31.8% <70; Sat 09/05 night 20.9% / 7.9% <54; rest-day Sun night 0.0%) follow DINNER, which is in the 16:00 segment left unchanged. Those still need the x0.65/target-130 preset, on before the meal bolus.",
+    "_compensating_not_correcting": "The ratio did not become wrong; the days changed (dorm + classes + marching band from late Aug). This is a seasonal setting. Revisit when band season ends or at semester break, or he will run high.",
+    "_soft_edge": "Start chosen as 10:00 because first meal is now often 10:10-10:48 and those recently went low (10.6%, 12.5%, 29.2% <70). If mornings drift high, move the segment start to 11:00.",
+    "_status": "Proposed, not applied. Loop settings are entered on the phone by the user; this repo never writes the live profile.",
+    "segments": [
+      {
+        "time": "00:00",
+        "ratio": 6.0
+      },
+      {
+        "time": "10:00",
+        "ratio": 6.5
+      },
+      {
+        "time": "16:00",
+        "ratio": 6.0
+      }
+    ]
   }
 }

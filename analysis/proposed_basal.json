@@ -522,5 +522,17 @@
     "_what_improved": "Later afternoon and evening were clean on Tue: 15h 8.3% <70, then 16h-20h ALL 0.0% <70 at means 120/129/139/124/118. Prior class days ran 14-22% <70 across 16-19h. Rage usage 10-20h was 2, in line with baseline (Tue 09/01 also 2, Wed 09/02 was 3) — no overshoot signal.",
     "_separate_thread_not_acted_on": "07:00 -> 11:00 drift from 165 to 67 on almost no insulin is a morning-window question (basal 09:30 block 1.80), independent of the CR segment. Needs more than one day before touching.",
     "_profile_verified": "2026-09-09T05:08:32Z profile doc: CR 00:00 6 / 10:00 7 / 16:00 6 intact, basal 35.35 U/day unchanged, ISF 53, target 100."
+  },
+  "rage_retarget_2026_09_10": {
+    "_desc": "PROPOSED 2026-09-10: retarget the 🤬 Rage preset from target 80 to target 100. Multiplier stays x1.20. No other setting touched. Addresses the largest single driver of severe lows found so far.",
+    "_scale_of_the_problem": "140 Rage episodes in 40 days = 3.5/day, median trigger BG 150, median 3.10U manual + 10g fake carbs in the following hour. 43% end <70 within 1-4h and 22% end <54 — roughly 30 severe lows in 40 days downstream of this one habit. Larger than anything basal or CR tuning has addressed.",
+    "_it_is_not_the_dose": "Splitting by manual dose (>=3U vs <3U) shows NO difference: nadir 74 vs 76, ended <54 23% vs 20%. The discriminator is the RISE RATE at the moment he reacts.",
+    "_by_rise_rate_30min": "falling/flat n=18 -> 28% <70, 11% <54 | slow +5..25 n=45 -> 36%, 13% | fast +25..45 n=60 -> 47%, 22% | VERY FAST 45+ n=13 -> 69% <70, 62% <54 at median BG only 143 and the SMALLEST median dose of any group (2.55U). Confirms the user's description: he reads a steep arrow as an incoming bad high and corrects, but on a fast rise Loop is already dosing hard against the carbs and the manual dose lands in the trough.",
+    "_by_trigger_bg": "under 120 n=19 -> 53% <70 / 26% <54 | 120-149 n=47 -> 57% / 30% (his biggest bucket AND the worst outcomes) | 150-179 n=55 -> 24% / 5% (this one works) | 180-219 n=15 -> 47% / 47%. The danger zone is correcting while only mildly elevated but climbing.",
+    "_why_retargeting_has_the_right_shape": "Target 80 -> 100 removes a FIXED 20/53 = 0.38U from every Loop-computed correction, which is proportionally large exactly where he gets hurt and small where the tool is warranted: BG ~104 0.45U -> 0.08U (83% smaller); BG ~137 1.08 -> 0.70 (35%); BG ~161 1.53 -> 1.15 (25%); BG ~230 2.82 -> 2.44 (13%). Requires ZERO behavior change — same button, same frequency.",
+    "_why_not_a_behavioral_fix": "Asking him not to react to a steep arrow was rejected by the user as unworkable, correctly: the reflex is the stable thing here at 3.5x/day. Change what the button does, not whether he presses it.",
+    "_caveat": "Reverse causation is partly present: a very fast rise implies a large fast-carb meal, so meal bolus + Loop auto-correction are already on board and some of those lows would occur regardless. Retargeting removes one contributor. Expect the <54 rate to fall meaningfully, not to zero.",
+    "_next_step_if_insufficient": "After ~2 weeks, if still >15% of episodes ending <54, change the multiplier x1.20 -> x1.10. One change at a time.",
+    "_status": "Proposed, not applied. Preset lives on the phone; user enters it, this repo verifies from devicestatus afterwards (see override_presets.py — the table is only recoverable from presets that have actually been used)."
   }
 }

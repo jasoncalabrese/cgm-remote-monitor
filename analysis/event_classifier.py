@@ -11,6 +11,9 @@ Two modes:
              blank slot to confirm against memory. Use this to hand-label ground truth.
 
 Signatures (validated on this user's data):
+  - A dose LOGGED as Afrezza (IFTTT widget: notes "Afrezza") is ground truth and
+    outranks every inferred signature below. Such records are excluded from
+    subcutaneous insulin maths - see is_afrezza().
   - Rebound (BG rise after the nadir, no carbs) = TRANSIENT drop (walk or compression);
     no rebound + real insulin action = SUSTAINED (Afrezza / Loop correction).
   - Time-of-day splits transient drops: daytime rebound = WALK ("return-home" rise),
@@ -49,6 +52,20 @@ def ms_of(x):
     except Exception: return None
 def num(x, k):
     v = x.get(k); return v if isinstance(v, (int, float)) else 0
+
+
+def is_afrezza(x):
+    """Inhaled insulin logged via the IFTTT widget.
+
+    Posted by IFTTT as eventType "Correction Bolus", enteredBy "Maker", notes
+    "Afrezza", carrying the cartridge size in `insulin`. It NEVER reaches Loop -
+    Nightscout is downstream of Loop - so it has no effect on dosing and exists
+    purely for analysis. It must be kept OUT of subcutaneous insulin maths: 4U
+    inhaled is not 4U injected, and its action is over in ~90 min against a 6h
+    DIA. Counting it as a logged bolus would also make this classifier label a
+    real Afrezza event an ordinary correction, which is exactly backwards.
+    """
+    return "afrezza" in str(x.get("notes", "")).lower()
 
 
 def find_drops(seq, drop_min, win_min, merge_gap_min):
@@ -101,7 +118,9 @@ def build():
     t = fetch("treatments.json",
               {"find[created_at][$gte]": ld(since + 7 * 3600000).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
                "count": 20000})
-    bolus = sorted((ms_of(x), num(x, "insulin")) for x in t if num(x, "insulin") > 0 and ms_of(x))
+    bolus = sorted((ms_of(x), num(x, "insulin")) for x in t
+                   if num(x, "insulin") > 0 and ms_of(x) and not is_afrezza(x))
+    afrezza = sorted((ms_of(x), num(x, "insulin")) for x in t if is_afrezza(x) and ms_of(x))
     carbs = sorted((ms_of(x), num(x, "carbs")) for x in t if num(x, "carbs") > 0 and ms_of(x))
     carbt = [c[0] for c in carbs]
     bk = dd(list)
@@ -112,6 +131,7 @@ def build():
     ts = [s[0] for s in seq]
 
     def ins_before(a, b): return sum(v for ms, v in bolus if a <= ms <= b)
+    def afrezza_in(a, b): return sum(v for ms, v in afrezza if a <= ms <= b)
     def carb_in(a, b):
         i = bisect.bisect_left(carbt, a); return i < len(carbt) and carbt[i] <= b
     def gi(ms):
@@ -122,10 +142,14 @@ def build():
         reb_win = [v for m, v in seq if nms + 15 * 60000 <= m <= nms + 150 * 60000]
         rebound = (max(reb_win) - nadir) if reb_win else 0
         logged = ins_before(ms - 15 * 60000, nms)
+        af = afrezza_in(ms - 20 * 60000, nms)
         rc = carb_in(nms, nms + 150 * 60000)
+        # A logged Afrezza dose is ground truth - it outranks every inferred signature.
+        cls = (f"Afrezza {af:g}U (logged)" if af
+               else classify(start, nadir, rebound, logged, rc, lh(ms)))
         events.append(dict(ms=ms, nms=nms, start=start, nadir=nadir, drop=start - nadir,
-                           rebound=rebound, logged=logged, reb_carbs=rc, hr=lh(ms),
-                           cls=classify(start, nadir, rebound, logged, rc, lh(ms))))
+                           rebound=rebound, logged=logged, afrezza=af, reb_carbs=rc,
+                           hr=lh(ms), cls=cls))
     return seq, events, carbs, bolus, gi
 
 

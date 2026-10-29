@@ -85,4 +85,23 @@ describe('Notifications API', function ( ) {
     //2nd call should have no effect, done should NOT be called again
     makeRequest();
   });
+
+  it('answers 200 to a Pushover callback for an unknown receipt', function (done) {
+    var acks = [];
+    var ctx = { pushnotify: { pushoverAck: function (body) { acks.push(body); return false; } } };
+    var app = require('express')();
+    app.use('/', notificationsAPI(app, {}, ctx));
+    request(app)
+      .post('/notifications/pushovercallback')
+      .type('form')
+      .send({ receipt: 'gone', acknowledged: '1' })
+      .expect(200)
+      .end(function (err) {
+        should.not.exist(err);
+        acks.should.have.length(1);
+        acks[0].receipt.should.equal('gone');
+        done();
+      });
+  });
+
 });

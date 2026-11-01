@@ -34,13 +34,18 @@ suspension during an Afrezza drop is the thing we do not want more of.
 Verifies itself — `insulinNeedsScaleFactor` appears on the next activation, so
 `override_presets.py` will confirm within hours.
 
-## 2. Read the alarm settings — CANNOT BE DONE ANY OTHER WAY
+## 2. Read the alarm settings — DONE 2026-11-01, see below
 
 Write these down even if nothing is changed:
 
-- [ ] Is the **rise-rate / rising-fast alert** ON?  ______
-- [ ] What is the **high alert** threshold?  ______
-- [ ] What is the **low alert** threshold?  ______
+ANSWERED: Rising Fast OFF, Falling Fast OFF, High 180, Low OFF, Urgent Low 55, Urgent Low Soon OFF.
+Deliberately minimal because Pushover duplicates the alerting.
+
+The live cue turned out to be on the SERVER, not the phone: Nightscout runs
+alarmTypes=['predict'] with bgTargetTop 165, so the high alarm fires on an AR2 FORECAST
+of 165 — 30-45 min early on a fast rise, landing while he is ~130-150 and climbing, which
+is the worst correction window. Fix is BG_TARGET_TOP 165 -> 180 in the server config; no
+phone needed. Do NOT disable 'predict' — it is also what provides the predictive LOW alarm.
 
 Why it matters: he corrects at a median BG of 150, and 19 times below 120 — he is
 reacting to an arrow, not a number. Correcting at 150–179 is fine (5% end <54);

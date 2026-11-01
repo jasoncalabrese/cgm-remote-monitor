@@ -5,7 +5,15 @@ definitions and alarm settings live only on the device — they cannot be change
 even read through Nightscout, unlike the basal/CR/ISF profile, which this repo
 verifies remotely after the fact.
 
-Last updated 2026-09-10. Next visit: weekend.
+Last updated 2026-11-01. STILL OUTSTANDING — none of this has been done since 2026-09-10.
+
+Item 1 is now considerably better evidenced than when it was written. Over the last 35
+days there were 21 distinct episodes below 54, and **57% of them follow a Rage
+activation** (median 3.85U of manual insulin in the preceding 2.5h). The four deepest,
+all nadir 40, are Rage episodes. Everything else in this engagement is now working —
+overnight is at ~0.0% below 54, midday holds after the carb-ratio change, and game days
+are handled by Running Extra Low. This button is the largest remaining cause of severe
+lows, and it is unchanged at x1.20 / target 80, firing 3.9 times a day.
 
 ---
 

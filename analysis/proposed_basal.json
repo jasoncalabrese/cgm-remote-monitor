@@ -668,5 +668,35 @@
     "_candidate_mechanism_unconfirmed": "If the old sensor drifts slightly HIGH late in its session, Loop over-delivers against readings that are too high; the late session then LOOKS clean because of that same drift, and the delivered insulin lands once the new sensor reads accurately. Four of nine episodes fall within 8h of the swap, inside one insulin DIA. Consistent with days 12-15 being the quietest and day 1 the worst, but 5 sessions cannot confirm it. The per-session old-vs-new 24h means are mostly flat (106->107, 104->106, 110->107) with one large step (115->104), so the drift is not uniform.",
     "_recommendation": "Run ⬇️ Running Low (x0.80/120) or ↘️ Running a little Low (x0.90/100) for the first 8-12h after a new sensor is activated. Unlike every other risk window in this engagement this one is SCHEDULED — he pre-soaks, so the swap is deliberate and on a 15-day cadence. One tap attached to a routine he already performs.",
     "_my_own_tooling_was_hiding_it": "check_response.py sets SENSOR_WARMUP_H = 24 and excludes exactly this window from its CLEAN columns. Built to strip warm-up noise when comparing therapy changes, it has been masking the user's highest-risk period since September. Annotated in place: keep the exclusion for therapy comparisons, never read a warmup-excluded number as overall risk, and report the first 24h separately."
+  },
+  "carbratio_overnight_2026_11_10": {
+    "_desc": "PROPOSED 2026-11-10: split the overnight carb-ratio segment. 00:00 6 -> 8, new 08:00 segment at 6 to protect breakfast. 10:00 (7) and 16:00 (6) unchanged. Targets the fake-carb mechanism, which is the dominant dose driver overnight.",
+    "_trigger": "User: 'He still seems to over correct, last night I think he did fake carbs, Afrezza, and rage mode at the same time.' Confirmed exactly.",
+    "_what_last_night_was": "Sun 11/08 17:00 -> Mon 11/09 10:00: 29.60U of MANUAL insulin and 80g of fake carbs. Every Rage activation is a single composite action — Rage + fake carbs + manual bolus in the SAME MINUTE — then repeated 5-10 min later: 23:01 Rage+10g+2.60U then 23:21 5g+1.05U; 01:11 Rage+10g+2.35U, 01:16 10g+2.25U, 01:27 5g+0.90U (5.5U in 16 min at BG 129-156); 04:16 Rage+10g+2.55U then 04:26 10g+2.55U (5.1U in 10 min). Outcome: Mon 05:45-07:15 ninety minutes under 70, nadir 50. ⬇️ Running Low was not set until 06:46, after the low.",
+    "_the_fake_carbs_are_the_dose_driver_not_the_preset": "At BG 129 overnight, 10g of fake carbs at CR 6 generates ~1.67U while the Rage correction itself contributes only ~0.8U. Of the 29.6U overnight, roughly 13U traces to the 80g of fake carbs. So the pending Rage multiplier change would shave only ~17% off each of these; the carb ratio is the bigger dial.",
+    "_why_the_overnight_segment_is_nearly_a_pure_fake_carb_dial": "Carb entries by hour, 63d: 00:00-05:00 has 4 real meals (>=25g) against 60 fake entries (650g); 05:00-08:00 has NO traffic at all, so a boundary there is free; 08:00-10:00 has 9 real meals (the 08:30-09:00 breakfast cluster) and must stay at 6. The 00:00-08:00 window is 94% fake-carb traffic by count.",
+    "_why_it_targets_well": "The fake-carb trick exists to make Loop deliver MORE than its correction logic would. Weakening the carb ratio shrinks exactly that surcharge and leaves the ISF-based correction untouched — a genuine 282 at 08:00 (the median BG at hour-8 fake entries) is still treated properly. And it requires no behaviour change: same buttons, smaller result. Same principle that worked for the Rage target.",
+    "_magnitude": "Last night's 45g of overnight fake carbs: 7.5U at CR 6 versus 5.6U at CR 8 — about 1.9U less, ~100 mg/dL at ISF 53, in the window that produced the 50. Daily average saving is only ~0.5 U/day because many nights carry none; the benefit is concentrated on heavy nights.",
+    "_honest_limits": "(1) Does NOTHING about the doubling-up, which is the other half of the harm — two doses 5-10 min apart, the second landing before the first has acted. (2) Costs ~2U on a real late-night meal; there were 4 in 63 days (00:28-01:00, 30-60g), so roughly one per fortnight running high. (3) 6 -> 8 is a 25% cut; 10 is available as a later step if 8 proves insufficient.",
+    "_easier_than_the_pending_preset_change": "This is a THERAPY-SETTINGS change, not a preset. Profile edits have gone through several times in this engagement without a special trip; the Rage multiplier has been stuck for two months on physical phone access.",
+    "_status": "Proposed, not applied. Verify afterwards from profile.json as with every prior profile change.",
+    "segments": [
+      {
+        "time": "00:00",
+        "ratio": 8.0
+      },
+      {
+        "time": "08:00",
+        "ratio": 6.0
+      },
+      {
+        "time": "10:00",
+        "ratio": 7.0
+      },
+      {
+        "time": "16:00",
+        "ratio": 6.0
+      }
+    ]
   }
 }

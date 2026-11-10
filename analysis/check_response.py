@@ -20,6 +20,12 @@ from collections import defaultdict as dd
 BASE = "https://nightscout.cbrese.com/api/v1"
 TZ = -7 * 3600 * 1000                  # local = UTC-7 (ETC/GMT+7, no DST)
 LOOKBACK_DAYS = int(sys.argv[1]) if len(sys.argv) > 1 else 8
+# WARNING (2026-11-10): excluding the first 24h hides this user's HIGHEST-RISK window.
+# Measured over 5 sensor sessions / 69 sensor-days: first 24h runs 4.0% <54 and 13.6% <70,
+# against 1.1% and 8.2% for the rest of the session — nearly 4x the severe-low rate. Most of
+# those episodes carry real insulin on board (up to 17.7U), so they are NOT warm-up noise.
+# Keep the exclusion for comparing THERAPY changes (that is what it is for), but never read a
+# warmup-excluded number as this user's overall risk. Report the first 24h separately instead.
 SENSOR_WARMUP_H = 24                   # exclude this long after a normal new sensor
 DEVICE_SWITCH_WARMUP_H = 48           # longer exclusion when the sensor LINE changes (G6->G7)
 

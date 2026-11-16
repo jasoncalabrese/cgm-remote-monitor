@@ -18,21 +18,22 @@ asked, what the reasoning was, what was deployed, and what the measurement showe
 This repo is attached to **all three** sessions. Each session works in its own repos and
 reads this one for context.
 
-**Issues here are the channel.** One issue per change, and it carries the whole life of
-that change:
+**`LOG.md` is the channel.** Append-only, newest at the bottom, one entry per thing
+that happened:
 
-1. **Analysis opens it** with the measurement that motivates it and the baseline to beat.
-2. **Infra or Loop implements**, and comments with what actually got deployed — the real
-   values, not the proposed ones.
-3. **Analysis measures** after enough data accrues and comments with the result against
-   the stated baseline.
-4. Closed only when it has been measured, not when it has been deployed.
+    ## YYYY-MM-DD · owner · what
 
-Label by owner (`infra`, `loop`, `analysis`) and by whether it is blocked on physical
-access to Andrew's phone, which has historically been the binding constraint.
+A change that is applied and later measured produces **two entries, not one edit**: the
+apply, naming the baseline, then the result against it. Never edit an entry already
+there — a later entry supersedes an earlier one, and the sequence is what makes a
+regression catchable later instead of quietly rewritten.
 
-`OPEN_ITEMS.md` is the current queue. Once this repo exists as a real repo, those become
-issues and the file goes away.
+Append-only means sessions rarely touch the same lines, so no locking is needed. Pull
+before you write.
+
+`OPEN_ITEMS.md` is the current queue — what is outstanding and who owns it.
+`proposed_basal.json` holds the full reasoning for every settings change; the log
+references it rather than repeating it.
 
 ## The one rule
 

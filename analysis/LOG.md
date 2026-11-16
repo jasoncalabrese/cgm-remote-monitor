@@ -1,7 +1,33 @@
-# Change log
-Reconstructed from the 68 commits that touched `analysis/` in the public Nightscout
-fork this work started in, 2026-07 to 2026-11, so the sequence survives the move to a
-fresh history. Full reasoning for every entry is in `proposed_basal.json`.
+# Log
+
+The running trail for all three sessions. **Append only.** Never edit an entry that is
+already here — a later entry supersedes an earlier one, and the sequence is the point.
+
+Entry format, newest at the bottom:
+
+    ## YYYY-MM-DD · owner · what
+    A few lines: what was done, the values ACTUALLY applied, and what to measure.
+
+`owner` is `analysis`, `infra` or `loop`. Grep it.
+
+A change that gets applied and then measured produces **two entries, not one edit** —
+the apply, then the result against the baseline the apply named. That is deliberate: it
+is how a regression gets caught later instead of being quietly rewritten. Twice an
+eight-day window has looked like a regression here and turned out to be ordinary
+variation; both times what settled it was a baseline written down weeks earlier.
+
+Append-only also means two sessions rarely touch the same lines, so this does not need
+locking or coordination — just pull before you write.
+
+Detail lives elsewhere and is referenced, not duplicated: `proposed_basal.json` for the
+full reasoning behind every settings change, `OPEN_ITEMS.md` for what is still open.
+
+---
+
+## Pre-history: 2026-06 to 2026-11
+
+Reconstructed from the 68 commits that touched `analysis/` in the public Nightscout fork
+this work started in, before the move to a private repo and a fresh history.
 
 ## 2026-06-13
 - Add 90-day Nightscout T1D data pull and pattern analysis
@@ -102,3 +128,10 @@ fresh history. Full reasoning for every entry is in `proposed_basal.json`.
 
 ## 2026-11-16
 - Split the work into three sessions and record the structure
+
+---
+
+## 2026-11-16 · analysis · trail moves to this file
+Dropped the idea of using GitHub issues as the coordination channel — ceremony that does
+not fit a one-human, three-agent project, and harder to read than a log. All three
+sessions append here instead.

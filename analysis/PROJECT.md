@@ -8,11 +8,35 @@ Three sessions, one shared record. Tag `andrew-t1d`, plus a role tag each.
 | **Loop/NS code** | `andrew-t1d:loop` | `LoopWorkspace`, `Loop`, `LoopKit` | app and server code changes |
 | **Infrastructure** | `andrew-t1d:infra` | `cbrese-infra` | droplet, Nightscout config, cron jobs |
 
-Find each other with `ListAgents`; talk with `SendMessage`.
+**These are separate cloud sessions and cannot message each other.** `ListAgents` /
+`SendMessage` only reach sessions on the same machine. Coordination goes through this
+repo — which is better anyway: a message is gone once read, while an issue records who
+asked, what the reasoning was, what was deployed, and what the measurement showed.
+
+## How the sessions coordinate
+
+This repo is attached to **all three** sessions. Each session works in its own repos and
+reads this one for context.
+
+**Issues here are the channel.** One issue per change, and it carries the whole life of
+that change:
+
+1. **Analysis opens it** with the measurement that motivates it and the baseline to beat.
+2. **Infra or Loop implements**, and comments with what actually got deployed — the real
+   values, not the proposed ones.
+3. **Analysis measures** after enough data accrues and comments with the result against
+   the stated baseline.
+4. Closed only when it has been measured, not when it has been deployed.
+
+Label by owner (`infra`, `loop`, `analysis`) and by whether it is blocked on physical
+access to Andrew's phone, which has historically been the binding constraint.
+
+`OPEN_ITEMS.md` is the current queue. Once this repo exists as a real repo, those become
+issues and the file goes away.
 
 ## The one rule
 
-**Only the analysis session writes to `analysis/`.** Everything the project has learned
+**Only the analysis session writes to `analysis/` content.** Everything the project has learned
 is here — every settings change with its rationale and result, and every finding that
 was later retracted and why. Three sessions editing it concurrently would corrupt the
 one thing that makes the work cumulative. The others read it and message analysis if
